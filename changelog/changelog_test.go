@@ -1,10 +1,10 @@
-package load
+package changelog
 
 import (
 	"testing"
 )
 
-func TestEmptyYamlFile(t *testing.T) {
+func TestParseEmptyYamlFile(t *testing.T) {
 	s := Changelog{}
 	err := s.Parse([]byte(""))
 
@@ -22,7 +22,7 @@ func TestEmptyYamlFile(t *testing.T) {
   }
 }
 
-func TestYamlFile1(t *testing.T) {
+func TestParseYamlFile1(t *testing.T) {
   content := `
 name: name
 author: author
@@ -49,13 +49,13 @@ versions:
   }
 }
 
-func TestOneVersion(t *testing.T) {
+func TestParseOneVersion(t *testing.T) {
   content := `
 name: my package
 versions:
   - version: 1.0.0
     date: Mon Jun 27 2016
-    changes:
+    updates:
       - change 1
       - change 2
       - |
@@ -76,26 +76,35 @@ versions:
   if s.Versions[0].Date.String()!="Mon Jun 27 2016" {
     t.Errorf("should s.Versions[0].Date='Mon Jun 27 2016', got s.Versions[0].Date=%q\n", s.Versions[0].Date.String())
   }
-  if len(s.Versions[0].Changes)!=3 {
-    t.Errorf("should len(s.Versions[0].Changes)='1', got len(s.Versions[0].Changes)=%q\n", len(s.Versions[0].Changes))
+  updates := s.Versions[0].Updates
+  iexpected := 3
+  igot := len(updates)
+  if iexpected!=igot {
+    t.Errorf("should len(s.Versions[0].Updates)=%q, got len(s.Versions[0].Updates)=%q\n", iexpected, igot)
   }
-  if s.Versions[0].Changes[0]!="change 1" {
-    t.Errorf("should s.Versions[0].Changes[0]='change 1', got s.Versions[0].Changes[0]=%q\n", s.Versions[0].Changes[0])
+  expected := "change 1"
+  got := updates[0]
+  if expected!=got {
+    t.Errorf("should s.Versions[0].Updates[0]=%q, got s.Versions[0].Updates[0]=%q\n", expected, got)
   }
-  if s.Versions[0].Changes[1]!="change 2" {
-    t.Errorf("should s.Versions[0].Changes[1]='change 2', got s.Versions[0].Changes[1]=%q\n", s.Versions[0].Changes[1])
+  expected = "change 2"
+  got = updates[1]
+  if expected!=got {
+    t.Errorf("should s.Versions[0].Updates[1]=%q, got s.Versions[0].Updates[1]=%q\n", expected, got)
   }
-  if s.Versions[0].Changes[2]!="change 3\nwith multiple lines" {
-    t.Errorf("should s.Versions[0].Changes[2]='change 3\nwith multiple lines', got s.Versions[0].Changes[2]=%q\n", s.Versions[0].Changes[2])
+  expected = "change 3\nwith multiple lines"
+  got = updates[2]
+  if expected!=got {
+    t.Errorf("should s.Versions[0].Updates[2]=%q, got s.Versions[0].Updates[2]=%q\n", expected, got)
   }
 }
 
-func TestMissingDate(t *testing.T) {
+func TestParseMissingDate(t *testing.T) {
   content := `
 name: my package
 versions:
   - version: 1.0.0
-    changes:
+    updates:
       - change 1
 `
 	s := Changelog{}
@@ -158,5 +167,33 @@ versions:
   }
   if s.Versions[3].Version.String()!="0.1.0" {
     t.Errorf("should s.Versions[3].Version=0.1.0, got s.Versions[3].Version=%q\n", s.Versions[3].Version)
+  }
+}
+
+func TestEncode1(t *testing.T) {
+  expected := `author: author
+email: email
+name: name
+versions:
+- date: Tue Jun 28 2016
+  name: name2
+  version: 0.0.2
+- date: Sat Jun 25 2016
+  name: name
+  version: 0.0.1
+`
+	s := Changelog{}
+  s.Name = "name"
+  s.Author = "author"
+  s.Email = "email"
+  s.CreateVersion("name2", "0.0.2", "Tue Jun 28 2016")
+  s.CreateVersion("name", "0.0.1", "Sat Jun 25 2016")
+
+  d, err := s.Encode()
+  if err!=nil {
+    t.Errorf("should err=nil, got err=%q\n", err)
+  }
+  if string(d)!=expected {
+    t.Errorf("should string(d)=%q, got string(d)=%q\n", expected, string(d))
   }
 }
