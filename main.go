@@ -9,10 +9,13 @@ import (
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
 	"github.com/mh-cbon/go-repo-utils/repoutils"
+	repocommit "github.com/mh-cbon/go-repo-utils/commit"
 	"github.com/urfave/cli"
+  "github.com/mh-cbon/verbose"
 )
 
 var VERSION = "0.0.0"
+var logger = verbose.Auto()
 
 func main() {
 
@@ -150,15 +153,32 @@ func initChangelog(c *cli.Context) error {
   clog.Author = author
 
   if c.IsSet("--since") {
+    logger.Println("using --since")
     newVersion := clog.CreateVersion("next", "", "")
     err := setVersionChanges(newVersion, path, since, "")
     if err != nil {
       return cli.NewExitError(err.Error(), 1)
     }
+    if len(newVersion.Updates)>0 {
+      clog.Versions = append(clog.Versions, newVersion)
+    } else {
+      return cli.NewExitError("no changes detected", 1)
+    }
   } else {
     tags, err := getVcsTags(path)
     if err != nil {
       return cli.NewExitError(err.Error(), 1)
+    }
+    logger.Printf("tags=%q\n", tags)
+
+    if len(tags)>0 {
+      to := tags[0]
+      newVersion := clog.CreateVersion("", to, "")
+      err := setVersionChanges(newVersion, path, "", to)
+      if err != nil {
+        return cli.NewExitError(err.Error(), 1)
+      }
+      clog.Versions = append(clog.Versions, newVersion)
     }
 
     for i, tag := range tags {
@@ -168,9 +188,13 @@ func initChangelog(c *cli.Context) error {
         to = tags[i+1]
       }
       newVersion := clog.CreateVersion("", to, "")
+      logger.Printf("list commits of=%q since=%q to=%q\n", to, since, to)
       err := setVersionChanges(newVersion, path, since, to)
       if err != nil {
         return cli.NewExitError(err.Error(), 1)
+      }
+      if to!= "" && len(newVersion.Updates)>0 {
+        clog.Versions = append(clog.Versions, newVersion)
       }
     }
 
@@ -180,10 +204,16 @@ func initChangelog(c *cli.Context) error {
       if err != nil {
         return cli.NewExitError(err.Error(), 1)
       }
+      if len(newVersion.Updates)>0 {
+        clog.Versions = append(clog.Versions, newVersion)
+      } else {
+        return cli.NewExitError("no changes detected", 1)
+      }
     }
 
   }
 
+  clog.Sort()
   err = clog.Write(file)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
@@ -214,12 +244,14 @@ func prepareNext(c *cli.Context) error {
     return cli.NewExitError(err.Error(), 1)
   }
 
+  isNew := false
   currentNext := clog.FindVersionByName("next")
   if currentNext!=nil {
     currentNext.SetTodayDate()
     currentNext.Updates = make([]string, 0)
   } else {
     currentNext = clog.CreateVersion("next", "", "")
+    isNew = true
   }
 
   mostRecent := clog.FindMostRecentVersion()
@@ -231,6 +263,19 @@ func prepareNext(c *cli.Context) error {
 
   currentNext.Author = author
   currentNext.Email = email
+
+  if isNew {
+    if len(currentNext.Updates)>0 {
+      clog.Versions = append(clog.Versions, currentNext)
+    } else {
+      return cli.NewExitError("no changes detected", 1)
+    }
+  }
+
+  clog.Sort()
+  for _, g := range clog.Versions {
+    fmt.Println(g.Version)
+  }
 
   err = clog.Write(file)
   if err!=nil {
@@ -324,17 +369,12 @@ func exportToMd(c *cli.Context) error {
 	out := c.String("out")
   file := "changelog.yml"
 
-  binPath, err := getBinPath()
-  if err != nil {
-    return cli.NewExitError(err.Error(), 1)
-  }
-
   if _, err := os.Stat(file); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err = clog.Load(file)
+  err := clog.Load(file)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -350,9 +390,9 @@ func exportToMd(c *cli.Context) error {
   }
 
   if version != "" {
-    err = tpls.GenerateTemplate(clog, true, filepath.Join(binPath, "templates", "md.go"), out)
+    err = tpls.GenerateTemplateStr(clog, true, tpls.MD, out)
   } else {
-    err = tpls.GenerateTemplate(clog, false, filepath.Join(binPath, "templates", "md.go"), out)
+    err = tpls.GenerateTemplateStr(clog, false, tpls.MD, out)
   }
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
@@ -379,20 +419,40 @@ func setVersionChanges (version *changelog.Version, path string, since string, t
     s := fmt.Sprintf("%s\n%s <%s> (%s)\n", commit.Message, commit.Author, commit.Email, commit.Date)
     contributor := fmt.Sprintf("%s <%s>", commit.Author, commit.Email)
     version.Updates = append(version.Updates, s)
-    version.Contributors = append(version.Contributors, contributor)
+    if contains(version.Contributors, contributor)==false {
+      version.Contributors = append(version.Contributors, contributor)
+    }
+  }
+
+  if len(commits)>0 {
+    orderedCommits := repocommit.Commits(commits)
+    orderedCommits.OrderByDate("DESC")
+    version.SetDate(orderedCommits[0].GetDate().Format(changelog.DateLayout))
   }
 
   return nil
 }
 
-func getVcsTags (path string) ([]string, error) {
+func contains(s []string, e string) bool {
+    for _, a := range s {
+        if a == e {
+            return true
+        }
+    }
+    return false
+}
 
+func getVcsTags (path string) ([]string, error) {
   vcs, err := repoutils.WhichVcs(path)
   if err != nil {
     return make([]string, 0), err
   }
 
-  return repoutils.List(vcs, path)
+  tags, err := repoutils.List(vcs, path)
+  if err==nil {
+    tags = repoutils.SortSemverTags(tags)
+  }
+  return tags, err
 }
 
 func getBinPath() (string, error) {

@@ -53,9 +53,9 @@ func TestParseOneVersion(t *testing.T) {
   content := `
 name: my package
 versions:
-  - version: 1.0.0
+  - a_version: 1.0.0
     date: Mon Jun 27 2016
-    updates:
+    xupdates:
       - change 1
       - change 2
       - |
@@ -103,8 +103,8 @@ func TestParseMissingDate(t *testing.T) {
   content := `
 name: my package
 versions:
-  - version: 1.0.0
-    updates:
+  - a_version: 1.0.0
+    xupdates:
       - change 1
 `
 	s := Changelog{}
@@ -122,8 +122,8 @@ func TestVersionSort(t *testing.T) {
   content := `
 name: my package
 versions:
-  - version: 0.1.0
-  - version: 1.0.0
+  - a_version: 0.1.0
+  - a_version: 1.0.0
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
@@ -144,10 +144,10 @@ func TestVersionSortExtended(t *testing.T) {
   content := `
 name: my package
 versions:
-  - version: 0.1.0
-  - version: 1.0.0
-  - version: 2.0.0
-  - name: noversion
+  - a_version: 0.1.0
+  - a_version: 1.0.0
+  - a_version: 2.0.0
+  - aname: noversion
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
@@ -175,19 +175,21 @@ func TestEncode1(t *testing.T) {
 email: email
 name: name
 versions:
-- date: Tue Jun 28 2016
-  name: name2
-  version: 0.0.2
-- date: Sat Jun 25 2016
-  name: name
-  version: 0.0.1
+- a_version: 0.0.2
+  aname: name2
+  date: Tue Jun 28 2016
+- a_version: 0.0.1
+  aname: name
+  date: Sat Jun 25 2016
 `
 	s := Changelog{}
   s.Name = "name"
   s.Author = "author"
   s.Email = "email"
-  s.CreateVersion("name2", "0.0.2", "Tue Jun 28 2016")
-  s.CreateVersion("name", "0.0.1", "Sat Jun 25 2016")
+  v1 := s.CreateVersion("name2", "0.0.2", "Tue Jun 28 2016")
+  s.Versions = append(s.Versions, v1)
+  v2 := s.CreateVersion("name", "0.0.1", "Sat Jun 25 2016")
+  s.Versions = append(s.Versions, v2)
 
   d, err := s.Encode()
   if err!=nil {

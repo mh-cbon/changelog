@@ -9,6 +9,25 @@ import (
 // YVersion is a marshable version
 type YVersion semver.Version
 
+// UnmarshalYAML implements the yaml.Unmarshaler interface.
+func (t *YVersion) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var s string
+	if err := unmarshal(&s); err != nil {
+		return err
+	}
+	tt, err := semver.NewVersion(strings.Trim(string(s), "\""))
+	if err != nil {
+		return err
+	}
+  *t = YVersion(*tt)
+	return nil
+}
+
+// MarshalYAML implements the yaml.Marshaler interface.
+func (t YVersion) MarshalYAML() (interface{}, error) {
+	return t.String(), nil
+}
+
 func (t *YVersion) MarshalJSON() ([]byte, error) {
   return []byte("\""+t.String()+"\""), nil
 }

@@ -5,15 +5,15 @@ import (
   "sort"
 
   "github.com/Masterminds/semver"
-  "github.com/ghodss/yaml"
+  "gopkg.in/yaml.v2"
 )
 
 // Config is the top-level configuration object.
 type Changelog struct {
-	Name         string      `json:"name,omitempty"`     // package name
-	Author       string      `json:"author,omitempty"`   // default releaser author
-	Email        string      `json:"email,omitempty"`    // default releaser email
-  Versions     []*Version  `json:"versions"`
+	Name         string      `yaml:"name,omitempty"`     // package name
+	Author       string      `yaml:"author,omitempty"`   // default releaser author
+	Email        string      `yaml:"email,omitempty"`    // default releaser email
+  Versions     []*Version  `yaml:"versions"`
 }
 
 // Load given path into the current Changelog object
@@ -60,7 +60,6 @@ func (g *Changelog) CreateVersion(name string, version string, date string) *Ver
     v.SetDate(date)
   }
   v.Updates = make([]string, 0)
-  g.Versions = append(g.Versions, &v)
   return &v
 }
 
@@ -80,7 +79,8 @@ func (g *Changelog) FindVersionByName(name string) *Version {
 func (g *Changelog) FindVersionByVersion(sVersion string) *Version {
   var v *Version
   for _, version := range g.Versions {
-    if version.Version.String() == sVersion {
+    s := version.Version
+    if s!=nil && s.String() == sVersion {
       v = version
       break
     }
@@ -92,9 +92,12 @@ func (g *Changelog) FindVersionByVersion(sVersion string) *Version {
 func (g *Changelog) GetSemverVersions() []*Version {
   ret := make([]*Version, 0)
   for _, version := range g.Versions {
-    _, err := semver.NewVersion(version.Version.String())
-    if err==nil {
-      ret = append(ret, version)
+    s := version.Version
+    if s!=nil {
+      _, err := semver.NewVersion(version.Version.String())
+      if err==nil {
+        ret = append(ret, version)
+      }
     }
   }
   return ret
@@ -104,8 +107,8 @@ func (g *Changelog) GetSemverVersions() []*Version {
 func (g *Changelog) FindMostRecentVersion() *Version {
   var v *Version
   versions := g.GetSemverVersions()
-  sort.Sort(VersionList(g.Versions))
   if len(versions)>0 {
+    sort.Sort(VersionList(versions))
     v = versions[0]
   }
   return v

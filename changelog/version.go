@@ -7,16 +7,18 @@ import (
 )
 
 type Version struct {
-	Version        *YVersion       `json:"version,omitempty"`        // semver version
-	Name           string          `json:"name,omitempty"`           // a version name
-  Date           *ShortTime      `json:"date,omitempty"`           // date of release
-	Author         string          `json:"author,omitempty"`         // release author
-	Email          string          `json:"email,omitempty"`          // release author email
-	Distribution   string          `json:"distribution,omitempty"`   // deb specifics, target distributions
-	Urgency        string          `json:"urgency,omitempty"`        // deb specifics, urgency of release
-  Updates        []string        `json:"updates,omitempty"`        // list of changes
-  Contributors   []string        `json:"contributors,omitempty"`   // list of contributors
+	Version        *YVersion       `yaml:"a_version,omitempty"`      // semver version
+	Name           string          `yaml:"aname,omitempty"`          // a version name
+  Date           *ShortTime      `yaml:"date,omitempty"`           // date of release
+	Author         string          `yaml:"author,omitempty"`         // release author
+	Email          string          `yaml:"email,omitempty"`          // release author email
+	Distribution   string          `yaml:"distribution,omitempty"`   // deb specifics, target distributions
+	Urgency        string          `yaml:"urgency,omitempty"`        // deb specifics, urgency of release
+  Updates        []string        `yaml:"xupdates,omitempty"`       // list of changes
+  Contributors   []string        `yaml:"xcontributors,omitempty"`  // list of contributors
 }
+
+var DateLayout = "Mon Jan _2 2006"
 
 // Sort implementation of []Version.
 type VersionList []*Version
@@ -30,10 +32,12 @@ func (s VersionList) Swap(i, j int) {
 }
 func (s VersionList) Less(i, j int) bool {
   if s[i].Version==nil {
+    // true => version without version number displays on top, it is desirable for next
     return true
   }
   if s[j].Version==nil {
-    return true
+     // true => version without version number displays on top, it is desirable for next
+    return false
   }
   v1 := semver.Version(*s[i].Version)
   v2 := semver.Version(*s[j].Version)
@@ -52,7 +56,7 @@ func (v* Version) SetVersion (version string) error {
 
 // Set date value
 func (v* Version) SetDate (date string) error {
-  tt, err := time.Parse("Mon Jan _2 2006", date)
+  tt, err := time.Parse(DateLayout, date)
   if err==nil {
     l := ShortTime(tt)
     v.Date = &l
@@ -62,6 +66,6 @@ func (v* Version) SetDate (date string) error {
 
 // Set date to DOD
 func (v* Version) SetTodayDate () error {
-  date := time.Now().Format("Mon Jan _2 2006")
+  date := time.Now().Format(DateLayout)
   return v.SetDate(date)
 }

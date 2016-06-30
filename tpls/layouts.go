@@ -1,8 +1,10 @@
-{{if eq .partial false}}# Changelog - {{.changelog.Name}}
+package tpls
+
+var MD = `{{if eq .partial false}}# Changelog - {{.changelog.Name}}
 {{end}}
 
 {{- range $e := .changelog.Versions}}
-### {{if call $.isnil $e.Version }}{{ $e.Name }}{{else}}{{ call $e.Version.String }}{{end}}
+### {{if call $.isnil $e.Version }}{{ $e.Name }}{{else}}{{ $e.Version.String }}{{end}}
 {{if (gt ($e.Author|len) 0) or (gt ($e.Email|len) 0)}}
 __Releaser__: {{$e.Author}}{{if gt ($e.Email|len) 0}} <{{$e.Email}}>{{end}}
 {{end}}
@@ -15,4 +17,4 @@ __Contributors__: {{call $.join $e.Contributors ", "}}
 {{range $update := $e.Updates}}
 - {{$update}}
 {{- end}}
-{{- end}}
+{{- end}}`

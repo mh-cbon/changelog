@@ -1,14 +1,10 @@
-hash: e195464436b83cdcf710636752ece55a5087a87c8ffb22579ca68c6920ac98a0
-updated: 2016-06-28T15:42:52.918858243+02:00
+hash: d460d6841077bdeb09fd981e7605dbcb0778714a54d1ccb370c417293fb5e703
+updated: 2016-06-30T13:43:47.892176206+02:00
 imports:
-- name: github.com/cloudfoundry-incubator/candiedyaml
-  version: 99c3df83b51532e3615f851d8c2dbb638f5313bf
 - name: github.com/fatih/color
   version: 533cd7fd8a85905f67a1753afb4deddc85ea174f
   repo: git@github.com:fatih/color.git
   vcs: git
-- name: github.com/ghodss/yaml
-  version: aa0c862057666179de291b67d9f093d12b5a8473
 - name: github.com/Masterminds/semver
   version: 808ed7761c233af2de3f9729a041d68c62527f3a
 - name: github.com/mattn/go-colorable
@@ -18,8 +14,9 @@ imports:
   version: 56b76bdf51f7708750eac80fa38b952bb9f32639
   repo: https://github.com/mattn/go-isatty
 - name: github.com/mh-cbon/go-repo-utils
-  version: ee44c0e5faeb9da61352746b5a56811fa789378b
+  version: 0e80338dceb955f2c80ccba3f80c1fbf97068125
   subpackages:
+  - commit
   - repoutils
   - bzr
   - git
