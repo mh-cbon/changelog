@@ -26,11 +26,11 @@ The workflow would be so,
 - review and edit the new `next` version in `changelog.yml`
 - run `changelog finalize --version=x.x.x` to rename `next` version to its release version
 - run `changelog md --out=CHANGELOG.md` to generate the new changelog file
-- run `changelog md --only=x.x.x` to get a the new version changelog and copy it somewhere else.
+- run `changelog deb --only=x.x.x` to get a the new version changelog and copy it somewhere else. tbd.
 
 ### intermediary changelog file
 
-To work `changelog` use an intermediary `changelog.yml` file.
+To work `changelog` uses an intermediary `changelog.yml` file.
 
 Like this,
 
@@ -58,7 +58,7 @@ versions:
 few problems here
 
 - is s using some weird names like `a_version`, `xupdates`.
-Did that because i can t find a way to order `map[string]` keys output.
+Did that because i can t find a *simple* way to order `map[string]` keys when marshalling the data to yaml.
 Its a bit ugly...
 
 - It is still missing some readability, everything is very much compacted : /
