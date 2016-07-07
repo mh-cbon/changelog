@@ -162,14 +162,17 @@ func initChangelog(c *cli.Context) error {
   tags = append(tags, "")
   tags = append(tags, vcsTags...)
 
+  logger.Println(since)
+  logger.Println(c.IsSet("since"))
+
   found := false
   for i, tag := range tags {
     proceed := false
 
-    if !c.IsSet("--since") {
+    if !c.IsSet("since") {
       proceed = true
     } else {
-      found = tag==since
+      found = found || tag==since
       if found {
         proceed = true
       }

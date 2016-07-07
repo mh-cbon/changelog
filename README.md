@@ -21,11 +21,11 @@ The workflow would be so,
 
 - make a new repo
 - commit your stuff
-- run `changelog init` to generate a changelog file
-- before releasing run `changelog prepare`, it generates a `next` version
-- review and edit the new `next` version changes in `changelog`
-- run `changelog finalize --version=x.x.x` to rename `next` version to its release version
-- run `changelog md --out=CHANGELOG.md` to generate the new changelog file
+- run `changelog init` to generate a `change.log` file
+- before releasing run `changelog prepare`, it generates an `UNRELEASED` version
+- review and edit the new `UNRELEASED` version changes in `change.log` file
+- run `changelog finalize --version=x.x.x` to rename `UNRELEASED` version to its release version
+- run `changelog md --out=CHANGELOG.md` to generate the new markdowned changelog file
 - run `changelog deb --only=x.x.x` to get a the new version changelog and copy it somewhere else. tbd.
 
 ### intermediary changelog file
@@ -34,12 +34,12 @@ To work `changelog` uses an intermediary `changelog` file.
 
 #### General overview
 
-A `changelog` file is a file containing a list `version` changes.
+A `change.log` file contains a list `version` and their changes.
 
 ```
 0.9.12-1
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release (Closes: #nnnn)
   * This is my first Debian package.
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
@@ -50,7 +50,7 @@ A `changelog` file is a file containing a list `version` changes.
 
 0.9.12-0; distribution=unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release (Closes: #nnnn)
   * This is my first Debian package.
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
@@ -178,6 +178,7 @@ COMMANDS:
      init      Initialize a new changelog file
      prepare   Prepare next changelog
      finalize  Take pending next changelog, apply a version on it
+     test      Test to load your changelog file and report for errors or success
      export    Export the changelog using given template
      md        Export the changelog to Markdown
      help, h   Shows a list of commands or help for one command
@@ -191,15 +192,14 @@ GLOBAL OPTIONS:
 
 ```sh
 NAME:
-   changelog - Initialize a new changelog file
+   changelog init - Initialize a new changelog file
 
 USAGE:
-   changelog [command options] [arguments...]
+   changelog init [command options] [arguments...]
 
 OPTIONS:
-   --author value, -a value  Package author
+   --author value, -a value  Package author (default: "N/A")
    --email value, -e value   Package author email
-   --name value, -n value    Package name (default: "<you pkg name>")
    --since value, -s value   Since which tag should the changelog be generated
 ```
 
