@@ -2,9 +2,8 @@ package main
 
 import (
   "os"
-  "os/exec"
   "fmt"
-  "path/filepath"
+  "encoding/json"
 
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
@@ -16,14 +15,9 @@ import (
 
 var VERSION = "0.0.0"
 var logger = verbose.Auto()
+var changelogFile = "change.log"
 
 func main() {
-
-  path, err := os.Getwd()
-  if err != nil {
-    panic(err)
-  }
-  currentName := filepath.Base(path)
 
 	app := cli.NewApp()
 	app.Name = "changelog"
@@ -38,18 +32,13 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "author, a",
-					Value: "",
+					Value: "N/A",
 					Usage: "Package author",
 				},
 				cli.StringFlag{
 					Name:  "email, e",
 					Value: "",
 					Usage: "Package author email",
-				},
-				cli.StringFlag{
-					Name:  "name, n",
-					Value: currentName,
-					Usage: "Package name",
 				},
 				cli.StringFlag{
 					Name:  "since, s",
@@ -65,7 +54,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "author, a",
-					Value: "",
+					Value: "N/A",
 					Usage: "Package author",
 				},
 				cli.StringFlag{
@@ -88,6 +77,13 @@ func main() {
 			},
 		},
 		{
+			Name:   "test",
+			Usage:  "Test to load your changelog file and report for errors or success",
+			Action: testFile,
+			Flags: []cli.Flag{
+			},
+		},
+		{
 			Name:   "export",
 			Usage:  "Export the changelog using given template",
 			Action: exportChangelog,
@@ -107,6 +103,11 @@ func main() {
 					Value: "-",
 					Usage: "Out target",
 				},
+				cli.StringFlag{
+					Name:  "vars",
+					Value: "",
+					Usage: "Add more variables to the template",
+				},
 			},
 		},
 		{
@@ -124,6 +125,11 @@ func main() {
 					Value: "-",
 					Usage: "Out target",
 				},
+				cli.StringFlag{
+					Name:  "vars",
+					Value: "",
+					Usage: "Add more variables to the template",
+				},
 			},
 		},
 	}
@@ -132,13 +138,11 @@ func main() {
 }
 
 func initChangelog(c *cli.Context) error {
-	name := c.String("name")
 	email := c.String("email")
 	author := c.String("author")
 	since := c.String("since")
-  file := "changelog.yml"
 
-  if _, err := os.Stat(file); !os.IsNotExist(err) {
+  if _, err := os.Stat(changelogFile); !os.IsNotExist(err) {
     return cli.NewExitError("Changelog file exists.", 1)
   }
 
@@ -148,22 +152,23 @@ func initChangelog(c *cli.Context) error {
   }
 
   clog := changelog.Changelog{}
-  clog.Name = name
-  clog.Email = email
-  clog.Author = author
 
+  // something much better is possible here.
   if c.IsSet("--since") {
     logger.Println("using --since")
-    newVersion := clog.CreateVersion("next", "", "")
+    newVersion := changelog.NewVersion("UNRELEASED")
+    newVersion.Author.Name = author
+    newVersion.Author.Email = email
     err := setVersionChanges(newVersion, path, since, "")
     if err != nil {
       return cli.NewExitError(err.Error(), 1)
     }
-    if len(newVersion.Updates)>0 {
+    if len(newVersion.Changes)>0 {
       clog.Versions = append(clog.Versions, newVersion)
     } else {
       return cli.NewExitError("no changes detected", 1)
     }
+
   } else {
     tags, err := getVcsTags(path)
     if err != nil {
@@ -173,7 +178,9 @@ func initChangelog(c *cli.Context) error {
 
     if len(tags)>0 {
       to := tags[0]
-      newVersion := clog.CreateVersion("", to, "")
+      newVersion := changelog.NewVersion(to)
+      newVersion.Author.Email = email
+      newVersion.Author.Name = author
       err := setVersionChanges(newVersion, path, "", to)
       if err != nil {
         return cli.NewExitError(err.Error(), 1)
@@ -187,24 +194,41 @@ func initChangelog(c *cli.Context) error {
       if i+1<len(tags) {
         to = tags[i+1]
       }
-      newVersion := clog.CreateVersion("", to, "")
+      newVersion := changelog.NewVersion(to)
+      newVersion.Author.Email = email
+      newVersion.Author.Name = author
       logger.Printf("list commits of=%q since=%q to=%q\n", to, since, to)
       err := setVersionChanges(newVersion, path, since, to)
       if err != nil {
         return cli.NewExitError(err.Error(), 1)
       }
-      if to!= "" && len(newVersion.Updates)>0 {
+      if to!= "" && len(newVersion.Changes)>0 {
         clog.Versions = append(clog.Versions, newVersion)
       }
     }
 
+    if len(tags)>0 {
+      lastTag := tags[len(tags)-1]
+      newVersion := changelog.NewVersion("UNRELEASED")
+      newVersion.Author.Email = email
+      newVersion.Author.Name = author
+      err := setVersionChanges(newVersion, path, lastTag, "")
+      if err != nil {
+        return cli.NewExitError(err.Error(), 1)
+      }
+      clog.Versions = append(clog.Versions, newVersion)
+    }
+
     if len(tags)==0 {
-      newVersion := clog.CreateVersion("next", "", "")
+      logger.Printf("since=%q\n", since)
+      newVersion := changelog.NewVersion("UNRELEASED")
+      newVersion.Author.Email = email
+      newVersion.Author.Name = author
       err := setVersionChanges(newVersion, path, since, "")
       if err != nil {
         return cli.NewExitError(err.Error(), 1)
       }
-      if len(newVersion.Updates)>0 {
+      if len(newVersion.Changes)>0 {
         clog.Versions = append(clog.Versions, newVersion)
       } else {
         return cli.NewExitError("no changes detected", 1)
@@ -214,9 +238,10 @@ func initChangelog(c *cli.Context) error {
   }
 
   clog.Sort()
-  err = clog.Write(file)
+  vars := make(map[string]interface{})
+  err = tpls.GenerateTemplateStr(clog, false, vars, tpls.CHANGELOG, changelogFile)
   if err!=nil {
-    return cli.NewExitError(err.Error(), 1)
+    return cli.NewExitError(fmt.Sprintf("Error while processing the templates: %s", err.Error()), 1)
   }
 
   fmt.Println("changelog file created")
@@ -227,30 +252,29 @@ func initChangelog(c *cli.Context) error {
 func prepareNext(c *cli.Context) error {
 	email := c.String("email")
 	author := c.String("author")
-  file := "changelog.yml"
 
   path, err := os.Getwd()
   if err != nil {
     return cli.NewExitError(err.Error(), 1)
   }
 
-  if _, err := os.Stat(file); os.IsNotExist(err) {
+  if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err = clog.Load(file)
+  err = clog.Load(changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
 
   isNew := false
-  currentNext := clog.FindVersionByName("next")
+  currentNext := clog.FindVersionByName("UNRELEASED")
   if currentNext!=nil {
     currentNext.SetTodayDate()
-    currentNext.Updates = make([]string, 0)
+    currentNext.Changes = make([]string, 0)
   } else {
-    currentNext = clog.CreateVersion("next", "", "")
+    currentNext = changelog.NewVersion("UNRELEASED")
     isNew = true
   }
 
@@ -261,11 +285,11 @@ func prepareNext(c *cli.Context) error {
     setVersionChanges(currentNext, path, mostRecent.Version.String(), "")
   }
 
-  currentNext.Author = author
-  currentNext.Email = email
+  currentNext.Author.Email = email
+  currentNext.Author.Name = author
 
   if isNew {
-    if len(currentNext.Updates)>0 {
+    if len(currentNext.Changes)>0 {
       clog.Versions = append(clog.Versions, currentNext)
     } else {
       return cli.NewExitError("no changes detected", 1)
@@ -273,11 +297,9 @@ func prepareNext(c *cli.Context) error {
   }
 
   clog.Sort()
-  for _, g := range clog.Versions {
-    fmt.Println(g.Version)
-  }
 
-  err = clog.Write(file)
+  vars := make(map[string]interface{})
+  err = tpls.GenerateTemplateStr(clog, false, vars, tpls.CHANGELOG, changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -287,27 +309,48 @@ func prepareNext(c *cli.Context) error {
 	return nil
 }
 
-func finalizeNext(c *cli.Context) error {
-	version := c.String("version")
-  file := "changelog.yml"
+func testFile(c *cli.Context) error {
 
-  if _, err := os.Stat(file); os.IsNotExist(err) {
+  path, err := os.Getwd()
+  if err != nil {
+    return cli.NewExitError(err.Error(), 1)
+  }
+
+  if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err := clog.Load(file)
+  err = clog.Load(changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
 
-  currentNext := clog.FindVersionByName("next")
+  fmt.Println("changelog file is correct")
+
+	return nil
+}
+
+func finalizeNext(c *cli.Context) error {
+	version := c.String("version")
+
+  if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
+    return cli.NewExitError("Changelog file does not exist.", 1)
+  }
+
+  clog := changelog.Changelog{}
+  err := clog.Load(changelogFile)
+  if err!=nil {
+    return cli.NewExitError(err.Error(), 1)
+  }
+
+  currentNext := clog.FindVersionByName("UNRELEASED")
   if currentNext==nil {
     currentVersion := clog.FindVersionByVersion(version)
     if currentVersion==nil {
-      return cli.NewExitError("No next version into this changelog", 1)
+      return cli.NewExitError("No UNRELEASED version into this changelog", 1)
     }
-    return cli.NewExitError("The version already exists and no next version was found into this changelog", 0) // desired to return 0 here.
+    return cli.NewExitError("The version already exists and no UNRELEASED version was found into this changelog", 0) // desired to return 0 here.
   }
 
   currentNext.Name = ""
@@ -316,7 +359,8 @@ func finalizeNext(c *cli.Context) error {
     return cli.NewExitError(err.Error(), 1)
   }
 
-  err = clog.Write(file)
+  vars := make(map[string]interface{})
+  err = tpls.GenerateTemplateStr(clog, false, vars, tpls.CHANGELOG, changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -330,14 +374,21 @@ func exportChangelog(c *cli.Context) error {
 	template := c.String("template")
 	version := c.String("version")
 	out := c.String("out")
-  file := "changelog.yml"
+	varsStr := c.String("vars")
 
-  if _, err := os.Stat(file); os.IsNotExist(err) {
+  vars := make(map[string]interface{})
+  if len(varsStr)>0 {
+    if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
+      return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+    }
+  }
+
+  if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err := clog.Load(file)
+  err := clog.Load(changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -352,11 +403,8 @@ func exportChangelog(c *cli.Context) error {
     clog.Versions = newVersions
   }
 
-  if version != "" {
-    err = tpls.GenerateTemplate(clog, true, template, out)
-  } else {
-    err = tpls.GenerateTemplate(clog, false, template, out)
-  }
+  partial := version!=""
+  err = tpls.GenerateTemplate(clog, partial, vars, template, out)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -367,14 +415,21 @@ func exportChangelog(c *cli.Context) error {
 func exportToMd(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
-  file := "changelog.yml"
+	varsStr := c.String("vars")
 
-  if _, err := os.Stat(file); os.IsNotExist(err) {
+  vars := make(map[string]interface{})
+  if len(varsStr)>0 {
+    if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
+      return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+    }
+  }
+
+  if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err := clog.Load(file)
+  err := clog.Load(changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -389,11 +444,8 @@ func exportToMd(c *cli.Context) error {
     clog.Versions = newVersions
   }
 
-  if version != "" {
-    err = tpls.GenerateTemplateStr(clog, true, tpls.MD, out)
-  } else {
-    err = tpls.GenerateTemplateStr(clog, false, tpls.MD, out)
-  }
+  partial := version!=""
+  err = tpls.GenerateTemplateStr(clog, partial, vars, tpls.MD, out)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
@@ -405,29 +457,32 @@ func setVersionChanges (version *changelog.Version, path string, since string, t
 
   vcs, err := repoutils.WhichVcs(path)
   if err != nil {
+    logger.Printf("err=%q\n", err)
     return err
   }
 
   commits, err := repoutils.ListCommitsBetween(vcs, path, since, to)
   if err != nil {
+    logger.Printf("err=%q\n", err)
     return err
   }
 
-  version.Updates = make([]string, 0)
-  version.Contributors = make([]string, 0)
   for _, commit := range commits {
-    s := fmt.Sprintf("%s\n%s <%s> (%s)\n", commit.Message, commit.Author, commit.Email, commit.Date)
-    contributor := fmt.Sprintf("%s <%s>", commit.Author, commit.Email)
-    version.Updates = append(version.Updates, s)
-    if contains(version.Contributors, contributor)==false {
-      version.Contributors = append(version.Contributors, contributor)
+    s := fmt.Sprintf("%s", commit.Message)
+    version.Changes = append(version.Changes, s)
+    contains := version.Contributors.ContainsByEmail(commit.Email) || version.Contributors.ContainsByName(commit.Author)
+    if contains==false {
+      c := changelog.Contributor{}
+      c.Name = commit.Author
+      c.Email = commit.Email
+      version.Contributors = append(version.Contributors, c)
     }
   }
 
   if len(commits)>0 {
     orderedCommits := repocommit.Commits(commits)
     orderedCommits.OrderByDate("DESC")
-    version.SetDate(orderedCommits[0].GetDate().Format(changelog.DateLayout))
+    version.SetDate(orderedCommits[0].GetDate().Format(changelog.DateLayouts[0]))
   }
 
   return nil
@@ -453,19 +508,4 @@ func getVcsTags (path string) ([]string, error) {
     tags = repoutils.SortSemverTags(tags)
   }
   return tags, err
-}
-
-func getBinPath() (string, error) {
-	var err error
-	wd := ""
-	if filepath.Base(os.Args[0]) == "main" { // go run ...
-		wd, err = os.Getwd()
-	} else {
-		bin := ""
-		bin, err = exec.LookPath(os.Args[0])
-		if err == nil {
-			wd = filepath.Dir(bin)
-		}
-	}
-	return wd, err
 }

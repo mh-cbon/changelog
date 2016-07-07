@@ -4,30 +4,22 @@ import (
 	"testing"
 )
 
-func TestParseEmptyYamlFile(t *testing.T) {
+func TestParseEmptyFile(t *testing.T) {
 	s := Changelog{}
 	err := s.Parse([]byte(""))
 
   if err!=nil {
     t.Errorf("should err=nil, got err=%q\n", err)
   }
-  if s.Name!="" {
-    t.Errorf("should s.Name='', got s.Name=%q\n", s.Name)
-  }
-  if s.Author!="" {
-    t.Errorf("should s.Author='', got s.Author=%q\n", s.Author)
-  }
-  if s.Email!="" {
-    t.Errorf("should s.Email='', got s.Email=%q\n", s.Email)
+  if len(s.Versions)>0 {
+    t.Errorf("should len(s.Versions)==0, got len(s.Versions)==%d\n", len(s.Versions))
   }
 }
 
-func TestParseYamlFile1(t *testing.T) {
+func TestParseFile1(t *testing.T) {
   content := `
-name: name
-author: author
-email: email (at) some.com
-versions:
+0.0.1
+-- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
@@ -35,167 +27,492 @@ versions:
   if err!=nil {
     t.Errorf("should err=nil, got err=%q\n", err)
   }
-  if s.Name!="name" {
-    t.Errorf("should s.Name='name', got s.Name=%q\n", s.Name)
+  if len(s.Versions)==0 {
+    t.Errorf("should len(s.Versions)>'0', got len(s.Versions)=%q\n", len(s.Versions))
   }
-  if s.Author!="author" {
-    t.Errorf("should s.Author='author', got s.Author=%q\n", s.Author)
+  v := s.Versions[0]
+  if v.Name!="" {
+    t.Errorf("should s.Name='', got s.Name=%q\n", v.Name)
   }
-  if s.Email!="email (at) some.com" {
-    t.Errorf("should s.Email='email (at) some.com', got s.Email=%q\n", s.Email)
+  if v.Version==nil {
+    t.Errorf("should s.Version!='nil', got s.Version=%q\n", v.Version)
+  } else if v.Version.String()!="0.0.1" {
+    t.Errorf("should s.Version.String()=='0.0.1', got s.Version.String()=%q\n", v.Version.String())
+  }
+  if v.Author!="author" {
+    t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
+  }
+  if v.Email!="" {
+    t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+  }
+}
+
+func TestUnclosedVersion(t *testing.T) {
+  content := `
+0.0.1
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err==nil {
+    t.Errorf("should err!=nil, got err=%q\n", err)
   }
   if len(s.Versions)>0 {
     t.Errorf("should len(s.Versions)='0', got len(s.Versions)=%q\n", len(s.Versions))
   }
 }
 
-func TestParseOneVersion(t *testing.T) {
+func TestVersionEndAuthorEmailDate(t *testing.T) {
   content := `
-name: my package
-versions:
-  - a_version: 1.0.0
-    date: Mon Jun 27 2016
-    xupdates:
-      - change 1
-      - change 2
-      - |
-        change 3
-        with multiple lines`
-	s := Changelog{}
-	err := s.Parse([]byte(content))
-
-  if err!=nil {
-    t.Errorf("should err=nil, got err=%q\n", err)
-  }
-  if len(s.Versions)!=1 {
-    t.Errorf("should len(s.Versions)='1', got len(s.Versions)=%q\n", len(s.Versions))
-  }
-  if s.Versions[0].Version.String()!="1.0.0" {
-    t.Errorf("should s.Versions[0].Version=1.0.0, got s.Versions[0].Version=%q\n", s.Versions[0].Version)
-  }
-  if s.Versions[0].Date.String()!="Mon Jun 27 2016" {
-    t.Errorf("should s.Versions[0].Date='Mon Jun 27 2016', got s.Versions[0].Date=%q\n", s.Versions[0].Date.String())
-  }
-  updates := s.Versions[0].Updates
-  iexpected := 3
-  igot := len(updates)
-  if iexpected!=igot {
-    t.Errorf("should len(s.Versions[0].Updates)=%q, got len(s.Versions[0].Updates)=%q\n", iexpected, igot)
-  }
-  expected := "change 1"
-  got := updates[0]
-  if expected!=got {
-    t.Errorf("should s.Versions[0].Updates[0]=%q, got s.Versions[0].Updates[0]=%q\n", expected, got)
-  }
-  expected = "change 2"
-  got = updates[1]
-  if expected!=got {
-    t.Errorf("should s.Versions[0].Updates[1]=%q, got s.Versions[0].Updates[1]=%q\n", expected, got)
-  }
-  expected = "change 3\nwith multiple lines"
-  got = updates[2]
-  if expected!=got {
-    t.Errorf("should s.Versions[0].Updates[2]=%q, got s.Versions[0].Updates[2]=%q\n", expected, got)
-  }
-}
-
-func TestParseMissingDate(t *testing.T) {
-  content := `
-name: my package
-versions:
-  - a_version: 1.0.0
-    xupdates:
-      - change 1
+0.0.1
+-- author <email>; Mon, 22 Mar 2010 00:37:30 +0100
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
 
   if err!=nil {
-    t.Errorf("should err=nil, got err=%q\n", err)
+    t.Errorf("should err==nil, got err=%q\n", err)
   }
-  if s.Versions[0].Date!=nil {
-    t.Errorf("should s.Versions[0].Date=nil, got s.Versions[0].Date=%q\n", s.Versions[0].Date)
+  v := s.Versions[0]
+  if v.Author!="author" {
+    t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
+  }
+  if v.Email!="email" {
+    t.Errorf("should s.Email='email', got s.Email=%q\n", v.Email)
+  }
+  e := "Mon, 22 Mar 2010 00:37:30 +0100"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(e))
   }
 }
 
-func TestVersionSort(t *testing.T) {
+func TestVersionEndAuthorDate(t *testing.T) {
   content := `
-name: my package
-versions:
-  - a_version: 0.1.0
-  - a_version: 1.0.0
+0.0.1
+-- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
 
   if err!=nil {
-    t.Errorf("should err=nil, got err=%q\n", err)
+    t.Errorf("should err==nil, got err=%q\n", err)
   }
-  s.Sort()
-  if s.Versions[0].Version.String()!="1.0.0" {
-    t.Errorf("should s.Versions[0].Version=1.0.0, got s.Versions[0].Version=%q\n", s.Versions[0].Version)
+  v := s.Versions[0]
+  if v.Author!="author" {
+    t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
   }
-  if s.Versions[1].Version.String()!="0.1.0" {
-    t.Errorf("should s.Versions[0].Version=0.1.0, got s.Versions[1].Version=%q\n", s.Versions[1].Version)
+  if v.Email!="" {
+    t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+  }
+  e := "Mon, 22 Mar 2010 00:37:30 +0100"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(e))
   }
 }
 
-func TestVersionSortExtended(t *testing.T) {
+func TestVersionEndEmailDate(t *testing.T) {
   content := `
-name: my package
-versions:
-  - a_version: 0.1.0
-  - a_version: 1.0.0
-  - a_version: 2.0.0
-  - aname: noversion
+0.0.1
+-- <email>; Mon, 22 Mar 2010 00:37:30 +0100
 `
 	s := Changelog{}
 	err := s.Parse([]byte(content))
 
   if err!=nil {
-    t.Errorf("should err=nil, got err=%q\n", err)
+    t.Errorf("should err==nil, got err=%q\n", err)
   }
-  s.Sort()
-  if s.Versions[0].Version!=nil {
-    t.Errorf("should s.Versions[0].Version=nil, got s.Versions[0].Version=%q\n", s.Versions[0].Version)
+  v := s.Versions[0]
+  if v.Author!="" {
+    t.Errorf("should s.Author='', got s.Author=%q\n", v.Author)
   }
-  if s.Versions[1].Version.String()!="2.0.0" {
-    t.Errorf("should s.Versions[1].Version=2.0.0, got s.Versions[1].Version=%q\n", s.Versions[1].Version)
+  if v.Email!="email" {
+    t.Errorf("should s.Email='email', got s.Email=%q\n", v.Email)
   }
-  if s.Versions[2].Version.String()!="1.0.0" {
-    t.Errorf("should s.Versions[2].Version=1.0.0, got s.Versions[2].Version=%q\n", s.Versions[2].Version)
-  }
-  if s.Versions[3].Version.String()!="0.1.0" {
-    t.Errorf("should s.Versions[3].Version=0.1.0, got s.Versions[3].Version=%q\n", s.Versions[3].Version)
+  e := "Mon, 22 Mar 2010 00:37:30 +0100"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(e))
   }
 }
 
-func TestEncode1(t *testing.T) {
-  expected := `author: author
-email: email
-name: name
-versions:
-- a_version: 0.0.2
-  aname: name2
-  date: Tue Jun 28 2016
-- a_version: 0.0.1
-  aname: name
-  date: Sat Jun 25 2016
+func TestVersionEndMissingDate(t *testing.T) {
+  content := `
+0.0.1
+-- author
 `
 	s := Changelog{}
-  s.Name = "name"
-  s.Author = "author"
-  s.Email = "email"
-  v1 := s.CreateVersion("name2", "0.0.2", "Tue Jun 28 2016")
-  s.Versions = append(s.Versions, v1)
-  v2 := s.CreateVersion("name", "0.0.1", "Sat Jun 25 2016")
-  s.Versions = append(s.Versions, v2)
+	err := s.Parse([]byte(content))
 
-  d, err := s.Encode()
-  if err!=nil {
-    t.Errorf("should err=nil, got err=%q\n", err)
+  if err==nil {
+    t.Errorf("should err!=nil, got err=%q\n", err)
   }
-  if string(d)!=expected {
-    t.Errorf("should string(d)=%q, got string(d)=%q\n", expected, string(d))
+}
+
+func TestVersionEndOnlyDate(t *testing.T) {
+  content := `
+0.0.1
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if v.Author!="" {
+    t.Errorf("should s.Author='', got s.Author=%q\n", v.Author)
+  }
+  if v.Email!="" {
+    t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+  }
+  e := "Mon, 22 Mar 2010 00:37:30 +0100"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(e))
+  }
+}
+
+func TestWrongVersionAsAName(t *testing.T) {
+  content := `
+UNRELEASED
+  - Contributor 1
+  - Contributor 2
+  * Change 1
+  * Change 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if v.Name!="UNRELEASED" {
+    t.Errorf("should v.Name='UNRELEASED', got v.Name=%q\n", v.Name)
+  }
+}
+
+func TestVersionTags(t *testing.T) {
+  content := `
+UNRELEASED; tag1=v1; tag2=v2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if val, ok := v.Tags["tag1"]; ok==false {
+    t.Errorf("should 'tag1' in v.Tags, got %q\n", ok)
+  } else if val != "v1" {
+    t.Errorf("should v.Tags['tag1']='v1', got v.Tags['tag1']=%q\n", val)
+  }
+  if val, ok := v.Tags["tag2"]; ok==false {
+    t.Errorf("should 'tag2' in v.Tags, got %q\n", ok)
+  } else if val != "v2" {
+    t.Errorf("should v.Tags['tag2']='v2', got v.Tags['tag2']=%q\n", val)
+  }
+}
+
+func TestMultipleVersions(t *testing.T) {
+  content := `
+0.0.1
+-- Mon, 22 Mar 2010 00:37:30 +0100
+0.0.2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  if len(s.Versions)!=2 {
+    t.Errorf("should len(s.Versions)='2', got len(s.Versions)=%q\n", len(s.Versions))
+  }
+  v := s.Versions[0]
+  if v.Name!="" {
+    t.Errorf("should s.Name='', got s.Name=%q\n", v.Name)
+  }
+  if v.Version==nil {
+    t.Errorf("should s.Version!='nil', got s.Version=%q\n", v.Version)
+  } else if v.Version.String()!="0.0.1" {
+    t.Errorf("should s.Version.String()=='0.0.1', got s.Version.String()=%q\n", v.Version.String())
+  }
+  v = s.Versions[1]
+  if v.Name!="" {
+    t.Errorf("should s.Name='', got s.Name=%q\n", v.Name)
+  }
+  if v.Version==nil {
+    t.Errorf("should s.Version!='nil', got s.Version=%q\n", v.Version)
+  } else if v.Version.String()!="0.0.2" {
+    t.Errorf("should s.Version.String()=='0.0.2', got s.Version.String()=%q\n", v.Version.String())
+  }
+}
+
+func TestChanges(t *testing.T) {
+  content := `
+0.0.1
+ * Change 1
+ * Change 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if len(v.Changes)!=2 {
+    t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+  }
+  if v.Changes[0] != "Change 1" {
+    t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
+  }
+  if v.Changes[1] != "Change 2" {
+    t.Errorf("should v.Changes[1]='Change 2', got v.Changes[1]=%q\n", v.Changes[1])
+  }
+}
+
+func TestChangesMultiline(t *testing.T) {
+  content := `
+0.0.1
+ * Change 0
+line 2
+ * Change 1
+   line 2
+ * Change 2 \
+   line 2
+ * Change 3 \
+line 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if len(v.Changes)!=4 {
+    t.Errorf("should len(v.Changes)='4', got len(v.Changes)=%q\n", len(v.Changes))
+  }
+  if v.Changes[0] != "Change 0\nline 2" {
+    t.Errorf("should v.Changes[0]='Change 0\nline 2', got v.Changes[0]=%q\n", v.Changes[0])
+  }
+  if v.Changes[1] != "Change 1\nline 2" {
+    t.Errorf("should v.Changes[1]='Change 1\nline 2', got v.Changes[1]=%q\n", v.Changes[1])
+  }
+  if v.Changes[2] != "Change 2 line 2" {
+    t.Errorf("should v.Changes[2]='Change 2 line 2', got v.Changes[2]=%q\n", v.Changes[2])
+  }
+  if v.Changes[3] != "Change 3 line 2" {
+    t.Errorf("should v.Changes[3]='Change 3 line 2', got v.Changes[3]=%q\n", v.Changes[3])
+  }
+}
+
+func TestContributors(t *testing.T) {
+  content := `
+0.0.1
+ - Contributor 1
+ - Contributor 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if len(v.Contributors)!=2 {
+    t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
+  }
+  if v.Contributors[0] != "Contributor 1" {
+    t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+  }
+  if v.Contributors[1] != "Contributor 2" {
+    t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+  }
+}
+
+func TestRandomOk1(t *testing.T) {
+  content := `
+0.0.1
+ * Change 1
+  * Change 2
+ - Contributor 1
+ - Contributor 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if len(v.Contributors)!=2 {
+    t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
+  }
+  if v.Contributors[0] != "Contributor 1" {
+    t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+  }
+  if v.Contributors[1] != "Contributor 2" {
+    t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+  }
+  if len(v.Changes)!=2 {
+    t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+  }
+  if v.Changes[0] != "Change 1" {
+    t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
+  }
+  if v.Changes[1] != "Change 2" {
+    t.Errorf("should v.Changes[1]='Change 2', got v.Changes[1]=%q\n", v.Changes[1])
+  }
+}
+
+func TestRandomOk2(t *testing.T) {
+  content := `
+0.0.1
+  - Contributor 1
+  - Contributor 2
+ * Change 1
+  * Change 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+  v := s.Versions[0]
+  if len(v.Contributors)!=2 {
+    t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
+  }
+  if v.Contributors[0] != "Contributor 1" {
+    t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+  }
+  if v.Contributors[1] != "Contributor 2" {
+    t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+  }
+  if len(v.Changes)!=2 {
+    t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+  }
+  if v.Changes[0] != "Change 1" {
+    t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
+  }
+  if v.Changes[1] != "Change 2" {
+    t.Errorf("should v.Changes[1]='Change 2', got v.Changes[1]=%q\n", v.Changes[1])
+  }
+}
+
+func TestPickyContributorMustHaveFrontSpace(t *testing.T) {
+  content := `
+0.0.1
+  - Contributor 1
+- Contributor 2
+ * Change 1
+  * Change 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err==nil {
+    t.Errorf("should err!=nil, got err=%q\n", err)
+  }
+}
+
+func TestPickyChangeMustHaveFrontSpace(t *testing.T) {
+  content := `
+0.0.1
+  - Contributor 1
+  - Contributor 2
+* Change 1
+  * Change 2
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err==nil {
+    t.Errorf("should err!=nil, got err=%q\n", err)
+  }
+}
+
+func TestVariousDateFormat1(t *testing.T) {
+  content := `
+0.0.1
+-- Mon, 22 Mar 2010 00:37:30
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+
+  v := s.Versions[0]
+  e := "Mon, 22 Mar 2010 00:37:30 +0000"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(DateLayouts[0]))
+  }
+  e = "Mon, 22 Mar 2010 00:37:30"
+  if v.GetDate()!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.GetDate())
+  }
+}
+
+func TestVariousDateFormat2(t *testing.T) {
+  content := `
+0.0.1
+-- Mon, 22 Mar 2010
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+
+  v := s.Versions[0]
+  e := "Mon, 22 Mar 2010 00:00:00 +0000"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(DateLayouts[0]))
+  }
+  e = "Mon, 22 Mar 2010"
+  if v.GetDate()!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.GetDate())
+  }
+}
+
+func TestVariousDateFormat3(t *testing.T) {
+  content := `
+0.0.1
+-- Mon 22 Mar 2010
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+  if err!=nil {
+    t.Errorf("should err==nil, got err=%q\n", err)
+  }
+
+  v := s.Versions[0]
+  e := "Mon, 22 Mar 2010 00:00:00 +0000"
+  if v.Date.Format(DateLayouts[0])!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.Date.Format(DateLayouts[0]))
+  }
+  e = "Mon 22 Mar 2010"
+  if v.GetDate()!=e {
+    t.Errorf("should s.Date='%q', got s.Date=%q\n", e, v.GetDate())
   }
 }

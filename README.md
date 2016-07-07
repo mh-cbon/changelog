@@ -20,50 +20,149 @@ go install
 The workflow would be so,
 
 - make a new repo
-- run `changelog init` to generate a changelog file
 - commit your stuff
+- run `changelog init` to generate a changelog file
 - before releasing run `changelog prepare`, it generates a `next` version
-- review and edit the new `next` version in `changelog.yml`
+- review and edit the new `next` version changes in `changelog`
 - run `changelog finalize --version=x.x.x` to rename `next` version to its release version
 - run `changelog md --out=CHANGELOG.md` to generate the new changelog file
 - run `changelog deb --only=x.x.x` to get a the new version changelog and copy it somewhere else. tbd.
 
 ### intermediary changelog file
 
-To work `changelog` uses an intermediary `changelog.yml` file.
+To work `changelog` uses an intermediary `changelog` file.
 
-Like this,
+#### General overview
 
-```yaml
-name: go-repo-utils
-versions:
-- a_version: 0.0.7
-  date: Thu Jun 30 2016
-  xupdates:
-  - |
-    add list-commands, fix bug when detecting a non clean vcs tree
-    update release script
-  xcontributors:
+A `changelog` file is a file containing a list `version` changes.
+
+```
+0.9.12-1
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * This is my first Debian package.
+
   - mh-cbon <mh-cbon@users.noreply.github.com>
-- a_version: 0.0.6
-  date: Tue Jun 21 2016
-  xupdates:
-  - |
-    Use anotated tags for git
-    mh-cbon <mh-cbon@users.noreply.github.com> (Tue Jun 21 08:21:13 2016 +0200)
-  xcontributors:
+
+-- Josip Rodin <joy-mg@debian.org>; Mon, 22 Mar 2010 00:37:31 +0100
+
+
+
+0.9.12-0; distribution=unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * This is my first Debian package.
+
   - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- Josip Rodin <joy-mg@debian.org>; Mon, 22 Mar 2010 00:37:30 +0100
 ```
 
-few problems here
+#### Version block
 
-- is s using some weird names like `a_version`, `xupdates`.
-Did that because i can t find a *simple* way to order `map[string]` keys when marshalling the data to yaml.
-Its a bit ugly...
+Each version is a formatted block of text such as
 
-- It is still missing some readability, everything is very much compacted : /
+```
+semver
 
-## General
+  * Text of change #1
+  * Text of change #2
+  * ...
+
+  - contributor #1 <mail@of.contributor.com>
+  - contributor #2 <mail@of.contributor.com>
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+The most minimal version would be
+
+```
+semver
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+#### Version field
+
+Each version starts with its version value, a valid `semver` identifier.
+
+`semver` identifier can have additional tags, in the form of `tagname=value;`
+
+```
+semver; tag1=value; tag2=value;
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+It is allowed that a version starts by a non valid `semver` identifier,
+in which case, the version is always sorted in first.
+
+This possibility is offered to handle next `UNRELEASED` version.
+
+```
+a version name; tag1=value; tag2=value;
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+#### Version changes
+
+Version changes immediately follow the `semver` identifier.
+
+They start with a `space` followed by a star `*`, they can be multi-line.
+
+The format is similar to `\s+\*\s+(.+)`
+
+```
+semver
+
+  * This is valid
+            * This is valid too, but ugly
+  *This is not valid
+*This is not valid either
+  * This is a multiline entry
+continuing here
+  * This is another multiline entry
+    nicer to read, leading white spaces will be trimmed
+  * This is another multiline entry \
+    with a backslash to get ride of the EOL
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+#### Version contributors
+
+Version `contributors` immediately follow the list of `changes`.
+
+They start with a `space` followed by an hyphen `-`.
+
+The format is similar to `\s\+-\s+(.+)`.
+
+It is not required to provide them
+in the form of `name <email>`, but it is recommended.
+
+
+```
+semver
+
+  - contributor #1 <mail@of.contributor.com>
+  - contributor #2 <mail@of.contributor.com>
+
+-- Packager name <mail@packager.org>; Release date
+```
+
+#### Version ender
+
+Versions must end with a trailing line starting by a double hyphen `--`.
+
+The trailing line provides `package author` and `release date` separated by a semicolon `;`
+
+```
+-- Packager name <mail@packager.org>; Release date
+```
+
+## CLI Usage
 
 ```sh
 NAME:
@@ -88,7 +187,7 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 
-### Init
+#### Init
 
 ```sh
 NAME:
@@ -104,7 +203,7 @@ OPTIONS:
    --since value, -s value   Since which tag should the changelog be generated
 ```
 
-## Prepare
+#### Prepare
 
 ```sh
 NAME:
@@ -118,7 +217,7 @@ OPTIONS:
    --email value, -e value   Package author email
 ```
 
-## Finalize
+#### Finalize
 
 ```sh
 NAME:
@@ -131,7 +230,7 @@ OPTIONS:
    --version value  Version revision
 ```
 
-## Export
+#### Export
 
 ```sh
 NAME:
@@ -146,7 +245,7 @@ OPTIONS:
    --out value, -o value       Out target (default: "-")
 ```
 
-## Md
+#### Md
 
 ```sh
 NAME:
@@ -160,7 +259,7 @@ OPTIONS:
    --out value, -o value  Out target (default: "-")
 ```
 
-## Enable debug messages
+#### Enable debug messages
 
 To enable debug messages, just set `VERBOSE=change*`, `VERBOSE=*` before running the command.
 

@@ -3,17 +3,18 @@ package changelog
 import (
 	"io/ioutil"
   "sort"
+  "bytes"
+  "regexp"
+  "errors"
+  "fmt"
+  "strings"
 
   "github.com/Masterminds/semver"
-  "gopkg.in/yaml.v2"
 )
 
-// Config is the top-level configuration object.
+//
 type Changelog struct {
-	Name         string      `yaml:"name,omitempty"`     // package name
-	Author       string      `yaml:"author,omitempty"`   // default releaser author
-	Email        string      `yaml:"email,omitempty"`    // default releaser email
-  Versions     []*Version  `yaml:"versions"`
+  Versions     []*Version
 }
 
 // Load given path into the current Changelog object
@@ -25,42 +26,126 @@ func (g *Changelog) Load(path string) error {
 	return g.Parse(data)
 }
 
-// Parse and load given data into the current Changelog object
+// Parse and load given data into the current Changelog object.
+// It will stop on first error encountered while parsing the data
 func (g *Changelog) Parse(data []byte) error {
   if len(data)==0 {
     return nil
   }
-	return yaml.Unmarshal(data, &g)
+  // @note, this is super dirty, let s improve that later.
+  data = bytes.Replace(data, []byte("\r\n"), []byte("\n"), -1)
+  lines := bytes.Split(data, []byte("\n"))
+  data = []byte("")
+
+  versionRegexp := regexp.MustCompile(`^[^\s+].+`)
+  versionEndRegexp := regexp.MustCompile(`^[-]{2}\s+(.+)`)
+  changeRegexp := regexp.MustCompile(`^\s+\*\s+(.+)`)
+  contributorRegexp := regexp.MustCompile(`^\s+-\s+(.+)`)
+
+  var cVersion *Version
+  cChange := ""
+  cVersionHasEnded := true
+
+  for index, line := range lines {
+    if cVersion==nil {
+      if versionRegexp.Match(line) == false {
+        continue
+      }
+      part := bytes.Split(line, []byte(";"))
+      cVersion = NewVersion(string(part[0]))
+      if len(part)>1 {
+        for _, tag := range part[1:] {
+          err := cVersion.AddStrTag(string(tag))
+          if err!=nil {
+            return errors.New(fmt.Sprintf("%s, at line %d", err.Error(), index))
+          }
+        }
+      }
+      cVersionHasEnded = false
+    } else {
+      if versionEndRegexp.Match(line) {
+        if len(cChange) > 0 {
+          cVersion.Changes = append(cVersion.Changes, cChange)
+          cChange = ""
+        }
+
+        k := versionEndRegexp.FindSubmatch(line)
+        part := bytes.Split(k[1], []byte(";"))
+
+        c, err := NewContributor(string(part[0]))
+        if err==nil {
+          cVersion.Author = c
+        }
+
+        if len(part)>1 {
+          s := strings.TrimSpace(string(part[1]))
+          err := cVersion.SetDate(s)
+          if err!=nil {
+            return errors.New(fmt.Sprintf("%s, at line %d", err.Error(), index))
+          }
+        } else {
+          err := cVersion.SetDate(cVersion.Author.Name)
+          if err==nil {
+            cVersion.Author.Name = ""
+          } else {
+            return errors.New(fmt.Sprintf("%s or %s, at line %d", "Missing date", err.Error(), index))
+          }
+        }
+
+        g.Versions = append(g.Versions, cVersion)
+        cVersion = nil
+        cVersionHasEnded = true
+
+      } else if contributorRegexp.Match(line) {
+        if len(cChange) > 0 {
+          cVersion.Changes = append(cVersion.Changes, cChange)
+          cChange = ""
+        }
+
+        k := contributorRegexp.FindSubmatch(line)
+        c, err := NewContributor(string(k[1]))
+        if err==nil {
+          cVersion.Contributors = append(cVersion.Contributors, c)
+        }
+
+      } else if changeRegexp.Match(line) {
+        if len(cChange) > 0 {
+          cVersion.Changes = append(cVersion.Changes, cChange)
+          cChange = ""
+        }
+        k := changeRegexp.FindSubmatch(line)
+        cChange = string(k[1])
+
+      } else if len(line)>0 && len(cChange)>0 {
+        if cChange[len(cChange)-1:len(cChange)]=="\\" {
+          cChange = strings.TrimSpace(cChange[0:len(cChange)-1]) + " " + strings.TrimSpace(string(line))
+        } else {
+          cChange += "\n" + strings.TrimSpace(string(line))
+        }
+
+      } else if len(strings.TrimSpace(string(line)))>0 {
+        return errors.New(fmt.Sprintf("Invalid format at line %d in %q", index, string(line)))
+      }
+    }
+  }
+
+  if cVersionHasEnded==false {
+    return errors.New(fmt.Sprintf("Version not closed at end of the document"))
+  }
+
+	return nil
 }
 
-// Marshals to yaml.
-func (g *Changelog) Encode() ([]byte, error) {
-  return yaml.Marshal(g)
-}
-
-// Marshals to yaml then writes the Changelog instance to a file
-func (g *Changelog) Write(file string) error {
-  d, err := g.Encode()
-  if err != nil {
-    return err
+// Find a version by its name.
+func (g *Changelog) FindUnreleasedVersion() *Version {
+  var v *Version
+  for _, version := range g.Versions {
+    if version.Version == nil {
+      v = version
+      break
+    }
   }
-  return ioutil.WriteFile(file, d, 0644)
-}
-
-// Create then append a new Version on Changelog instance.
-func (g *Changelog) CreateVersion(name string, version string, date string) *Version {
-  v := Version{}
-  v.Name = name
-  if version!="" {
-    v.SetVersion(version)
-  }
-  if date=="" {
-    v.SetTodayDate()
-  } else {
-    v.SetDate(date)
-  }
-  v.Updates = make([]string, 0)
-  return &v
+  return v
 }
 
 // Find a version by its name.

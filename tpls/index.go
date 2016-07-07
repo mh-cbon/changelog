@@ -2,69 +2,55 @@ package tpls
 
 import (
 	"os"
+	"io"
+	"io/ioutil"
 	"strings"
 	"text/template"
-	"path/filepath"
 
 	"github.com/mh-cbon/changelog/changelog"
+  "github.com/mh-cbon/verbose"
+  "github.com/Masterminds/semver"
 )
 
-func GenerateTemplate(clog changelog.Changelog, partial bool, src string, out string) error {
-	tpl, err := template.ParseFiles(src)
-	if err != nil {
-		return err
-	}
+var logger = verbose.Auto()
 
-  var writer *os.File
+func GenerateTemplate(clog changelog.Changelog, partial bool, vars map[string]interface{}, src string, out string) error {
+  d, err := ioutil.ReadFile(src)
+  if err!=nil {
+    return err
+  }
+	return GenerateTemplateStr(clog, partial, vars, string(d), out)
+}
+
+func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string]interface{}, tplString string, out string) error {
+
+  var err error
+  var writer io.Writer
   if out=="-" {
     writer = os.Stdout
   } else {
-  	writer, err = os.Create(out)
+  	f, err := os.Create(out)
   	if err != nil {
   		return err
   	}
-  	defer writer.Close()
+  	defer f.Close()
+    writer = f
   }
 
   values := make(map[string]interface{})
   values["changelog"] = clog
   values["partial"] = partial
+  values["vars"] = vars
   values["isnil"] = IsNil
   values["join"] = strings.Join
 
-  template, err := tpl.New(filepath.Base(src)).ParseFiles(src)
+  t, err := template.New("it").Parse(tplString)
   if err!=nil {
     return err
   }
-	return template.Execute(writer, values)
+	return t.Execute(writer, values)
 }
 
-func GenerateTemplateStr(clog changelog.Changelog, partial bool, tplString string, out string) error {
-
-  var writer *os.File
-  if out=="-" {
-    writer = os.Stdout
-  } else {
-  	writer, err := os.Create(out)
-  	if err != nil {
-  		return err
-  	}
-  	defer writer.Close()
-  }
-
-  values := make(map[string]interface{})
-  values["changelog"] = clog
-  values["partial"] = partial
-  values["isnil"] = IsNil
-  values["join"] = strings.Join
-
-  template, err := template.New("it").Parse(tplString)
-  if err!=nil {
-    return err
-  }
-	return template.Execute(writer, values)
-}
-
-func IsNil(args *changelog.YVersion) bool {
+func IsNil(args *semver.Version) bool {
     return args==nil
 }
