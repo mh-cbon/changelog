@@ -441,6 +441,7 @@ func setVersionChanges (version *changelog.Version, path string, since string, t
   if len(commits)>0 {
     orderedCommits := repocommit.Commits(commits)
     orderedCommits.OrderByDate("DESC")
+    fmt.Println(orderedCommits)
     version.SetDate(orderedCommits[0].GetDate().Format(changelog.DateLayouts[0]))
   }
 
