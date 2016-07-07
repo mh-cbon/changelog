@@ -306,4 +306,4 @@ VERBOSE=* changelog init
 
 # Changelog
 
-- 0.0.0: init
+[CHANGELOG](CHANGELOG.md)
