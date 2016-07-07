@@ -153,88 +153,49 @@ func initChangelog(c *cli.Context) error {
 
   clog := changelog.Changelog{}
 
-  // something much better is possible here.
-  if c.IsSet("--since") {
-    logger.Println("using --since")
-    newVersion := changelog.NewVersion("UNRELEASED")
-    newVersion.Author.Name = author
-    newVersion.Author.Email = email
-    err := setVersionChanges(newVersion, path, since, "")
-    if err != nil {
-      return cli.NewExitError(err.Error(), 1)
-    }
-    if len(newVersion.Changes)>0 {
-      clog.Versions = append(clog.Versions, newVersion)
+
+  vcsTags, err := getVcsTags(path)
+  if err != nil {
+    return cli.NewExitError(err.Error(), 1)
+  }
+  tags := make([]string, 0)
+  tags = append(tags, "")
+  tags = append(tags, vcsTags...)
+
+  found := false
+  for i, tag := range tags {
+    proceed := false
+
+    if !c.IsSet("--since") {
+      proceed = true
     } else {
-      return cli.NewExitError("no changes detected", 1)
+      found = tag==since
+      if found {
+        proceed = true
+      }
     }
 
-  } else {
-    tags, err := getVcsTags(path)
+    if proceed==false {
+      continue
+    }
+
+    cSince := tag
+    cTo := ""
+    if i+1<len(tags) {
+      cTo = tags[i+1]
+    }
+    newVersion := changelog.NewVersion(cTo)
+    newVersion.Author.Email = email
+    newVersion.Author.Name = author
+    logger.Printf("list commits of=%q since=%q to=%q\n", cTo, cSince, cTo)
+    err := setVersionChanges(newVersion, path, cSince, cTo)
     if err != nil {
       return cli.NewExitError(err.Error(), 1)
     }
-    logger.Printf("tags=%q\n", tags)
-
-    if len(tags)>0 {
-      to := tags[0]
-      newVersion := changelog.NewVersion(to)
-      newVersion.Author.Email = email
-      newVersion.Author.Name = author
-      err := setVersionChanges(newVersion, path, "", to)
-      if err != nil {
-        return cli.NewExitError(err.Error(), 1)
-      }
-      clog.Versions = append(clog.Versions, newVersion)
+    if cTo=="" {
+      newVersion.Name = "UNRELEASED"
     }
-
-    for i, tag := range tags {
-      since := tag
-      to := ""
-      if i+1<len(tags) {
-        to = tags[i+1]
-      }
-      newVersion := changelog.NewVersion(to)
-      newVersion.Author.Email = email
-      newVersion.Author.Name = author
-      logger.Printf("list commits of=%q since=%q to=%q\n", to, since, to)
-      err := setVersionChanges(newVersion, path, since, to)
-      if err != nil {
-        return cli.NewExitError(err.Error(), 1)
-      }
-      if to!= "" && len(newVersion.Changes)>0 {
-        clog.Versions = append(clog.Versions, newVersion)
-      }
-    }
-
-    if len(tags)>0 {
-      lastTag := tags[len(tags)-1]
-      newVersion := changelog.NewVersion("UNRELEASED")
-      newVersion.Author.Email = email
-      newVersion.Author.Name = author
-      err := setVersionChanges(newVersion, path, lastTag, "")
-      if err != nil {
-        return cli.NewExitError(err.Error(), 1)
-      }
-      clog.Versions = append(clog.Versions, newVersion)
-    }
-
-    if len(tags)==0 {
-      logger.Printf("since=%q\n", since)
-      newVersion := changelog.NewVersion("UNRELEASED")
-      newVersion.Author.Email = email
-      newVersion.Author.Name = author
-      err := setVersionChanges(newVersion, path, since, "")
-      if err != nil {
-        return cli.NewExitError(err.Error(), 1)
-      }
-      if len(newVersion.Changes)>0 {
-        clog.Versions = append(clog.Versions, newVersion)
-      } else {
-        return cli.NewExitError("no changes detected", 1)
-      }
-    }
-
+    clog.Versions = append(clog.Versions, newVersion)
   }
 
   clog.Sort()
@@ -311,17 +272,12 @@ func prepareNext(c *cli.Context) error {
 
 func testFile(c *cli.Context) error {
 
-  path, err := os.Getwd()
-  if err != nil {
-    return cli.NewExitError(err.Error(), 1)
-  }
-
   if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
     return cli.NewExitError("Changelog file does not exist.", 1)
   }
 
   clog := changelog.Changelog{}
-  err = clog.Load(changelogFile)
+  err := clog.Load(changelogFile)
   if err!=nil {
     return cli.NewExitError(err.Error(), 1)
   }
