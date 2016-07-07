@@ -201,6 +201,11 @@ OPTIONS:
    --author value, -a value  Package author (default: "N/A")
    --email value, -e value   Package author email
    --since value, -s value   Since which tag should the changelog be generated
+
+EXAMPLE:
+  changelog init
+  changelog init --since=0.0.9
+  changelog init --since=0.0.9 --author=mh-cbon
 ```
 
 #### Prepare
@@ -213,8 +218,12 @@ USAGE:
    changelog prepare [command options] [arguments...]
 
 OPTIONS:
-   --author value, -a value  Package author
+   --author value, -a value  Package author (default: "N/A")
    --email value, -e value   Package author email
+
+EXAMPLE:
+  changelog prepare
+  changelog prepare --author=mh-cbon
 ```
 
 #### Finalize
@@ -228,6 +237,9 @@ USAGE:
 
 OPTIONS:
    --version value  Version revision
+
+EXAMPLE:
+  changelog finalize --version=0.0.2
 ```
 
 #### Export
@@ -243,6 +255,12 @@ OPTIONS:
    --template value, -t value  Go template
    --version value             Only given version
    --out value, -o value       Out target (default: "-")
+   --vars value                Add more variables to the template
+
+EXAMPLE:
+  changelog export --out=CHANGELOG.rtf --template=rtf.go
+  changelog export --out=CHANGELOG.rtf --template=rtf.go --version=0.0.2
+  changelog export --out=CHANGELOG.rtf --template=rtf.go --vars='{"name":"changelog"}'
 ```
 
 #### Md
@@ -257,6 +275,12 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
+   --vars value           Add more variables to the template
+
+EXAMPLE:
+  changelog md --out=CHANGELOG.rtf
+  changelog md --out=CHANGELOG.rtf --version=0.0.2
+  changelog md --out=CHANGELOG.rtf --vars='{"name":"changelog"}'
 ```
 
 #### Enable debug messages
