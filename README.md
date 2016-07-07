@@ -208,6 +208,19 @@ EXAMPLE:
   changelog init --since=0.0.9 --author=mh-cbon
 ```
 
+#### Test
+
+```sh
+NAME:
+   changelog test - Test to load your changelog file and report for errors or success
+
+USAGE:
+   changelog test [arguments...]
+
+EXAMPLE:
+  changelog test
+```
+
 #### Prepare
 
 ```sh
