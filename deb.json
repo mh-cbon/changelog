@@ -1,0 +1,23 @@
+{
+  "name": "changelog",
+  "maintainer": "mh-cbon <mh-cbon@users.noreply.github.com>",
+  "description": "Maintain a changelog",
+  "changelog-cmd": "changelog debian --vars='{\"name\":\"changelog\", \"urgency\":\"\"}'",
+  "homepage": "http://github.com/mh-cbon/changelog",
+  "files": [
+    {
+      "from": "build/!arch!/changelog",
+      "to": "/usr/bin",
+      "base" : "build/!arch!/",
+      "fperm": "0755"
+    }
+  ],
+  "copyrights": [
+    {
+      "files": "*",
+      "copyright": "2016 mh-cbon <mh-cbon@users.noreply.github.com>",
+      "license": "MIT",
+      "file": "LICENSE"
+    }
+  ]
+}
