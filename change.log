@@ -1,3 +1,12 @@
+0.0.4
+
+  * fix glide lock file
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:22:19 +0200
+
+
 0.0.3
 
   * add magic install script
