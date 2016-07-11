@@ -1,0 +1,26 @@
+{
+  "product": "changelog",
+  "company": "mh-cbon",
+  "license": "LICENSE",
+  "upgrade-code": "C0320290-80F0-4930-A43C-502CC4050D3E",
+  "files": {
+    "guid": "F6D0ABAF-0D6A-4D3C-B4D3-84127E6B778E",
+    "items": [
+      "changelog.exe"
+    ]
+  },
+  "env": {
+    "guid": "0F3CBB28-4EF6-4163-99BF-504FF9F885D9",
+    "vars": [
+      {
+        "name": "PATH",
+        "value": "[INSTALLDIR]",
+        "permanent": "no",
+        "system": "no",
+        "action": "set",
+        "part": "last"
+      }
+    ]
+  },
+  "shortcuts": {}
+}
