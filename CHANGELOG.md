@@ -1,5 +1,20 @@
 # Changelog - changelog
 
+### 0.0.5
+
+__Changes__
+
+- deb.json: make use of name token
+- README: Update usage command line
+- installer: fix url download
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Mon 11 Jul 2016
+______________
+
 ### 0.0.4
 
 __Changes__
