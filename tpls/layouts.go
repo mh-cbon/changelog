@@ -13,11 +13,13 @@ __Date__: {{$e.Date.Format "Mon 02 Jan 2006"}}
 __Contributors__: {{call $.join $e.Contributors.Strings ", "}}
 {{- end}}
 
-##### Changes
+#### Changes
 {{range $change := $e.Changes}}
 - {{$change}}
 {{- end}}
 {{- end}}
+
+
 `
 
 var CHANGELOG = `{{- range $index, $e := .changelog.Versions}}
