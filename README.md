@@ -7,11 +7,13 @@ __wip__
 # Install
 
 ```sh
+# debian/ubuntu only
 wget -q -O - --no-check-certificate https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
 curl https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
 ```
 
 ```sh
+# GO
 mkdir -p $GOPATH/src/github.com/mh-cbon
 cd $GOPATH/src/github.com/mh-cbon
 git clone https://github.com/mh-cbon/changelog.git
