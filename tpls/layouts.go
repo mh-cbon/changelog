@@ -9,16 +9,15 @@ var MD = `{{if eq .partial false}}# Changelog - {{.vars.name}}
 __Changes__
 {{range $change := $e.Changes}}
 - {{$change}}
-{{end}}
+{{- end}}
 {{if gt ($e.Contributors | len) 0}}
 __Contributors__
 {{range $contributor := $e.Contributors}}
 - {{$contributor.Name}}
 {{- end}}
 {{end}}
-
 Released by {{$e.Author.Name}}, {{$e.Date.Format "Mon 02 Jan 2006"}}
-
+______________
 {{end}}
 
 `
