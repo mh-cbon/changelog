@@ -42,7 +42,7 @@ func NewVersion(version string) *Version {
 	if vV != nil {
 		v.Name = version
 	}
-  v.Tags = make(map[string]string)
+	v.Tags = make(map[string]string)
 	return &v
 }
 

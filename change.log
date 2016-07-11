@@ -1,18 +1,7 @@
 UNRELEASED
 
-  * README: cli usage
-  * README: cli usage
-  * README: cli usage
-  * fix --since arg of init command
-  * change changelog file format
-  * change changelog file format
-  * readme
-  * Merge branch 'master' of github.com:mh-cbon/changelog
-  * Initial commit
-  * init
-  * updates
-  * init
+  * Initial release
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
--- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 07 Jul 2016 15:25:06 +0200
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200

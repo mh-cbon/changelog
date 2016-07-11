@@ -215,10 +215,10 @@ func initChangelog(c *cli.Context) error {
 		if err != nil {
 			return cli.NewExitError(err.Error(), 1)
 		}
-    if newVersion.Author.Name=="N/A" && len(newVersion.Contributors)>0 {
-      newVersion.Author.Name = newVersion.Contributors[0].Name
-      newVersion.Author.Email = newVersion.Contributors[0].Email
-    }
+		if newVersion.Author.Name == "N/A" && len(newVersion.Contributors) > 0 {
+			newVersion.Author.Name = newVersion.Contributors[0].Name
+			newVersion.Author.Email = newVersion.Contributors[0].Email
+		}
 		if cTo == "" {
 			newVersion.Name = "UNRELEASED"
 		}
@@ -276,10 +276,10 @@ func prepareNext(c *cli.Context) error {
 	currentNext.Author.Email = email
 	currentNext.Author.Name = author
 
-  if currentNext.Author.Name=="N/A" && len(currentNext.Contributors)>0 {
-    currentNext.Author.Name = currentNext.Contributors[0].Name
-    currentNext.Author.Email = currentNext.Contributors[0].Email
-  }
+	if currentNext.Author.Name == "N/A" && len(currentNext.Contributors) > 0 {
+		currentNext.Author.Name = currentNext.Contributors[0].Name
+		currentNext.Author.Email = currentNext.Contributors[0].Email
+	}
 
 	if isNew {
 		if len(currentNext.Changes) > 0 {
