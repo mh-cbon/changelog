@@ -1,5 +1,19 @@
 # Changelog - changelog
 
+### 0.0.6
+
+__Changes__
+
+- add msi build
+- README: update install procedure
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Mon 11 Jul 2016
+______________
+
 ### 0.0.5
 
 __Changes__
