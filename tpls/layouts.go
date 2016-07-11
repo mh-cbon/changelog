@@ -4,7 +4,7 @@ var MD = `{{if eq .partial false}}# Changelog - {{.vars.name}}
 {{end}}
 
 {{- range $e := .changelog.Versions}}
-### {{if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{ $e.Version.String }}{{end}}
+## {{if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{ $e.Version.String }}{{end}}
 {{if (gt ($e.Author.Name|len) 0) or (gt ($e.Author.Email|len) 0)}}
 __Releaser__: {{$e.Author.Name}}{{if gt ($e.Author.Email|len) 0}} <{{$e.Author.Email}}>{{end}}
 {{end}}
@@ -17,8 +17,7 @@ __Contributors__: {{call $.join $e.Contributors.Strings ", "}}
 {{range $change := $e.Changes}}
 - {{$change}}
 {{- end}}
-{{- end}}
-
+{{end}}
 
 `
 
