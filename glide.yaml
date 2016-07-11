@@ -5,7 +5,7 @@ scripts:
     philea -s "666 go vet %s" "666 go-fmt-fail %s" \
     && 666 go run main.go -v \
     && 666 changelog finalize --version !newversion! \
-    && 666 commit -q -m "changelog: !newversion!" -f change.log
+    && 666 commit -q -m "changelog: !newversion!" -f change.log \
     && 666 rm-glob -r build/ \
     && 666 rm-glob -r assets/ \
     && 666 build-them-all build main.go -o "build/&os-&arch/&pkg" --ldflags "-X main.VERSION=!newversion!"
