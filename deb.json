@@ -2,11 +2,11 @@
   "name": "changelog",
   "maintainer": "mh-cbon <mh-cbon@users.noreply.github.com>",
   "description": "Maintain a changelog",
-  "changelog-cmd": "changelog debian --vars='{\"name\":\"changelog\", \"urgency\":\"\"}'",
-  "homepage": "http://github.com/mh-cbon/changelog",
+  "changelog-cmd": "changelog debian --vars='{\"name\":\"!name!\", \"urgency\":\"\"}'",
+  "homepage": "http://github.com/mh-cbon/!name!",
   "files": [
     {
-      "from": "build/!arch!/changelog",
+      "from": "build/!arch!/!name!",
       "to": "/usr/bin",
       "base" : "build/!arch!/",
       "fperm": "0755"
