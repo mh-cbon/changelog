@@ -1,19 +1,23 @@
 # Changelog
 
-bin util to help managing a changelog
-
-__wip__
+Maintain a changelog easily.
 
 # Install
 
+__debian/ubuntu__
+
 ```sh
-# debian/ubuntu only
 wget -q -O - --no-check-certificate https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
 curl https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
 ```
 
+__windows__
+
+Pick an msi package [here](https://github.com/mh-cbon/changelog/releases)
+
+__others__
+
 ```sh
-# GO
 mkdir -p $GOPATH/src/github.com/mh-cbon
 cd $GOPATH/src/github.com/mh-cbon
 git clone https://github.com/mh-cbon/changelog.git

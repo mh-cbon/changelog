@@ -3,7 +3,6 @@
   * appveyor: register go-msi path manually
   * appveyor: update go-msi package
   * appveyor: fix curl option to follow location redirect
-  * changelog: 0.0.7
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
@@ -76,5 +75,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
-
-
