@@ -33,3 +33,14 @@ var CHANGELOG = `{{- range $index, $e := .changelog.Versions}}
 
 
 {{end}}`
+
+var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
+{{$.vars.name}} ({{- if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{$e.Version.String}}{{end}})
+{{- if gt ($.vars.urgency|len) 0}}{{$.vars.urgency}};{{end}}{{- range $k,$v := $e.Tags}}{{$k}}={{$v}};{{- end}}
+{{range $change := $e.Changes}}
+  * {{$change}}
+{{- end}}
+
+-- {{$e.Author.Name}}{{if gt ($e.Author.Email|len) 0}} <{{$e.Author.Email}}>{{end}}  {{$e.GetDateF $.debianlayout}}
+
+{{end}}`

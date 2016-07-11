@@ -111,8 +111,30 @@ func main() {
 		},
 		{
 			Name:   "md",
-			Usage:  "Export the changelog to Markdown",
+			Usage:  "Export the changelog to Markdown format",
 			Action: exportToMd,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "version",
+					Value: "",
+					Usage: "Only given version",
+				},
+				cli.StringFlag{
+					Name:  "out, o",
+					Value: "-",
+					Usage: "Out target",
+				},
+				cli.StringFlag{
+					Name:  "vars",
+					Value: "",
+					Usage: "Add more variables to the template",
+				},
+			},
+		},
+		{
+			Name:   "debian",
+			Usage:  "Export the changelog to Debian format",
+			Action: exportToDebian,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "version",
@@ -403,6 +425,47 @@ func exportToMd(c *cli.Context) error {
 
 	partial := version != ""
 	err = tpls.GenerateTemplateStr(clog, partial, vars, tpls.MD, out)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	return nil
+}
+
+func exportToDebian(c *cli.Context) error {
+	version := c.String("version")
+	out := c.String("out")
+	varsStr := c.String("vars")
+
+	vars := make(map[string]interface{})
+	if len(varsStr) > 0 {
+		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
+			return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+		}
+	}
+
+	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
+		return cli.NewExitError("Changelog file does not exist.", 1)
+	}
+
+	clog := changelog.Changelog{}
+	err := clog.Load(changelogFile)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	if version != "" {
+		newVersions := make([]*changelog.Version, 0)
+		v := clog.FindVersionByVersion(version)
+		if v == nil {
+			return cli.NewExitError("Version '"+version+"' not found.", 1)
+		}
+		newVersions = append(newVersions, v)
+		clog.Versions = newVersions
+	}
+
+	partial := version != ""
+	err = tpls.GenerateTemplateStr(clog, partial, vars, tpls.DEBIAN, out)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}

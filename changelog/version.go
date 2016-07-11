@@ -99,7 +99,12 @@ func (v *Version) SetTodayDate() error {
 
 // Get date given its original layout.
 func (v *Version) GetDate() string {
-	return v.Date.Format(v.DateLayout)
+	return v.GetDateF(v.DateLayout)
+}
+
+// Get date given with a specific layout.
+func (v *Version) GetDateF(layout string) string {
+	return v.Date.Format(layout)
 }
 
 // Parse and add given string tag
