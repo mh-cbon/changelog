@@ -1,5 +1,21 @@
 # Changelog - changelog
 
+### 0.0.8
+
+__Changes__
+
+- appveyor: register go-msi path manually
+- appveyor: update go-msi package
+- appveyor: fix curl option to follow location redirect
+- changelog: 0.0.7
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Tue 12 Jul 2016
+______________
+
 ### 0.0.7
 
 __Changes__
