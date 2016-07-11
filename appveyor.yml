@@ -15,7 +15,7 @@ install:
   - go version
   - go env
   - go get -u github.com/Masterminds/glide
-  - curl -fsSL -o C:\go-msi.msi https://github.com/mh-cbon/go-msi/releases/download/0.0.22/go-msi-amd64.msi
+  - curl -fsSL -o C:\go-msi.msi https://github.com/mh-cbon/go-msi/releases/download/0.0.23/go-msi-amd64.msi
   - DIR C:\
   - msiexec.exe /i C:\go-msi.msi /quiet
   - echo %PATH%
