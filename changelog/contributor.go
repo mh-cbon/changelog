@@ -68,10 +68,19 @@ func (c Contributors) ContainsByName(name string) bool {
 	}
 	return false
 }
+
 func (c Contributors) Strings() []string {
 	r := make([]string, 0)
 	for _, v := range c {
 		r = append(r, v.String())
+	}
+	return r
+}
+
+func (c Contributors) Names() []string {
+	r := make([]string, 0)
+	for _, v := range c {
+		r = append(r, v.Name)
 	}
 	return r
 }

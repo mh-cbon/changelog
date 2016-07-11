@@ -4,19 +4,21 @@ var MD = `{{if eq .partial false}}# Changelog - {{.vars.name}}
 {{end}}
 
 {{- range $e := .changelog.Versions}}
-## {{if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{ $e.Version.String }}{{end}}
-{{if (gt ($e.Author.Name|len) 0) or (gt ($e.Author.Email|len) 0)}}
-__Releaser__: {{$e.Author.Name}}{{if gt ($e.Author.Email|len) 0}} <{{$e.Author.Email}}>{{end}}
-{{end}}
-__Date__: {{$e.Date.Format "Mon 02 Jan 2006"}}
-{{if gt ($e.Contributors | len) 0}}
-__Contributors__: {{call $.join $e.Contributors.Strings ", "}}
-{{- end}}
+### {{if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{ $e.Version.String }}{{end}}
 
-#### Changes
+__Changes__
 {{range $change := $e.Changes}}
 - {{$change}}
+{{end}}
+{{if gt ($e.Contributors | len) 0}}
+__Contributors__
+{{range $contributor := $e.Contributors}}
+- {{$contributor.Name}}
 {{- end}}
+{{end}}
+
+Released by {{$e.Author.Name}}, {{$e.Date.Format "Mon 02 Jan 2006"}}
+
 {{end}}
 
 `
