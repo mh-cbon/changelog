@@ -1,3 +1,14 @@
+0.0.5
+
+  * deb.json: make use of name token
+  * README: Update usage command line
+  * installer: fix url download
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:51:43 +0200
+
+
 0.0.4
 
   * fix glide lock file
