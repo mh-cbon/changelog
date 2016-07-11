@@ -27,15 +27,15 @@ The workflow would be so,
 - make a new repo
 - commit your stuff
 - run `changelog init` to generate a `change.log` file
-- before releasing run `changelog prepare`, it generates an `UNRELEASED` version
+- before a new release, run `changelog prepare`, to generate an `UNRELEASED` version
 - review and edit the new `UNRELEASED` version changes in `change.log` file
 - run `changelog finalize --version=x.x.x` to rename `UNRELEASED` version to its release version
 - run `changelog md --out=CHANGELOG.md` to generate the new markdowned changelog file
-- run `changelog deb --only=x.x.x` to get a the new version changelog and copy it somewhere else. tbd.
+- run `changelog debian` to get a the new version changelog to DEBIAN format
 
 ### intermediary changelog file
 
-To work `changelog` uses an intermediary `changelog` file.
+To work `changelog` uses an intermediary file `change.log`.
 
 #### General overview
 
@@ -185,7 +185,8 @@ COMMANDS:
      finalize  Take pending next changelog, apply a version on it
      test      Test to load your changelog file and report for errors or success
      export    Export the changelog using given template
-     md        Export the changelog to Markdown
+     md        Export the changelog to Markdown format
+     debian    Export the changelog to Debian format
      help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -296,9 +297,29 @@ OPTIONS:
    --vars value           Add more variables to the template
 
 EXAMPLE:
-  changelog md --out=CHANGELOG.rtf
-  changelog md --out=CHANGELOG.rtf --version=0.0.2
-  changelog md --out=CHANGELOG.rtf --vars='{"name":"changelog"}'
+  changelog md --out=CHANGELOG.md
+  changelog md --out=CHANGELOG.md --version=0.0.2
+  changelog md --out=CHANGELOG.md --vars='{"name":"changelog"}'
+```
+
+#### Debian
+
+```sh
+NAME:
+   changelog debian - Export the changelog to Debian format
+
+USAGE:
+   changelog debian [command options] [arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target (default: "-")
+   --vars value           Add more variables to the template
+
+EXAMPLE:
+  changelog md --out=changelog
+  changelog md --out=changelog --version=0.0.2
+  changelog md --out=changelog --vars='{"name":"changelog", "urgency":""}'
 ```
 
 #### Enable debug messages
