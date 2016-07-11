@@ -39,11 +39,11 @@ func TestParseFile1(t *testing.T) {
 	} else if v.Version.String() != "0.0.1" {
 		t.Errorf("should s.Version.String()=='0.0.1', got s.Version.String()=%q\n", v.Version.String())
 	}
-	if v.Author != "author" {
-		t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
+	if v.Author.Name != "author" {
+		t.Errorf("should s.Author.Name='author', got s.Author.Name=%q\n", v.Author.Name)
 	}
-	if v.Email != "" {
-		t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+	if v.Author.Email != "" {
+		t.Errorf("should s.Author.Email='', got s.Author.Email=%q\n", v.Author.Email)
 	}
 }
 
@@ -74,11 +74,11 @@ func TestVersionEndAuthorEmailDate(t *testing.T) {
 		t.Errorf("should err==nil, got err=%q\n", err)
 	}
 	v := s.Versions[0]
-	if v.Author != "author" {
-		t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
+	if v.Author.Name != "author" {
+		t.Errorf("should s.Author.Name='author', got s.Author.Name=%q\n", v.Author.Name)
 	}
-	if v.Email != "email" {
-		t.Errorf("should s.Email='email', got s.Email=%q\n", v.Email)
+	if v.Author.Email != "email" {
+		t.Errorf("should s.Author.Email='email', got s.Author.Email=%q\n", v.Author.Email)
 	}
 	e := "Mon, 22 Mar 2010 00:37:30 +0100"
 	if v.Date.Format(DateLayouts[0]) != e {
@@ -98,11 +98,11 @@ func TestVersionEndAuthorDate(t *testing.T) {
 		t.Errorf("should err==nil, got err=%q\n", err)
 	}
 	v := s.Versions[0]
-	if v.Author != "author" {
-		t.Errorf("should s.Author='author', got s.Author=%q\n", v.Author)
+	if v.Author.Name != "author" {
+		t.Errorf("should s.Author.Name='author', got s.Author.Name=%q\n", v.Author.Name)
 	}
-	if v.Email != "" {
-		t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+	if v.Author.Email != "" {
+		t.Errorf("should s.Author.Email='', got s.Author.Email=%q\n", v.Author.Email)
 	}
 	e := "Mon, 22 Mar 2010 00:37:30 +0100"
 	if v.Date.Format(DateLayouts[0]) != e {
@@ -122,11 +122,11 @@ func TestVersionEndEmailDate(t *testing.T) {
 		t.Errorf("should err==nil, got err=%q\n", err)
 	}
 	v := s.Versions[0]
-	if v.Author != "" {
-		t.Errorf("should s.Author='', got s.Author=%q\n", v.Author)
+	if v.Author.Name != "" {
+		t.Errorf("should s.Author.Name='', got s.Author.Name=%q\n", v.Author.Name)
 	}
-	if v.Email != "email" {
-		t.Errorf("should s.Email='email', got s.Email=%q\n", v.Email)
+	if v.Author.Email != "email" {
+		t.Errorf("should s.Author.Email='email', got s.Author.Email=%q\n", v.Author.Email)
 	}
 	e := "Mon, 22 Mar 2010 00:37:30 +0100"
 	if v.Date.Format(DateLayouts[0]) != e {
@@ -160,11 +160,11 @@ func TestVersionEndOnlyDate(t *testing.T) {
 		t.Errorf("should err==nil, got err=%q\n", err)
 	}
 	v := s.Versions[0]
-	if v.Author != "" {
-		t.Errorf("should s.Author='', got s.Author=%q\n", v.Author)
+	if v.Author.Name != "" {
+		t.Errorf("should s.Author.Name='', got s.Author.Name=%q\n", v.Author.Name)
 	}
-	if v.Email != "" {
-		t.Errorf("should s.Email='', got s.Email=%q\n", v.Email)
+	if v.Author.Email != "" {
+		t.Errorf("should s.Author.Email='', got s.Author.Email=%q\n", v.Author.Email)
 	}
 	e := "Mon, 22 Mar 2010 00:37:30 +0100"
 	if v.Date.Format(DateLayouts[0]) != e {
@@ -334,11 +334,17 @@ func TestContributors(t *testing.T) {
 	if len(v.Contributors) != 2 {
 		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
 	}
-	if v.Contributors[0] != "Contributor 1" {
-		t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+	if v.Contributors[0].Name != "Contributor 1" {
+		t.Errorf("should v.Contributors[0].Name='Contributor 1', got v.Contributors[0].Name=%q\n", v.Contributors[0].Name)
 	}
-	if v.Contributors[1] != "Contributor 2" {
-		t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+	if v.Contributors[0].Email != "" {
+		t.Errorf("should v.Contributors[0].Email='', got v.Contributors[0].Email=%q\n", v.Contributors[0].Email)
+	}
+	if v.Contributors[1].Name != "Contributor 2" {
+		t.Errorf("should v.Contributors[1].Name='Contributor 2', got v.Contributors[1].Name=%q\n", v.Contributors[1].Name)
+	}
+	if v.Contributors[1].Email != "" {
+		t.Errorf("should v.Contributors[1].Email='', got v.Contributors[1].Email=%q\n", v.Contributors[1].Email)
 	}
 }
 
@@ -361,11 +367,17 @@ func TestRandomOk1(t *testing.T) {
 	if len(v.Contributors) != 2 {
 		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
 	}
-	if v.Contributors[0] != "Contributor 1" {
-		t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+	if v.Contributors[0].Name != "Contributor 1" {
+		t.Errorf("should v.Contributors[0].Name='Contributor 1', got v.Contributors[0].Name=%q\n", v.Contributors[0].Name)
 	}
-	if v.Contributors[1] != "Contributor 2" {
-		t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+	if v.Contributors[0].Email != "" {
+		t.Errorf("should v.Contributors[0].Email='', got v.Contributors[0].Email=%q\n", v.Contributors[0].Email)
+	}
+	if v.Contributors[1].Name != "Contributor 2" {
+		t.Errorf("should v.Contributors[1].Name='Contributor 2', got v.Contributors[1].Name=%q\n", v.Contributors[1].Name)
+	}
+	if v.Contributors[1].Email != "" {
+		t.Errorf("should v.Contributors[1].Email='', got v.Contributors[1].Email=%q\n", v.Contributors[1].Email)
 	}
 	if len(v.Changes) != 2 {
 		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
@@ -397,11 +409,17 @@ func TestRandomOk2(t *testing.T) {
 	if len(v.Contributors) != 2 {
 		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
 	}
-	if v.Contributors[0] != "Contributor 1" {
-		t.Errorf("should v.Contributors[0]='Contributor 1', got v.Contributors[0]=%q\n", v.Contributors[0])
+	if v.Contributors[0].Name != "Contributor 1" {
+		t.Errorf("should v.Contributors[0].Name='Contributor 1', got v.Contributors[0].Name=%q\n", v.Contributors[0].Name)
 	}
-	if v.Contributors[1] != "Contributor 2" {
-		t.Errorf("should v.Contributors[1]='Contributor 2', got v.Contributors[1]=%q\n", v.Contributors[1])
+	if v.Contributors[0].Email != "" {
+		t.Errorf("should v.Contributors[0].Email='', got v.Contributors[0].Email=%q\n", v.Contributors[0].Email)
+	}
+	if v.Contributors[1].Name != "Contributor 2" {
+		t.Errorf("should v.Contributors[1].Name='Contributor 2', got v.Contributors[1].Name=%q\n", v.Contributors[1].Name)
+	}
+	if v.Contributors[1].Email != "" {
+		t.Errorf("should v.Contributors[1].Email='', got v.Contributors[1].Email=%q\n", v.Contributors[1].Email)
 	}
 	if len(v.Changes) != 2 {
 		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
