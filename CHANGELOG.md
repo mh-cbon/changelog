@@ -1,24 +1,16 @@
 # Changelog - changelog
 
-### UNRELEASED
+### 0.0.1
 
-__Releaser__: mh-cbon
+__Changes__
 
-__Date__: Thu 07 Jul 2016
+- Initial release
 
-__Contributors__: mh-cbon <mh-cbon@users.noreply.github.com>
+__Contributors__
 
-##### Changes
+- mh-cbon
 
-- README: cli usage
-- README: cli usage
-- README: cli usage
-- fix --since arg of init command
-- change changelog file format
-- change changelog file format
-- readme
-- Merge branch 'master' of github.com:mh-cbon/changelog
-- Initial commit
-- init
-- updates
-- init
+Released by mh-cbon, Mon 11 Jul 2016
+______________
+
+
