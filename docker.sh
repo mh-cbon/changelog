@@ -1,6 +1,5 @@
 dnf install rpm-build -y
-wget -q -O - --no-check-certificate \
-https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+curl https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | sh -x  mh-cbon/go-bin-rpm '${REPO}-${ARCH}${EXT}'
 cd /docker
 TAG=$1
