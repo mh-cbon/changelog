@@ -51,7 +51,10 @@ func (g *Changelog) Parse(data []byte) error {
 			if versionRegexp.Match(line) == false {
 				continue
 			}
-			part := bytes.Split(line, []byte(";"))
+      sline := string(line)
+      sline = strings.TrimSpace(sline)
+      sline = strings.TrimSuffix(sline, ";")
+			part := strings.Split(sline, ";")
 			cVersion = NewVersion(string(part[0]))
 			if len(part) > 1 {
 				for _, tag := range part[1:] {

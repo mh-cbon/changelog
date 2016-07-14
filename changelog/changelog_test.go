@@ -218,6 +218,33 @@ UNRELEASED; tag1=v1; tag2=v2
 	}
 }
 
+func TestVersionTagsTrailingSemicolon(t *testing.T) {
+	content := `
+UNRELEASED; tag1=v1; tag2=v2;
+-- Mon, 22 Mar 2010 00:37:30 +0100
+`
+	s := Changelog{}
+	err := s.Parse([]byte(content))
+
+	if err != nil {
+		t.Errorf("should err==nil, got err=%q\n", err)
+	}
+	v := s.Versions[0]
+	if val, ok := v.Tags["tag1"]; ok == false {
+		t.Errorf("should 'tag1' in v.Tags, got %q\n", ok)
+	} else if val != "v1" {
+		t.Errorf("should v.Tags['tag1']='v1', got v.Tags['tag1']=%q\n", val)
+	}
+	if val, ok := v.Tags["tag2"]; ok == false {
+		t.Errorf("should 'tag2' in v.Tags, got %q\n", ok)
+	} else if val != "v2" {
+		t.Errorf("should v.Tags['tag2']='v2', got v.Tags['tag2']=%q\n", val)
+	}
+  if len(v.Tags)!=2 {
+		t.Errorf("should len(v.Tags)='2', got len(v.Tags)=%q\n", len(v.Tags))
+  }
+}
+
 func TestMultipleVersions(t *testing.T) {
 	content := `
 0.0.1
