@@ -43,6 +43,7 @@ func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string
 	values["vars"] = vars
 	values["isnil"] = IsNil
 	values["debianlayout"] = changelog.DateLayouts[0]
+	values["rpmlayout"] = changelog.DateLayouts[4]
 	values["join"] = strings.Join
 
 	t, err := template.New("it").Parse(tplString)

@@ -29,6 +29,7 @@ func init() {
 	DateLayouts = append(DateLayouts, "Mon, 02 Jan 2006 15:04:05")
 	DateLayouts = append(DateLayouts, "Mon, 02 Jan 2006")
 	DateLayouts = append(DateLayouts, "Mon 02 Jan 2006")
+	DateLayouts = append(DateLayouts, "Mon Jan 02 2006")
 	DateLayouts = append(DateLayouts, "2006-02-01")
 	DateLayouts = append(DateLayouts, "2/1/2015")
 	DateLayouts = append(DateLayouts, "01/02/2015")

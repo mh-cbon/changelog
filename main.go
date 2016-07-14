@@ -155,6 +155,28 @@ func main() {
 				},
 			},
 		},
+		{
+			Name:   "rpm",
+			Usage:  "Export the changelog to RPM format",
+			Action: exportToRpm,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "version",
+					Value: "",
+					Usage: "Only given version",
+				},
+				cli.StringFlag{
+					Name:  "out, o",
+					Value: "-",
+					Usage: "Out target",
+				},
+				cli.StringFlag{
+					Name:  "vars",
+					Value: "",
+					Usage: "Add more variables to the template",
+				},
+			},
+		},
 	}
 
 	app.Run(os.Args)
@@ -427,6 +449,26 @@ func exportToDebian(c *cli.Context) error {
   }
 
 	err := exportToSomeTemplate(version, out, vars, tpls.DEBIAN)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	return nil
+}
+
+func exportToRpm(c *cli.Context) error {
+	version := c.String("version")
+	out := c.String("out")
+	varsStr := c.String("vars")
+
+	vars := make(map[string]interface{})
+	if len(varsStr) > 0 {
+		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
+			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+		}
+	}
+
+	err := exportToSomeTemplate(version, out, vars, tpls.RPM)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}

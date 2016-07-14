@@ -47,3 +47,10 @@ var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 -- {{$e.Author.Name}}{{if gt ($e.Author.Email|len) 0}} <{{$e.Author.Email}}>{{end}}  {{$e.GetDateF $.debianlayout}}
 
 {{end}}`
+
+var RPM = `{{- range $index, $e := .changelog.Versions}}
+* {{$e.GetDateF $.debianlayout}} {{$e.Author.String}} - {{- if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{$e.Version.String}}{{end}}
+{{range $change := $e.Changes}}
+- {{$change}}
+{{- end}}
+{{end}}`
