@@ -1,3 +1,14 @@
+
+0.0.11
+
+  * build: add rpm packages
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 19:15:32 +0200
+
+
+
 0.0.10
 
   * RPM: ensure release tag is at least=1
@@ -11,6 +22,7 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 15:34:11 +0200
+
 
 
 0.0.9
@@ -27,6 +39,7 @@
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 15:00:01 +0200
 
 
+
 0.0.8
 
   * appveyor: register go-msi path manually
@@ -38,6 +51,7 @@
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 12 Jul 2016 00:10:58 +0200
 
 
+
 0.0.7
 
   * appveyor: fix curl option to follow location redirect
@@ -45,6 +59,7 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 23:32:43 +0200
+
 
 
 0.0.6
@@ -55,6 +70,7 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 23:23:53 +0200
+
 
 
 0.0.5
@@ -68,6 +84,7 @@
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:51:43 +0200
 
 
+
 0.0.4
 
   * fix glide lock file
@@ -75,6 +92,7 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:22:19 +0200
+
 
 
 0.0.3
@@ -88,6 +106,7 @@
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:05:53 +0200
 
 
+
 0.0.2
 
   * add deb.json file to generate debian packages
@@ -95,6 +114,7 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:48:46 +0200
+
 
 
 0.0.1
