@@ -19,6 +19,7 @@ install:
   - cd $GOPATH/src/github.com/mh-cbon/changelog
   - glide install
   - go install
+  - go build -o changelog main.go
 
 script:
   - go test changelog/*
@@ -31,7 +32,7 @@ before_deploy:
   - go-bin-deb generate -a amd64 --version ${TRAVIS_TAG} -w pkg-build-amd64/ -o ${TRAVIS_BUILD_DIR}/changelog-amd64.deb
   - docker run -v $PWD:/docker fedora /bin/sh -c "cd /docker && sh ./docker.sh ${TRAVIS_TAG} changelog"
   - sudo chown travis:travis changelog-{386,amd64}.rpm
-  
+
 deploy:
   provider: releases
   api_key:
