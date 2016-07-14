@@ -1,5 +1,23 @@
 # Changelog - changelog
 
+### 0.0.9
+
+__Changes__
+
+- export: Add RPM export format
+- main: Refactor export methods and ensure name vars is defined
+- version: add new GetTag method to safely read a tag value
+- debian layout: fix read urgency from the tags, not the vars
+- README: update install section
+- appveyor: build only on tag
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 14 Jul 2016
+______________
+
 ### 0.0.8
 
 __Changes__
@@ -7,7 +25,6 @@ __Changes__
 - appveyor: register go-msi path manually
 - appveyor: update go-msi package
 - appveyor: fix curl option to follow location redirect
-- changelog: 0.0.7
 
 __Contributors__
 
