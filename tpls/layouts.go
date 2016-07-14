@@ -49,7 +49,7 @@ var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 {{end}}`
 
 var RPM = `{{- range $index, $e := .changelog.Versions}}
-* {{$e.GetDateF $.rpmlayout}} {{$e.Author.String}} - {{$e.GetName}}{{if gt ($e.GetTag "release"|len) 0}}-{{$e.GetTag "release"}}{{end}}
+* {{$e.GetDateF $.rpmlayout}} {{$e.Author.String}} - {{$e.GetName}}{{if gt ($e.GetTag "release"|len) 0}}-{{$e.GetTag "release"}}{{else}}-1{{end}}
 {{- range $change := $e.Changes}}
 - {{$change}}
 {{- end}}
