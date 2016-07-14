@@ -1,5 +1,18 @@
 # Changelog - changelog
 
+### 0.0.18
+
+__Changes__
+
+- travs: fix wrong asset name
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 14 Jul 2016
+______________
+
 ### 0.0.17
 
 __Changes__
