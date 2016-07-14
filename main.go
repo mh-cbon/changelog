@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"errors"
+	"io/ioutil"
 
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
@@ -367,32 +369,16 @@ func exportChangelog(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
 		}
 	}
 
-	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
-		return cli.NewExitError("Changelog file does not exist.", 1)
-	}
-
-	clog := changelog.Changelog{}
-	err := clog.Load(changelogFile)
-	if err != nil {
+  templateContent, err := ioutil.ReadFile(template)
+  if err != nil {
 		return cli.NewExitError(err.Error(), 1)
-	}
+  }
 
-	if version != "" {
-		newVersions := make([]*changelog.Version, 0)
-		v := clog.FindVersionByVersion(version)
-		if v == nil {
-			return cli.NewExitError("Version '"+version+"' not found.", 1)
-		}
-		newVersions = append(newVersions, v)
-		clog.Versions = newVersions
-	}
-
-	partial := version != ""
-	err = tpls.GenerateTemplate(clog, partial, vars, template, out)
+	err = exportToSomeTemplate(version, out, vars, string(templateContent))
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
@@ -408,32 +394,15 @@ func exportToMd(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
 		}
 	}
 
-	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
-		return cli.NewExitError("Changelog file does not exist.", 1)
-	}
+  if _, ok := vars["name"]; ok ==false {
+    vars["name"] = ""
+  }
 
-	clog := changelog.Changelog{}
-	err := clog.Load(changelogFile)
-	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
-	}
-
-	if version != "" {
-		newVersions := make([]*changelog.Version, 0)
-		v := clog.FindVersionByVersion(version)
-		if v == nil {
-			return cli.NewExitError("Version '"+version+"' not found.", 1)
-		}
-		newVersions = append(newVersions, v)
-		clog.Versions = newVersions
-	}
-
-	partial := version != ""
-	err = tpls.GenerateTemplateStr(clog, partial, vars, tpls.MD, out)
+	err := exportToSomeTemplate(version, out, vars, tpls.MD)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
@@ -449,34 +418,48 @@ func exportToDebian(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return cli.NewExitError(fmt.Sprintf("Failed to decode vars: %s", err.Error()), 1)
+			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
 		}
 	}
 
+  if _, ok := vars["name"]; ok ==false {
+    vars["name"] = ""
+  }
+
+	err := exportToSomeTemplate(version, out, vars, tpls.DEBIAN)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	return nil
+}
+
+func exportToSomeTemplate (version string, out string, vars map[string]interface{}, templateContent string) error {
+
 	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
-		return cli.NewExitError("Changelog file does not exist.", 1)
+		return errors.New("Changelog file does not exist.")
 	}
 
 	clog := changelog.Changelog{}
 	err := clog.Load(changelogFile)
 	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
+		return err
 	}
 
 	if version != "" {
 		newVersions := make([]*changelog.Version, 0)
 		v := clog.FindVersionByVersion(version)
 		if v == nil {
-			return cli.NewExitError("Version '"+version+"' not found.", 1)
+			return errors.New("Version '"+version+"' not found.")
 		}
 		newVersions = append(newVersions, v)
 		clog.Versions = newVersions
 	}
 
 	partial := version != ""
-	err = tpls.GenerateTemplateStr(clog, partial, vars, tpls.DEBIAN, out)
+	err = tpls.GenerateTemplateStr(clog, partial, vars, templateContent, out)
 	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
+		return err
 	}
 
 	return nil
