@@ -1,5 +1,18 @@
 # Changelog - changelog
 
+### 0.0.15
+
+__Changes__
+
+- rpm: add missing rpm.json to build the package
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 14 Jul 2016
+______________
+
 ### 0.0.14
 
 __Changes__
