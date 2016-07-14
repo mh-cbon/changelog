@@ -19,7 +19,6 @@ install:
   - cd $GOPATH/src/github.com/mh-cbon/changelog
   - glide install
   - go install
-  - go build -o changelog main.go
 
 script:
   - go test changelog/*
