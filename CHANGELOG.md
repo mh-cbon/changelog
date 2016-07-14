@@ -1,5 +1,24 @@
 # Changelog - changelog
 
+### 0.0.10
+
+__Changes__
+
+- RPM: ensure release tag is at least=1
+- README: update usage command lines
+- export: Add changelog format to export commands
+- tpls: Fix RPM template, Refactor to simplify code
+- version: add method GetName to get name or version value to string
+- Tags: Allow trailing semicolo in tags
+- RPM: Fix rpm template
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 14 Jul 2016
+______________
+
 ### 0.0.9
 
 __Changes__
