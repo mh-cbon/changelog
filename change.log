@@ -1,4 +1,14 @@
 
+0.0.13
+
+  * travis: update docker file
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 21:12:30 +0200
+
+
+
 0.0.12
 
   * travis: fix docker script, requires curl
