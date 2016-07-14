@@ -38,7 +38,8 @@ var CHANGELOG = `{{- range $index, $e := .changelog.Versions}}
 
 var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 {{$.vars.name}} ({{- if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{$e.Version.String}}{{end}})
-{{- if gt ($.vars.urgency|len) 0}}{{$.vars.urgency}};{{end}}{{- range $k,$v := $e.Tags}}{{$k}}={{$v}};{{- end}}
+{{- with $urgency := $e.GetTag "urgency" }}
+{{- if gt ($urgency|len) 0}}{{$urgency}};{{end}}{{- range $k,$v := $e.Tags}}{{$k}}={{$v}};{{- end}}{{end}}
 {{range $change := $e.Changes}}
   * {{$change}}
 {{- end}}
