@@ -1,0 +1,16 @@
+{
+  "name": "changelog",
+  "summary": "Maintain a changelog easily",
+  "description": "Maintain a changelog easily",
+  "changelog-cmd": "changelog rpm",
+  "license": "LICENSE",
+  "url": "https://github.com/mh-cbon/go-bin-rpm",
+  "files": [
+    {
+      "from": "build/!arch!/changelog",
+      "to": "%{_bindir}/",
+      "base": "build/!arch!/",
+      "type": ""
+    }
+  ]
+}
