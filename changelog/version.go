@@ -109,6 +109,17 @@ func (v *Version) GetDateF(layout string) string {
 	return v.Date.Format(layout)
 }
 
+// Get version name, if empty returns its version.
+func (v *Version) GetName() string {
+	if v.Name!="" {
+		return v.Name
+	}
+  if v.Version==nil {
+    return v.Name
+  }
+	return v.Version.String()
+}
+
 // Get tag value given its name.
 func (v *Version) GetTag(name string) string {
 	if _, ok := v.Tags[name]; ok == false {
