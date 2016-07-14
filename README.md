@@ -323,9 +323,49 @@ OPTIONS:
    --vars value           Add more variables to the template
 
 EXAMPLE:
-  changelog md --out=changelog
-  changelog md --out=changelog --version=0.0.2
-  changelog md --out=changelog --vars='{"name":"changelog", "urgency":""}'
+  changelog debian --out=changelog
+  changelog debian --out=changelog --version=0.0.2
+  changelog debian --out=changelog --vars='{"name":"changelog"}'
+```
+
+#### RPM
+
+```sh
+NAME:
+   changelog rpm - Export the changelog to RPM format
+
+USAGE:
+   changelog rpm [command options] [arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target (default: "-")
+   --vars value           Add more variables to the template
+
+EXAMPLE:
+  changelog rpm --out=changelog
+  changelog rpm --out=changelog --version=0.0.2
+  changelog rpm --out=changelog --vars='{"name":"changelog"}'
+```
+
+#### CHANGELOG
+
+```sh
+NAME:
+   changelog changelog - Export the changelog to CHANGELOG format
+
+USAGE:
+   changelog changelog [command options] [arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target (default: "-")
+   --vars value           Add more variables to the template
+
+EXAMPLE:
+  changelog changelog --out=changelog
+  changelog changelog --out=changelog --version=0.0.2
+  changelog changelog --out=changelog --vars='{"name":"changelog"}'
 ```
 
 #### Enable debug messages
