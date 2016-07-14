@@ -108,6 +108,14 @@ func (v *Version) GetDateF(layout string) string {
 	return v.Date.Format(layout)
 }
 
+// Get tag value given its name.
+func (v *Version) GetTag(name string) string {
+  if _, ok := v.Tags[name]; ok ==false {
+    return ""
+  }
+  return v.Tags[name]
+}
+
 // Parse and add given string tag
 func (v *Version) AddStrTag(tag string) error {
 	tagRegexp := regexp.MustCompile(`\s*([^=]+)=([^=]+)`)
