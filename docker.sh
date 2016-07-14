@@ -2,7 +2,7 @@
 
 dnf install rpm-build -y
 
-curl https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/go-bin-rpm ASSET='${REPO}-${ARCH}${EXT}' sh -xe
 
 cd /docker

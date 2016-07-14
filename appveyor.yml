@@ -44,7 +44,7 @@ deploy:
     artifact: msi-x86, msi-x64
     draft: false
     prerelease: false
-    description: "Release {APPVEYOR_REPO_TAG_NAME}"
+    description: "Release %APPVEYOR_REPO_TAG_NAME%"
     auth_token:
       secure: KCSQ5Lux18jVHKiuoiw50YTHG82Ii5PoBOhynj8kEqT/Rwm7sjKwdoUfnuT5i+JS
     on:
