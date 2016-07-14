@@ -7,8 +7,12 @@ Maintain a changelog easily.
 __debian/ubuntu__
 
 ```sh
-wget -q -O - --no-check-certificate https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
-curl https://raw.githubusercontent.com/mh-cbon/changelog/master/install.sh | sh
+curl https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+| GH=mh-cbon/changelog ASSET='${REPO}-${ARCH}${EXT}' sh -xe
+# or
+wget -q -O - --no-check-certificate \
+https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+| GH=mh-cbon/changelog ASSET='${REPO}-${ARCH}${EXT}' sh -xe
 ```
 
 __windows__
