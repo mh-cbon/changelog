@@ -49,8 +49,8 @@ var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 {{end}}`
 
 var RPM = `{{- range $index, $e := .changelog.Versions}}
-* {{$e.GetDateF $.debianlayout}} {{$e.Author.String}} - {{- if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{$e.Version.String}}{{end}}
-{{range $change := $e.Changes}}
+* {{$e.GetDateF $.rpmlayout}} {{$e.Author.String}} - {{if call $.isnil $e.Version }}{{$e.Name}}{{else}}{{$e.Version.String}}-{{$e.GetTag "release"}}{{end}}
+{{- range $change := $e.Changes}}
 - {{$change}}
 {{- end}}
 {{end}}`
