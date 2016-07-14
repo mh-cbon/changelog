@@ -1,4 +1,14 @@
 
+0.0.15
+
+  * rpm: add missing rpm.json to build the package
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 22:29:40 +0200
+
+
+
 0.0.14
 
   * travis: fix build script
