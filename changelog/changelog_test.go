@@ -240,9 +240,9 @@ UNRELEASED; tag1=v1; tag2=v2;
 	} else if val != "v2" {
 		t.Errorf("should v.Tags['tag2']='v2', got v.Tags['tag2']=%q\n", val)
 	}
-  if len(v.Tags)!=2 {
+	if len(v.Tags) != 2 {
 		t.Errorf("should len(v.Tags)='2', got len(v.Tags)=%q\n", len(v.Tags))
-  }
+	}
 }
 
 func TestMultipleVersions(t *testing.T) {

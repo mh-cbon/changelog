@@ -111,12 +111,12 @@ func (v *Version) GetDateF(layout string) string {
 
 // Get version name, if empty returns its version.
 func (v *Version) GetName() string {
-	if v.Name!="" {
+	if v.Name != "" {
 		return v.Name
 	}
-  if v.Version==nil {
-    return v.Name
-  }
+	if v.Version == nil {
+		return v.Name
+	}
 	return v.Version.String()
 }
 
