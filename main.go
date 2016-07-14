@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
 	"errors"
+	"fmt"
 	"io/ioutil"
+	"os"
 
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
@@ -395,10 +395,10 @@ func exportChangelog(c *cli.Context) error {
 		}
 	}
 
-  templateContent, err := ioutil.ReadFile(template)
-  if err != nil {
+	templateContent, err := ioutil.ReadFile(template)
+	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
-  }
+	}
 
 	err = exportToSomeTemplate(version, out, vars, string(templateContent))
 	if err != nil {
@@ -420,9 +420,9 @@ func exportToMd(c *cli.Context) error {
 		}
 	}
 
-  if _, ok := vars["name"]; ok ==false {
-    vars["name"] = ""
-  }
+	if _, ok := vars["name"]; ok == false {
+		vars["name"] = ""
+	}
 
 	err := exportToSomeTemplate(version, out, vars, tpls.MD)
 	if err != nil {
@@ -444,9 +444,9 @@ func exportToDebian(c *cli.Context) error {
 		}
 	}
 
-  if _, ok := vars["name"]; ok ==false {
-    vars["name"] = ""
-  }
+	if _, ok := vars["name"]; ok == false {
+		vars["name"] = ""
+	}
 
 	err := exportToSomeTemplate(version, out, vars, tpls.DEBIAN)
 	if err != nil {
@@ -476,7 +476,7 @@ func exportToRpm(c *cli.Context) error {
 	return nil
 }
 
-func exportToSomeTemplate (version string, out string, vars map[string]interface{}, templateContent string) error {
+func exportToSomeTemplate(version string, out string, vars map[string]interface{}, templateContent string) error {
 
 	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
 		return errors.New("Changelog file does not exist.")
@@ -492,7 +492,7 @@ func exportToSomeTemplate (version string, out string, vars map[string]interface
 		newVersions := make([]*changelog.Version, 0)
 		v := clog.FindVersionByVersion(version)
 		if v == nil {
-			return errors.New("Version '"+version+"' not found.")
+			return errors.New("Version '" + version + "' not found.")
 		}
 		newVersions = append(newVersions, v)
 		clog.Versions = newVersions

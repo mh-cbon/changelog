@@ -111,10 +111,10 @@ func (v *Version) GetDateF(layout string) string {
 
 // Get tag value given its name.
 func (v *Version) GetTag(name string) string {
-  if _, ok := v.Tags[name]; ok ==false {
-    return ""
-  }
-  return v.Tags[name]
+	if _, ok := v.Tags[name]; ok == false {
+		return ""
+	}
+	return v.Tags[name]
 }
 
 // Parse and add given string tag
