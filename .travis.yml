@@ -39,7 +39,7 @@ deploy:
   file:
     - changelog-386.deb
     - changelog-amd64.deb
-    - changelog-amd64.rpm
+    - changelog-386.rpm
     - changelog-amd64.rpm
   skip_cleanup: true
   on:
