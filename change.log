@@ -1,4 +1,14 @@
 
+0.0.17
+
+  * rpm: add missing rpm.json to build the package
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 23:23:00 +0200
+
+
+
 0.0.16
 
   * rpm: add missing rpm.json to build the package
