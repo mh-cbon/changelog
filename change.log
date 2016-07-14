@@ -1,3 +1,18 @@
+0.0.10
+
+  * RPM: ensure release tag is at least=1
+  * README: update usage command lines
+  * export: Add changelog format to export commands
+  * tpls: Fix RPM template, Refactor to simplify code
+  * version: add method GetName to get name or version value to string
+  * Tags: Allow trailing semicolo in tags
+  * RPM: Fix rpm template
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 15:34:11 +0200
+
+
 0.0.9
 
   * export: Add RPM export format
