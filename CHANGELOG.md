@@ -1,5 +1,18 @@
 # Changelog - changelog
 
+### 0.0.12
+
+__Changes__
+
+- travis: fix docker script, requires curl
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 14 Jul 2016
+______________
+
 ### 0.0.11
 
 __Changes__
