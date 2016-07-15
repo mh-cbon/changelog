@@ -4,11 +4,9 @@ Maintain a changelog easily.
 
 # Install
 
-__debian/ubuntu__
+__deb/rpm__
 
 ```sh
-
-__deb/rpm__
 curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/changelog sh -xe
 # or
