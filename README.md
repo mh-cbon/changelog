@@ -7,19 +7,21 @@ Maintain a changelog easily.
 __debian/ubuntu__
 
 ```sh
+
+__deb/rpm__
 curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
-| GH=mh-cbon/changelog ASSET='${REPO}-${ARCH}${EXT}' sh -xe
+| GH=mh-cbon/changelog sh -xe
 # or
 wget -q -O - --no-check-certificate \
 https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
-| GH=mh-cbon/changelog ASSET='${REPO}-${ARCH}${EXT}' sh -xe
+| GH=mh-cbon/changelog sh -xe
 ```
 
 __windows__
 
 Pick an msi package [here](https://github.com/mh-cbon/changelog/releases)
 
-__others__
+__go__
 
 ```sh
 mkdir -p $GOPATH/src/github.com/mh-cbon
