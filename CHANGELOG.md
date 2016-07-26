@@ -1,5 +1,24 @@
 # Changelog - changelog
 
+### 0.0.19
+
+__Changes__
+
+- Markdown format: add link to the github diff page
+- cli: add ghrelease command to export changelog to a short md format
+- multilines: improved support of multilines changes to correctly
+align them vertically with the prefix
+- layouts: add new GHRELEASE template
+- layouts: add test suite
+- tagrange: add method to get begin...end range of a version
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Tue 26 Jul 2016
+______________
+
 ### 0.0.18
 
 __Changes__
