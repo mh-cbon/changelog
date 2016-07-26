@@ -1,5 +1,20 @@
 # Changelog - changelog
 
+### 0.0.20
+
+__Changes__
+
+- firstrev: silently fail if the directory is not a repository,
+  or if the system does not have required binaries
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Tue 26 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.19...0.0.20#diff)
+______________
+
 ### 0.0.19
 
 __Changes__
