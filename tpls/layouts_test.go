@@ -6,7 +6,7 @@ import (
 )
 
 func TestChangeLogInternalFormat(t *testing.T) {
-  in := `
+	in := `
 0.0.1
 
  * change #1
@@ -15,7 +15,7 @@ func TestChangeLogInternalFormat(t *testing.T) {
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `
+	expected := `
 0.0.1
 
   * change #1
@@ -29,22 +29,22 @@ func TestChangeLogInternalFormat(t *testing.T) {
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, CHANGELOG)
+	out, err := GenerateTemplateStr(s, false, vars, CHANGELOG)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
-  }
+	}
 }
 
 func TestMultilineFormatting(t *testing.T) {
-  in := `
+	in := `
 0.0.1
 
  * change #1
@@ -58,7 +58,7 @@ with another line
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `
+	expected := `
 0.0.1
 
   * change #1
@@ -77,22 +77,22 @@ with another line
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, CHANGELOG)
+	out, err := GenerateTemplateStr(s, false, vars, CHANGELOG)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%s\n, got output=\n%s\n", expected, out)
-  }
+	}
 }
 
 func TestChangeLogMDFormat(t *testing.T) {
-  in := `
+	in := `
 0.0.2
 
  * change #2
@@ -110,7 +110,7 @@ with another line
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `# Changelog - test
+	expected := `# Changelog - test
 
 ### 0.0.2
 
@@ -145,24 +145,24 @@ ______________
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
-  s.FirstRev = "some"
+	s.FirstRev = "some"
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, MD)
+	out, err := GenerateTemplateStr(s, false, vars, MD)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
-  }
+	}
 }
 
 func TestChangeLogDEBIANFormat(t *testing.T) {
-  in := `
+	in := `
 0.0.2
 
  * change #2
@@ -180,7 +180,7 @@ func TestChangeLogDEBIANFormat(t *testing.T) {
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `
+	expected := `
 test (0.0.2)
 
   * change #2
@@ -199,22 +199,22 @@ test (0.0.1)
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, DEBIAN)
+	out, err := GenerateTemplateStr(s, false, vars, DEBIAN)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
-  }
+	}
 }
 
 func TestChangeLogRPMFormat(t *testing.T) {
-  in := `
+	in := `
 0.0.2
 
  * change #2
@@ -232,7 +232,7 @@ func TestChangeLogRPMFormat(t *testing.T) {
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `
+	expected := `
 * Mon Mar 22 2010 author - 0.0.2-1
 - change #2
   with another line
@@ -243,22 +243,22 @@ func TestChangeLogRPMFormat(t *testing.T) {
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, RPM)
+	out, err := GenerateTemplateStr(s, false, vars, RPM)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
-  }
+	}
 }
 
 func TestChangeLogGHRELEASEFormat(t *testing.T) {
-  in := `
+	in := `
 0.0.1
 
  * change #1
@@ -269,7 +269,7 @@ func TestChangeLogGHRELEASEFormat(t *testing.T) {
 
 -- author; Mon, 22 Mar 2010 00:37:30 +0100
 `
-  expected := `
+	expected := `
 - change #1
   with another line
 
@@ -278,16 +278,16 @@ __Contributors__ : contributor #1, contributor #2
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
 
-  vars := make(map[string]interface{})
-  vars["name"] = "test"
+	vars := make(map[string]interface{})
+	vars["name"] = "test"
 
-  out, err := GenerateTemplateStr(s, false, vars, GHRELEASE)
+	out, err := GenerateTemplateStr(s, false, vars, GHRELEASE)
 
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
 
-  if expected!=out {
+	if expected != out {
 		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
-  }
+	}
 }

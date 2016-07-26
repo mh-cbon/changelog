@@ -1,10 +1,10 @@
 package tpls
 
 import (
+	"bytes"
 	"io"
 	"io/ioutil"
 	"os"
-	"bytes"
 	"strings"
 	"text/template"
 
@@ -18,16 +18,16 @@ var logger = verbose.Auto()
 // PrintMultilines prints multiple lines with a given prefix
 // replaced by space for line with index > 0
 // (vertical alignment)
-func PrintMultilines (lines string, prefix string) string {
-  ret := ""
-  for index, line := range strings.Split(lines, "\n") {
-    if index==0 {
-      ret += prefix + line + "\n"
-    } else {
-      ret += strings.Repeat(" ", len(prefix)) + line + "\n"
-    }
-  }
-  return strings.TrimSuffix(ret, "\n")
+func PrintMultilines(lines string, prefix string) string {
+	ret := ""
+	for index, line := range strings.Split(lines, "\n") {
+		if index == 0 {
+			ret += prefix + line + "\n"
+		} else {
+			ret += strings.Repeat(" ", len(prefix)) + line + "\n"
+		}
+	}
+	return strings.TrimSuffix(ret, "\n")
 }
 
 // WriteTemplateTo writes changelog content
@@ -56,12 +56,12 @@ func WriteTemplateStrTo(clog changelog.Changelog, partial bool, vars map[string]
 		writer = f
 	}
 
-  content, err := GenerateTemplateStr(clog, partial, vars, tplString)
-  if err!=nil {
-    return err
-  }
+	content, err := GenerateTemplateStr(clog, partial, vars, tplString)
+	if err != nil {
+		return err
+	}
 
-  _, err = writer.Write([]byte(content))
+	_, err = writer.Write([]byte(content))
 	return err
 }
 
@@ -95,12 +95,12 @@ func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string
 		return "", err
 	}
 
-  var b bytes.Buffer
+	var b bytes.Buffer
 	err = t.Execute(&b, values)
-  if err !=nil {
-    return "", err
-  }
-  return b.String(), nil
+	if err != nil {
+		return "", err
+	}
+	return b.String(), nil
 }
 
 func IsNil(args *semver.Version) bool {

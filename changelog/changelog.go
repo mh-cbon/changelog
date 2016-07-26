@@ -5,19 +5,19 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"path"
 	"regexp"
 	"sort"
 	"strings"
-	"path"
 
 	"github.com/Masterminds/semver"
-  "github.com/mh-cbon/go-repo-utils/repoutils"
+	"github.com/mh-cbon/go-repo-utils/repoutils"
 )
 
 //
 type Changelog struct {
 	Versions []*Version
-  FirstRev string
+	FirstRev string
 }
 
 // Load given path into the current Changelog object
@@ -27,16 +27,16 @@ func (g *Changelog) Load(filepath string) error {
 		return err
 	}
 
-  cwd := path.Dir(filepath)
-  vcs, err := repoutils.WhichVcs(cwd)
+	cwd := path.Dir(filepath)
+	vcs, err := repoutils.WhichVcs(cwd)
 	if err != nil {
 		return err
 	}
-  rev, err := repoutils.GetFirstRevision(vcs, cwd)
+	rev, err := repoutils.GetFirstRevision(vcs, cwd)
 	if err != nil {
 		return err
 	}
-  g.FirstRev = rev
+	g.FirstRev = rev
 
 	return g.Parse(data)
 }
@@ -223,30 +223,30 @@ func (g *Changelog) Sort() {
 }
 
 type TagRange struct {
-  Begin string
-  End string
+	Begin string
+	End   string
 }
 
-func (g *Changelog) GetTagRange (tag string) TagRange {
-  tagRange := TagRange{}
+func (g *Changelog) GetTagRange(tag string) TagRange {
+	tagRange := TagRange{}
 	versions := g.GetSemverVersions()
-  found := false
-  for i, v := range versions {
-    strV := v.GetName()
-    if i==len(versions)-1 {
-      tagRange.Begin = g.FirstRev
-      tagRange.End = strV
-    } else {
-      tagRange.Begin = versions[i+1].GetName()
-      tagRange.End = strV
-    }
-    if strV==tag {
-      found = true
-      break
-    }
-  }
-  if !found {
-    return TagRange{}
-  }
-  return tagRange
+	found := false
+	for i, v := range versions {
+		strV := v.GetName()
+		if i == len(versions)-1 {
+			tagRange.Begin = g.FirstRev
+			tagRange.End = strV
+		} else {
+			tagRange.Begin = versions[i+1].GetName()
+			tagRange.End = strV
+		}
+		if strV == tag {
+			found = true
+			break
+		}
+	}
+	if !found {
+		return TagRange{}
+	}
+	return tagRange
 }

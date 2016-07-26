@@ -605,7 +605,7 @@ func setVersionChanges(version *changelog.Version, path string, since string, to
 		return err
 	}
 
-  //build changes and contributors list from the commits
+	//build changes and contributors list from the commits
 	for _, commit := range commits {
 		s := fmt.Sprintf("%s", commit.Message)
 		version.Changes = append(version.Changes, s)
@@ -618,7 +618,7 @@ func setVersionChanges(version *changelog.Version, path string, since string, to
 		}
 	}
 
-  // guess release date from the commits
+	// guess release date from the commits
 	if len(commits) > 0 {
 		orderedCommits := repocommit.Commits(commits)
 		orderedCommits.OrderByDate("DESC")
