@@ -26,14 +26,14 @@ func (g *Changelog) Load(filepath string) error {
 	if err != nil {
 		return err
 	}
-  
+
 	cwd := path.Dir(filepath)
 	vcs, err := repoutils.WhichVcs(cwd)
 	if err == nil {
-  	rev, err := repoutils.GetFirstRevision(vcs, cwd)
-  	if err == nil {
-    	g.FirstRev = rev
-  	}
+		rev, err := repoutils.GetFirstRevision(vcs, cwd)
+		if err == nil {
+			g.FirstRev = rev
+		}
 	}
 
 	return g.Parse(data)
