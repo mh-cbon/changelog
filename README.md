@@ -372,6 +372,24 @@ EXAMPLE:
   changelog changelog --out=changelog --vars='{"name":"changelog"}'
 ```
 
+#### GHRELEASE
+
+```sh
+NAME:
+   changelog ghrelease - Export the changelog to GHRELEASE format
+
+USAGE:
+   changelog ghrelease [command options] [arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target (default: "-")
+   --vars value           Add more variables to the template
+
+EXAMPLE:
+  changelog ghrelease --out=changelog --version=0.0.2
+```
+
 #### Enable debug messages
 
 To enable debug messages, just set `VERBOSE=change*`, `VERBOSE=*` before running the command.
