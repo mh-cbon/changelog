@@ -1,5 +1,5 @@
-hash: d5ee46f70958a76b24632acceff146840c706c35d1e0a7a83e8b509543aeda9a
-updated: 2016-07-11T22:21:31.426547343+02:00
+hash: ee48ee84776d4f98d3ca552dda61f9b0f1cd70d38230f8a458885c7085bfc0d9
+updated: 2016-07-26T17:10:46.792046016+02:00
 imports:
 - name: github.com/fatih/color
   version: 87d4004f2ab62d0d255e0a38f1680aa534549fe3
@@ -10,7 +10,7 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 56b76bdf51f7708750eac80fa38b952bb9f32639
 - name: github.com/mh-cbon/go-repo-utils
-  version: 40d6776ec36b2b022dbf2dbb939800102975257e
+  version: 59067a54516ebcd4fb416241559a13c02a55bc4b
   subpackages:
   - commit
   - repoutils
