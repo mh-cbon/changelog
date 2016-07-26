@@ -7,7 +7,7 @@ __Changes__
 - Markdown format: add link to the github diff page
 - cli: add ghrelease command to export changelog to a short md format
 - multilines: improved support of multilines changes to correctly
-align them vertically with the prefix
+  align them vertically with the prefix
 - layouts: add new GHRELEASE template
 - layouts: add test suite
 - tagrange: add method to get begin...end range of a version
@@ -16,7 +16,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Tue 26 Jul 2016
+Released by mh-cbon, Tue 26 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.18...0.0.19#diff)
 ______________
 
 ### 0.0.18
@@ -29,7 +30,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.17...0.0.18#diff)
 ______________
 
 ### 0.0.17
@@ -42,7 +44,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.16...0.0.17#diff)
 ______________
 
 ### 0.0.16
@@ -55,7 +58,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.15...0.0.16#diff)
 ______________
 
 ### 0.0.15
@@ -68,7 +72,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.14...0.0.15#diff)
 ______________
 
 ### 0.0.14
@@ -82,7 +87,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.13...0.0.14#diff)
 ______________
 
 ### 0.0.13
@@ -95,7 +101,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.12...0.0.13#diff)
 ______________
 
 ### 0.0.12
@@ -108,7 +115,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.11...0.0.12#diff)
 ______________
 
 ### 0.0.11
@@ -121,7 +129,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.10...0.0.11#diff)
 ______________
 
 ### 0.0.10
@@ -140,7 +149,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.9...0.0.10#diff)
 ______________
 
 ### 0.0.9
@@ -158,7 +168,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 14 Jul 2016
+Released by mh-cbon, Thu 14 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.8...0.0.9#diff)
 ______________
 
 ### 0.0.8
@@ -173,7 +184,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Tue 12 Jul 2016
+Released by mh-cbon, Tue 12 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.7...0.0.8#diff)
 ______________
 
 ### 0.0.7
@@ -186,7 +198,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.6...0.0.7#diff)
 ______________
 
 ### 0.0.6
@@ -200,7 +213,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.5...0.0.6#diff)
 ______________
 
 ### 0.0.5
@@ -215,7 +229,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.4...0.0.5#diff)
 ______________
 
 ### 0.0.4
@@ -228,7 +243,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.3...0.0.4#diff)
 ______________
 
 ### 0.0.3
@@ -243,7 +259,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.2...0.0.3#diff)
 ______________
 
 ### 0.0.2
@@ -256,7 +273,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.1...0.0.2#diff)
 ______________
 
 ### 0.0.1
@@ -269,7 +287,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/c589337667f6d64f5b2b2165290c20b8b4e7b40b...0.0.1#diff)
 ______________
 
 
