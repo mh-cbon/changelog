@@ -1,10 +1,21 @@
 
+0.0.20
+
+  * firstrev: silently fail if the directory is not a repository,
+    or if the system does not have required binaries
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 26 Jul 2016 18:22:32 +0200
+
+
+
 0.0.19
 
   * Markdown format: add link to the github diff page
   * cli: add ghrelease command to export changelog to a short md format
   * multilines: improved support of multilines changes to correctly
-align them vertically with the prefix
+    align them vertically with the prefix
   * layouts: add new GHRELEASE template
   * layouts: add test suite
   * tagrange: add method to get begin...end range of a version
