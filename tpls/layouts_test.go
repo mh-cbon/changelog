@@ -138,7 +138,7 @@ __Contributors__
 - contributor #1
 
 Released by author, Mon 22 Mar 2010 -
-[see the diff](https://github.com/mh-cbon/changelog/compare/some...0.0.1#diff)
+[see the diff](https://github.com/mh-cbon/test/compare/some...0.0.1#diff)
 ______________
 
 
