@@ -18,7 +18,7 @@ __Contributors__
 {{- end}}
 {{end}}
 Released by {{$e.Author.Name}}, {{$e.Date.Format "Mon 02 Jan 2006"}} -
-[see the diff](https://github.com/mh-cbon/changelog/compare/{{$tagRange.Begin}}...{{$tagRange.End}}#diff)
+[see the diff](https://github.com/mh-cbon/{{$.vars.name}}/compare/{{$tagRange.Begin}}...{{$tagRange.End}}#diff)
 ______________
 {{end}}
 
