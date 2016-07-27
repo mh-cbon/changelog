@@ -1,4 +1,15 @@
 
+0.0.21
+
+  * MD layout: Fix diff url, it was using wrong repository name
+  * rpm: fix url of the rpm package
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 27 Jul 2016 16:05:24 +0200
+
+
+
 0.0.20
 
   * firstrev: silently fail if the directory is not a repository,
