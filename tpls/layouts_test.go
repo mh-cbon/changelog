@@ -124,7 +124,7 @@ __Contributors__
 - contributor #1
 
 Released by author, Mon 22 Mar 2010 -
-[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.1...0.0.2#diff)
+[see the diff](https://github.com/mh-cbon/test/compare/0.0.1...0.0.2#diff)
 ______________
 
 ### 0.0.1
