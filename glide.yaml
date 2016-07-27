@@ -17,7 +17,8 @@ scripts:
     && 666 git push && 666 git push --tags \
     && philea -s -S -p "build/windows*/*" "666 archive create -f -o=assets/%dname.zip -C=build/%dname/ ." \
     && philea -s -S -e windows*/** -p "build/*/**" "666 archive create -f -o=assets/%dname.tar.gz -C=build/%dname/ ." \
-    && 666 gh-api-cli create-release -n release -o mh-cbon -r changelog --ver !newversion! \
+    && 666 gh-api-cli create-release -n release -o mh-cbon -r changelog \
+     --ver !newversion! -c "changelog ghrelease --version !newversion!" \
     && 666 gh-api-cli upload-release-asset -n release --glob "assets/*" -o mh-cbon -r changelog --ver !newversion! \
     && 666 rm-glob -r build/ \
     && 666 rm-glob -r assets/ \
