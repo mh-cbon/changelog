@@ -1,5 +1,20 @@
 # Changelog - changelog
 
+### 0.0.21
+
+__Changes__
+
+- MD layout: Fix diff url, it was using wrong repository name
+- rpm: fix url of the rpm package
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Wed 27 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.20...0.0.21#diff)
+______________
+
 ### 0.0.20
 
 __Changes__
