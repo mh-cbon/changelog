@@ -197,6 +197,9 @@ COMMANDS:
      export    Export the changelog using given template
      md        Export the changelog to Markdown format
      debian    Export the changelog to Debian format
+     rpm       Export the changelog to RPM format
+     changelog Export the changelog to CHANGELOG (internal) format
+     ghrelease Export the changelog to gh-release format, good for gh release page
      help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
