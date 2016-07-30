@@ -1,4 +1,16 @@
 
+0.0.24
+
+  * travis: fix ghtoken value to build gh-pages
+  * appveyor: rename some variable
+  * appveyor: update gh token
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 17:08:34 +0200
+
+
+
 0.0.23
 
   * packaging: fix travis script
