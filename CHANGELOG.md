@@ -1,5 +1,19 @@
 # Changelog - changelog
 
+### 0.0.23
+
+__Changes__
+
+- packaging: fix travis script
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Sat 30 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.22...0.0.23#diff)
+______________
+
 ### 0.0.22
 
 __Changes__
