@@ -1,4 +1,16 @@
 
+0.0.22
+
+  * packaging: add choco package, add deb/rpm repositories
+  * README: update usage and install section
+  * release: generate gh-release body from the changelog
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 02:07:20 +0200
+
+
+
 0.0.21
 
   * MD layout: Fix diff url, it was using wrong repository name
