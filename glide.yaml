@@ -1,6 +1,6 @@
 package: github.com/mh-cbon/changelog
 scripts:
-  prebump: git fetch --tags
+  prebump: 666 git fetch --tags origin master && 666 git pull origin master
   preversion: |
     philea -s "666 go vet %s" "666 go-fmt-fail %s" \
     && 666 go run main.go -v \
@@ -19,6 +19,7 @@ scripts:
     && philea -s -S -e windows*/** -p "build/*/**" "666 archive create -f -o=assets/%dname.tar.gz -C=build/%dname/ ." \
     && 666 gh-api-cli create-release -n release -o mh-cbon -r changelog \
      --ver !newversion! -c "changelog ghrelease --version !newversion!" \
+     --draft !isprerelease! \
     && 666 gh-api-cli upload-release-asset -n release --glob "assets/*" -o mh-cbon -r changelog --ver !newversion! \
     && 666 rm-glob -r build/ \
     && 666 rm-glob -r assets/ \

@@ -7,40 +7,48 @@ language: go
 go:
   - tip
 
+env:
+  global:
+    - MYAPP=go-repo-utils
+    - MYEMAIL=mh-cbon@users.noreply.github.com
+    - secure: vVqh75hmm0jhYS1pyImLpopjI3+wiBFLd7KrLH7RJGOet0ElEWURBKyqvg29JMcfZHJSZH6XFO4f/pO9VuKQRp5htc916Y9y5QYl+uZ+VkL8/f/mlpRuiSu8O5SrlAKEm3rkTCSRRtmKqHbasKQsTGpoDpGBudFllGDlX63U/dCicpgEjBPhvidw0V4S53B+BI2FWJvgsp3oeqf8bhBPN8T3oScuQW+9aaG0VKDOGAJ1TgaJDs+SUXw8mCQdMxuwGh9t2ieyK4ndbP857Dyr845VG/XOGu/9FqiSEQsgUSGp3PjGspbhAEX4xvBlM32+BsDkQDeC4Li5SXqm5nPvlrU7iIUfxq0JXBKtLrPasByMio6dpl1bhhq9Ue1hyvGa9P9edgq89BVLJ8/kGrUJ+zoK7trKf4S0pQhdC1C2ZSnIh4X0ASCl0muFzC5eWq+XUj+cQeBTbimiU97vDR1hzS24Hmu5rFDYl33KFU7G2tkQN7cEX/ihF6J8b0pXUXSr68WhCptiduVPmYGoI1XDS9buwCC6BT49gdJ3IzeowL/eL05n65U39kll1XLOjWC+F9bZJAi79pZdhTUfMqnxesJFGMsvriidGX9DaiRnigUveZdS/V418zT6hmuc4lsXTiUBAnjF0cPk5FKSCdKoYmSPPVKgp4c9MDMVjYKJhF8=
+
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install build-essential lintian -y
   - mkdir -p ${GOPATH}/bin
   - cd ~
   - curl https://glide.sh/get | sh
-  - curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/go-bin-deb sh -xe
 
 install:
-  - cd $GOPATH/src/github.com/mh-cbon/changelog
+  - cd $GOPATH/src/github.com/mh-cbon/$MYAPP
   - glide install
   - go install
 
 script:
   - go test changelog/*
+  - go test tpls/*
 
 before_deploy:
   - mkdir -p build/{386,amd64}
   - GOOS=linux GOARCH=386 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/386/changelog main.go
   - GOOS=linux GOARCH=amd64 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/amd64/changelog main.go
-  - go-bin-deb generate -a 386 --version ${TRAVIS_TAG} -w pkg-build-386/ -o ${TRAVIS_BUILD_DIR}/changelog-386.deb
-  - go-bin-deb generate -a amd64 --version ${TRAVIS_TAG} -w pkg-build-amd64/ -o ${TRAVIS_BUILD_DIR}/changelog-amd64.deb
-  - docker run -v $PWD:/docker fedora /bin/sh -c "cd /docker && sh ./docker.sh ${TRAVIS_TAG} changelog"
-  - sudo chown travis:travis changelog-{386,amd64}.rpm
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-deb/master/create-pkg.sh | GH=mh-cbon/$MYAPP sh -xe
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/create-pkg.sh | GH=mh-cbon/$MYAPP sh -xe
+
+after_deploy:
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-deb/master/setup-repository.sh | GH=mh-cbon/$MYAPP EMAIL=$MYEMAIL sh -xe
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/setup-repository.sh | GH=mh-cbon/$MYAPP EMAIL=$MYEMAIL sh -xe
 
 deploy:
   provider: releases
   api_key:
     secure: r85L4eKuTZyn9wIrgloovZE4wctRMLgyZZ2PXeCkRxdA8z4fctySrKGUlWs5nsetEyw2UhBwYVSRj4JjBIp1nsgcEjJZAmlIMl59QvN5PvlGg8OypyUyEJ6oJqt6ve1gyByVUjj+s9HhTqi9VTh27WOAGD6plonNhCj2VHCNHVJbh5WmWVJEbSh7CKwbywSangrmGW9fm/gfpfvmcW5kD+fLrk94vT7XfXbpriGkmUmTzVgOsXpSjZzPIm1e616/bKl4yiSqLXDmIJVNH/5/tzWIE+WkxEWzN2FyfJUbDH+wEWqXq4gmqLva+MdD8h5RkJ+HZBGY6jlf6tBYfR7KsulhEauqUaiuW5WfUBaU6hlXm7eucIPZMHVaTqnnrRDmAgEo7OZqAQrSm+txqxg7hOCdAdPp+tayxSDPbhFwtMn/3wZc0CFUMY4aH1LIZMurZKriojzjqo+jT8wceCzXQPKEHOEeeK2kYsp5rtsB0jUBcM97n1ihOuDrketyyrueVf7vdZ9kpGClP+2HUvoVNrm2PYskVm/aoQSKX+4dD7wWLZpP/MQK1Pbmcvky/p4WbKvquEsqwAT34cT51YjKDfXq1LEnDLxx0qcutEKZMIsX/yMF/pa5QM4Os/a7nVn1kuxIRf5Dn2t5AN4boT3qsYtngXJSyNABuD8hPRHBP+Y=
+  file_glob: true
   file:
-    - changelog-386.deb
-    - changelog-amd64.deb
-    - changelog-386.rpm
-    - changelog-amd64.rpm
+    - $MYAPP-386.deb
+    - $MYAPP-amd64.deb
+    - $MYAPP-386.rpm
+    - $MYAPP-amd64.rpm
   skip_cleanup: true
   on:
     tags: true

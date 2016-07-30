@@ -22,5 +22,11 @@
       }
     ]
   },
-  "shortcuts": {}
+  "shortcuts": {},
+  "choco": {
+    "description": "Maintain a changelog easily",
+    "project-url": "https://github.com/mh-cbon/changelog",
+    "tags": "changelog",
+    "license-url": "https://github.com/mh-cbon/changelog/blob/master/LICENSE"
+  }
 }
