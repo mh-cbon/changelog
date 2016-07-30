@@ -1,5 +1,21 @@
 # Changelog - changelog
 
+### 0.0.22
+
+__Changes__
+
+- packaging: add choco package, add deb/rpm repositories
+- README: update usage and install section
+- release: generate gh-release body from the changelog
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Sat 30 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.21...0.0.22#diff)
+______________
+
 ### 0.0.21
 
 __Changes__
