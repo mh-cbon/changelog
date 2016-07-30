@@ -2,7 +2,7 @@
   "name": "changelog",
   "maintainer": "mh-cbon <mh-cbon@users.noreply.github.com>",
   "description": "Maintain a changelog",
-  "changelog-cmd": "changelog debian --vars='{\"name\":\"!name!\", \"urgency\":\"\"}'",
+  "changelog-cmd": "changelog debian --vars='{\"name\":\"!name!\"}'",
   "homepage": "http://github.com/mh-cbon/!name!",
   "files": [
     {
