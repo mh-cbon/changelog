@@ -1,4 +1,14 @@
 
+0.0.23
+
+  * packaging: fix travis script
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 02:15:31 +0200
+
+
+
 0.0.22
 
   * packaging: add choco package, add deb/rpm repositories
