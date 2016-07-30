@@ -19,7 +19,7 @@ install:
   - go version
   - go env
   - go get -u github.com/Masterminds/glide
-  - curl -fsSL -o C:\latest.bat https://raw.githubusercontent.com/mh-cbon/latest/master/latest.bat
+  - curl -fsSL -o C:\latest.bat https://raw.githubusercontent.com/mh-cbon/latest/master/latest.bat?a=1
   - cmd /C C:\latest.bat mh-cbon go-msi amd64
   - set PATH=C:\Program Files\go-msi\;%PATH%
 

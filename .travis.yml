@@ -9,7 +9,7 @@ go:
 
 env:
   global:
-    - MYAPP=go-repo-utils
+    - MYAPP=changelog
     - MYEMAIL=mh-cbon@users.noreply.github.com
     - secure: vVqh75hmm0jhYS1pyImLpopjI3+wiBFLd7KrLH7RJGOet0ElEWURBKyqvg29JMcfZHJSZH6XFO4f/pO9VuKQRp5htc916Y9y5QYl+uZ+VkL8/f/mlpRuiSu8O5SrlAKEm3rkTCSRRtmKqHbasKQsTGpoDpGBudFllGDlX63U/dCicpgEjBPhvidw0V4S53B+BI2FWJvgsp3oeqf8bhBPN8T3oScuQW+9aaG0VKDOGAJ1TgaJDs+SUXw8mCQdMxuwGh9t2ieyK4ndbP857Dyr845VG/XOGu/9FqiSEQsgUSGp3PjGspbhAEX4xvBlM32+BsDkQDeC4Li5SXqm5nPvlrU7iIUfxq0JXBKtLrPasByMio6dpl1bhhq9Ue1hyvGa9P9edgq89BVLJ8/kGrUJ+zoK7trKf4S0pQhdC1C2ZSnIh4X0ASCl0muFzC5eWq+XUj+cQeBTbimiU97vDR1hzS24Hmu5rFDYl33KFU7G2tkQN7cEX/ihF6J8b0pXUXSr68WhCptiduVPmYGoI1XDS9buwCC6BT49gdJ3IzeowL/eL05n65U39kll1XLOjWC+F9bZJAi79pZdhTUfMqnxesJFGMsvriidGX9DaiRnigUveZdS/V418zT6hmuc4lsXTiUBAnjF0cPk5FKSCdKoYmSPPVKgp4c9MDMVjYKJhF8=
 
