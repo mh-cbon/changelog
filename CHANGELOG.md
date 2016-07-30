@@ -1,5 +1,21 @@
 # Changelog - changelog
 
+### 0.0.24
+
+__Changes__
+
+- travis: fix ghtoken value to build gh-pages
+- appveyor: rename some variable
+- appveyor: update gh token
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Sat 30 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.23...0.0.24#diff)
+______________
+
 ### 0.0.23
 
 __Changes__
