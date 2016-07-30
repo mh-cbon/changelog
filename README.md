@@ -2,6 +2,8 @@
 
 Maintain a changelog easily.
 
+This tool is part of the [go-github-release workflow](https://github.com/mh-cbon/go-github-release)
+
 # Install
 
 __deb/ubuntu/rpm repositories__
