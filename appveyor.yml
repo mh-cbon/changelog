@@ -7,7 +7,7 @@ environment:
   GOPATH: c:\gopath
   GO15VENDOREXPERIMENT: 1
   CHOCOKEY:
-    secure: KOJemGCpMfF6oFpELBKidDtSZOXTMIjvdoHYESlI2OjHRgjN6fOS+XdWG9Ol+17T
+    secure: HRc9tf57V3c3dVyn8hvMkKeiwK2oyWvOSjNXembIAQctNx+GTGBBaHI3bh+8cIgy
   GHTOKEN:
     secure: WVMaMjrLzXN8YNcnFRfcucTYWtvoDeE/4b2TUGQBZDvv7u+ERBQ///z5Q8qYSt0L
 
