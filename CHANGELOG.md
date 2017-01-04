@@ -1,5 +1,20 @@
 # Changelog - changelog
 
+### 0.0.25
+
+__Changes__
+
+- add new option -g/--guess to guess name and user variable from the cwd
+- Code refactoring: applied go linters
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Wed 04 Jan 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.24...0.0.25#diff)
+______________
+
 ### 0.0.24
 
 __Changes__
