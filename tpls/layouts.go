@@ -1,5 +1,6 @@
 package tpls
 
+// MD is the layout for a Markdwon export.
 var MD = `{{if eq .partial false}}# Changelog - {{.vars.name}}
 {{end}}
 
@@ -24,6 +25,7 @@ ______________
 
 `
 
+// CHANGELOG is the layout for a changelog export.
 var CHANGELOG = `{{- range $index, $e := .changelog.Versions}}
 {{$e.GetName}}
 {{range $change := $e.Changes}}
@@ -38,6 +40,7 @@ var CHANGELOG = `{{- range $index, $e := .changelog.Versions}}
 
 {{end}}`
 
+// DEBIAN is the layout for a debian export.
 var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 {{$.vars.name}} ({{$e.GetName}})
 {{- with $urgency := $e.GetTag "urgency" }}
@@ -50,6 +53,7 @@ var DEBIAN = `{{- range $index, $e := .changelog.Versions}}
 
 {{end}}`
 
+// RPM is the layout for an rpm export.
 var RPM = `{{- range $index, $e := .changelog.Versions}}
 * {{$e.GetDateF $.rpmlayout}} {{$e.Author.String}} - {{$e.GetName}}{{if gt ($e.GetTag "release"|len) 0}}-{{$e.GetTag "release"}}{{else}}-1{{end}}
 {{- range $change := $e.Changes}}
@@ -57,8 +61,9 @@ var RPM = `{{- range $index, $e := .changelog.Versions}}
 {{- end}}
 {{end}}`
 
-// this layout is mostly useful to create log for
-// gh release page : https://github.com/mh-cbon/go-repo-utils/releases
+// GHRELEASE is the format for the
+// gh release page : https://github.com/mh-cbon/go-repo-utils/releases,
+// it should export only one version.
 var GHRELEASE = `{{- range $e := .changelog.Versions}}
 {{- range $change := $e.Changes}}
 {{call $.printMultilines $change "- "}}
