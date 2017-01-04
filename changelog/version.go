@@ -10,6 +10,15 @@ import (
 	"github.com/Masterminds/semver"
 )
 
+// Version is a struct with
+// a Version field, its semver value
+// a Name field, the release name
+// a Date field, the release date value
+// a DateLayout, the layout used to parse the input date
+// Author, the release author
+// Tags, the list tag associated to a release (name=value...)
+// Changes, the list of changes
+// Contributors, the list of contributors participating to this version
 type Version struct {
 	Version      *semver.Version   // semver version
 	Name         string            // release name
@@ -21,6 +30,7 @@ type Version struct {
 	Contributors Contributors      // list of contributors
 }
 
+// DateLayouts is a list of common date format to parse
 var DateLayouts []string
 
 func init() {
@@ -35,7 +45,8 @@ func init() {
 	DateLayouts = append(DateLayouts, "01/02/2015")
 }
 
-// Create a new Version.
+// NewVersion creates a new Version struct of given version name.
+// it sets the date to today by default.
 func NewVersion(version string) *Version {
 	v := Version{}
 	v.SetTodayDate()
@@ -47,7 +58,7 @@ func NewVersion(version string) *Version {
 	return &v
 }
 
-// Sort implementation of []Version.
+// VersionList can sort a []Version.
 type VersionList []*Version
 
 // sort utils.
@@ -71,7 +82,9 @@ func (s VersionList) Less(i, j int) bool {
 	return v1.GreaterThan(&v2)
 }
 
-// Set version value
+// SetVersion interprets given string as a semver value,
+// if its a valid semver, assigns it to Version property,
+// otherwise it returns an error
 func (v *Version) SetVersion(version string) error {
 	nv, err := semver.NewVersion(version)
 	if err == nil {
@@ -80,7 +93,9 @@ func (v *Version) SetVersion(version string) error {
 	return err
 }
 
-// Set date value
+// SetDate interprets given string as a date,
+// first layout to match without error is applied to Date property,
+// otherwise it returns an error
 func (v *Version) SetDate(date string) error {
 	for _, layout := range DateLayouts {
 		tt, err := time.Parse(layout, date)
@@ -93,23 +108,23 @@ func (v *Version) SetDate(date string) error {
 	return errors.New("Failed to parse date '" + date + "'")
 }
 
-// Set date to DOD
+// SetTodayDate set date property to today's date.
 func (v *Version) SetTodayDate() error {
 	date := time.Now().Format(DateLayouts[0])
 	return v.SetDate(date)
 }
 
-// Get date given its original layout.
+// GetDate returns the date string given its original layout.
 func (v *Version) GetDate() string {
 	return v.GetDateF(v.DateLayout)
 }
 
-// Get date given with a specific layout.
+// GetDateF returns the date string given a layout.
 func (v *Version) GetDateF(layout string) string {
 	return v.Date.Format(layout)
 }
 
-// Get version name, if empty returns its version.
+// GetName returns the version name, if empty returns its semver version.
 func (v *Version) GetName() string {
 	if v.Name != "" {
 		return v.Name
@@ -120,7 +135,7 @@ func (v *Version) GetName() string {
 	return v.Version.String()
 }
 
-// Get tag value given its name.
+// GetTag finds the value of tag given its name.
 func (v *Version) GetTag(name string) string {
 	if _, ok := v.Tags[name]; ok == false {
 		return ""
@@ -128,7 +143,7 @@ func (v *Version) GetTag(name string) string {
 	return v.Tags[name]
 }
 
-// Parse and add given string tag
+// AddStrTag parses and adds given tag string with the format name=tag
 func (v *Version) AddStrTag(tag string) error {
 	tagRegexp := regexp.MustCompile(`\s*([^=]+)=([^=]+)`)
 	tag = strings.TrimSpace(tag)
@@ -141,5 +156,5 @@ func (v *Version) AddStrTag(tag string) error {
 			return nil
 		}
 	}
-	return errors.New(fmt.Sprintf("Invalid tag '%s'", tag))
+	return fmt.Errorf("Invalid tag '%s'", tag)
 }

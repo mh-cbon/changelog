@@ -2,7 +2,6 @@ package changelog
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"path"
@@ -14,7 +13,9 @@ import (
 	"github.com/mh-cbon/go-repo-utils/repoutils"
 )
 
-//
+// Changelog struct contains
+// a list of versions and their changes,
+// a hash to the first revision of the repo.
 type Changelog struct {
 	Versions []*Version
 	FirstRev string
@@ -48,7 +49,6 @@ func (g *Changelog) Parse(data []byte) error {
 	// @note, this is super dirty, let s improve that later.
 	data = bytes.Replace(data, []byte("\r\n"), []byte("\n"), -1)
 	lines := bytes.Split(data, []byte("\n"))
-	data = []byte("")
 
 	versionRegexp := regexp.MustCompile(`^[^\s+].+`)
 	versionEndRegexp := regexp.MustCompile(`^[-]{2}\s+(.+)`)
@@ -73,7 +73,7 @@ func (g *Changelog) Parse(data []byte) error {
 				for _, tag := range part[1:] {
 					err := cVersion.AddStrTag(string(tag))
 					if err != nil {
-						return errors.New(fmt.Sprintf("%s, at line %d", err.Error(), index))
+						return fmt.Errorf("%s, at line %d", err.Error(), index)
 					}
 				}
 			}
@@ -97,14 +97,14 @@ func (g *Changelog) Parse(data []byte) error {
 					s := strings.TrimSpace(string(part[1]))
 					err := cVersion.SetDate(s)
 					if err != nil {
-						return errors.New(fmt.Sprintf("%s, at line %d", err.Error(), index))
+						return fmt.Errorf("%s, at line %d", err.Error(), index)
 					}
 				} else {
 					err := cVersion.SetDate(cVersion.Author.Name)
 					if err == nil {
 						cVersion.Author.Name = ""
 					} else {
-						return errors.New(fmt.Sprintf("%s or %s, at line %d", "Missing date", err.Error(), index))
+						return fmt.Errorf("%s or %s, at line %d", "Missing date", err.Error(), index)
 					}
 				}
 
@@ -127,7 +127,6 @@ func (g *Changelog) Parse(data []byte) error {
 			} else if changeRegexp.Match(line) {
 				if len(cChange) > 0 {
 					cVersion.Changes = append(cVersion.Changes, cChange)
-					cChange = ""
 				}
 				k := changeRegexp.FindSubmatch(line)
 				cChange = string(k[1])
@@ -140,19 +139,19 @@ func (g *Changelog) Parse(data []byte) error {
 				}
 
 			} else if len(strings.TrimSpace(string(line))) > 0 {
-				return errors.New(fmt.Sprintf("Invalid format at line %d in %q", index, string(line)))
+				return fmt.Errorf("Invalid format at line %d in %q", index, string(line))
 			}
 		}
 	}
 
 	if cVersionHasEnded == false {
-		return errors.New(fmt.Sprintf("Version not closed at end of the document"))
+		return fmt.Errorf("Version not closed at end of the document")
 	}
 
 	return nil
 }
 
-// Find a version by its name.
+// FindUnreleasedVersion finds a version without name.
 func (g *Changelog) FindUnreleasedVersion() *Version {
 	var v *Version
 	for _, version := range g.Versions {
@@ -164,7 +163,7 @@ func (g *Changelog) FindUnreleasedVersion() *Version {
 	return v
 }
 
-// Find a version by its name.
+// FindVersionByName finds a version by its name.
 func (g *Changelog) FindVersionByName(name string) *Version {
 	var v *Version
 	for _, version := range g.Versions {
@@ -176,7 +175,7 @@ func (g *Changelog) FindVersionByName(name string) *Version {
 	return v
 }
 
-// Find a version by its version.
+// FindVersionByVersion finds a version by its version number.
 func (g *Changelog) FindVersionByVersion(sVersion string) *Version {
 	var v *Version
 	for _, version := range g.Versions {
@@ -189,7 +188,7 @@ func (g *Changelog) FindVersionByVersion(sVersion string) *Version {
 	return v
 }
 
-// Get all Version with a valid semver Version field.
+// GetSemverVersions gets all Version with a valid semver Version field.
 func (g *Changelog) GetSemverVersions() []*Version {
 	ret := make([]*Version, 0)
 	for _, version := range g.Versions {
@@ -204,7 +203,7 @@ func (g *Changelog) GetSemverVersions() []*Version {
 	return ret
 }
 
-// Find the most recent version by comparing semver values.
+// FindMostRecentVersion finds the most recent version by comparing semver values.
 func (g *Changelog) FindMostRecentVersion() *Version {
 	var v *Version
 	versions := g.GetSemverVersions()
@@ -215,16 +214,18 @@ func (g *Changelog) FindMostRecentVersion() *Version {
 	return v
 }
 
-// Ensures versions are sorted according to semver rules
+// Sort ensures versions are sorted according to semver rules
 func (g *Changelog) Sort() {
 	sort.Sort(VersionList(g.Versions))
 }
 
+// TagRange represents a range of commit hash for a tag
 type TagRange struct {
 	Begin string
 	End   string
 }
 
+// GetTagRange finds the commits hash range for a tag.
 func (g *Changelog) GetTagRange(tag string) TagRange {
 	tagRange := TagRange{}
 	versions := g.GetSemverVersions()

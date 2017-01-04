@@ -207,12 +207,12 @@ UNRELEASED; tag1=v1; tag2=v2
 	}
 	v := s.Versions[0]
 	if val, ok := v.Tags["tag1"]; ok == false {
-		t.Errorf("should 'tag1' in v.Tags, got %q\n", ok)
+		t.Errorf("should 'tag1' in v.Tags, got %v\n", ok)
 	} else if val != "v1" {
 		t.Errorf("should v.Tags['tag1']='v1', got v.Tags['tag1']=%q\n", val)
 	}
 	if val, ok := v.Tags["tag2"]; ok == false {
-		t.Errorf("should 'tag2' in v.Tags, got %q\n", ok)
+		t.Errorf("should 'tag2' in v.Tags, got %v\n", ok)
 	} else if val != "v2" {
 		t.Errorf("should v.Tags['tag2']='v2', got v.Tags['tag2']=%q\n", val)
 	}
@@ -231,12 +231,12 @@ UNRELEASED; tag1=v1; tag2=v2;
 	}
 	v := s.Versions[0]
 	if val, ok := v.Tags["tag1"]; ok == false {
-		t.Errorf("should 'tag1' in v.Tags, got %q\n", ok)
+		t.Errorf("should 'tag1' in v.Tags, got %v\n", ok)
 	} else if val != "v1" {
 		t.Errorf("should v.Tags['tag1']='v1', got v.Tags['tag1']=%q\n", val)
 	}
 	if val, ok := v.Tags["tag2"]; ok == false {
-		t.Errorf("should 'tag2' in v.Tags, got %q\n", ok)
+		t.Errorf("should 'tag2' in v.Tags, got %v\n", ok)
 	} else if val != "v2" {
 		t.Errorf("should v.Tags['tag2']='v2', got v.Tags['tag2']=%q\n", val)
 	}
