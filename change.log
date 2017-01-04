@@ -1,4 +1,15 @@
 
+0.0.25
+
+  * add new option -g/--guess to guess name and user variable from the cwd
+  * Code refactoring: applied go linters
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 04 Jan 2017 15:21:15 +0100
+
+
+
 0.0.24
 
   * travis: fix ghtoken value to build gh-pages
