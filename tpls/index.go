@@ -43,14 +43,13 @@ func WriteTemplateTo(clog changelog.Changelog, partial bool, vars map[string]int
 // WriteTemplateStrTo write changelog content
 // to out target using given template string
 func WriteTemplateStrTo(clog changelog.Changelog, partial bool, vars map[string]interface{}, tplString string, out string) error {
-	var err error
 	var writer io.Writer
 	if out == "-" {
 		writer = os.Stdout
 	} else {
-		f, err := os.Create(out)
-		if err != nil {
-			return err
+		f, err2 := os.Create(out)
+		if err2 != nil {
+			return err2
 		}
 		defer f.Close()
 		writer = f
@@ -84,7 +83,7 @@ func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string
 	values["getTagRange"] = clog.GetTagRange
 	values["partial"] = partial
 	values["vars"] = vars
-	values["isnil"] = IsNil
+	values["isnil"] = isNil
 	values["debianlayout"] = changelog.DateLayouts[0]
 	values["rpmlayout"] = changelog.DateLayouts[4]
 	values["join"] = strings.Join
@@ -103,6 +102,6 @@ func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string
 	return b.String(), nil
 }
 
-func IsNil(args *semver.Version) bool {
+func isNil(args *semver.Version) bool {
 	return args == nil
 }

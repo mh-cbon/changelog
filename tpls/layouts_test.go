@@ -29,12 +29,14 @@ func TestChangeLogInternalFormat(t *testing.T) {
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 
 	vars := make(map[string]interface{})
 	vars["name"] = "test"
 
 	out, err := GenerateTemplateStr(s, false, vars, CHANGELOG)
-
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
 	}
@@ -77,6 +79,9 @@ with another line
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 
 	vars := make(map[string]interface{})
 	vars["name"] = "test"
@@ -146,6 +151,9 @@ ______________
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 	s.FirstRev = "some"
 
 	vars := make(map[string]interface{})
@@ -199,6 +207,9 @@ test (0.0.1)
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 
 	vars := make(map[string]interface{})
 	vars["name"] = "test"
@@ -243,6 +254,9 @@ func TestChangeLogRPMFormat(t *testing.T) {
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 
 	vars := make(map[string]interface{})
 	vars["name"] = "test"
@@ -278,6 +292,9 @@ __Contributors__ : contributor #1, contributor #2
 `
 	s := changelog.Changelog{}
 	err := s.Parse([]byte(in))
+	if err != nil {
+		t.Errorf("should err=nil, got err=%q\n", err)
+	}
 
 	vars := make(map[string]interface{})
 	vars["name"] = "test"
