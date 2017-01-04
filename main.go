@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
@@ -105,6 +106,10 @@ func main() {
 					Value: "-",
 					Usage: "Out target",
 				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
+				},
 				cli.StringFlag{
 					Name:  "vars",
 					Value: "",
@@ -126,6 +131,10 @@ func main() {
 					Name:  "out, o",
 					Value: "-",
 					Usage: "Out target",
+				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
 				},
 				cli.StringFlag{
 					Name:  "vars",
@@ -149,6 +158,10 @@ func main() {
 					Value: "-",
 					Usage: "Out target",
 				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
+				},
 				cli.StringFlag{
 					Name:  "vars",
 					Value: "",
@@ -170,6 +183,10 @@ func main() {
 					Name:  "out, o",
 					Value: "-",
 					Usage: "Out target",
+				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
 				},
 				cli.StringFlag{
 					Name:  "vars",
@@ -193,6 +210,10 @@ func main() {
 					Value: "-",
 					Usage: "Out target",
 				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
+				},
 				cli.StringFlag{
 					Name:  "vars",
 					Value: "",
@@ -214,6 +235,10 @@ func main() {
 					Name:  "out, o",
 					Value: "-",
 					Usage: "Out target",
+				},
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
 				},
 				cli.StringFlag{
 					Name:  "vars",
@@ -426,17 +451,29 @@ func finalizeNext(c *cli.Context) error {
 	return nil
 }
 
+func split(s string, separators []rune) []string {
+	f := func(r rune) bool {
+		for _, s := range separators {
+			if r == s {
+				return true
+			}
+		}
+		return false
+	}
+	return strings.FieldsFunc(s, f)
+
+}
+
 func exportChangelog(c *cli.Context) error {
 	template := c.String("template")
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
+	vars, err := computeVars(varsStr, guess)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
 	}
 
 	templateContent, err := ioutil.ReadFile(template)
@@ -444,9 +481,9 @@ func exportChangelog(c *cli.Context) error {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
-	err = exportToSomeTemplate(version, out, vars, string(templateContent))
-	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
+	err2 := exportToSomeTemplate(version, out, vars, string(templateContent))
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
 	}
 
 	return nil
@@ -455,22 +492,21 @@ func exportChangelog(c *cli.Context) error {
 func exportToMd(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
+	vars, err := computeVars(varsStr, guess)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
 	}
 
-	if _, ok := vars["name"]; ok == false {
+	if _, ok := vars["name"]; !ok {
 		vars["name"] = ""
 	}
 
-	err := exportToSomeTemplate(version, out, vars, tpls.MD)
-	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
+	err2 := exportToSomeTemplate(version, out, vars, tpls.MD)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
 	}
 
 	return nil
@@ -479,22 +515,21 @@ func exportToMd(c *cli.Context) error {
 func exportToDebian(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
+	vars, err := computeVars(varsStr, guess)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
 	}
 
-	if _, ok := vars["name"]; ok == false {
+	if _, ok := vars["name"]; !ok {
 		vars["name"] = ""
 	}
 
-	err := exportToSomeTemplate(version, out, vars, tpls.DEBIAN)
-	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
+	err2 := exportToSomeTemplate(version, out, vars, tpls.DEBIAN)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
 	}
 
 	return nil
@@ -503,18 +538,17 @@ func exportToDebian(c *cli.Context) error {
 func exportToRpm(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
-	}
-
-	err := exportToSomeTemplate(version, out, vars, tpls.RPM)
+	vars, err := computeVars(varsStr, guess)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
+	}
+
+	err2 := exportToSomeTemplate(version, out, vars, tpls.RPM)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
 	}
 
 	return nil
@@ -523,18 +557,17 @@ func exportToRpm(c *cli.Context) error {
 func exportToChangelog(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
-	}
-
-	err := exportToSomeTemplate(version, out, vars, tpls.CHANGELOG)
+	vars, err := computeVars(varsStr, guess)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
+	}
+
+	err2 := exportToSomeTemplate(version, out, vars, tpls.CHANGELOG)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
 	}
 
 	return nil
@@ -543,20 +576,65 @@ func exportToChangelog(c *cli.Context) error {
 func exportToGHRELEASE(c *cli.Context) error {
 	version := c.String("version")
 	out := c.String("out")
+	guess := c.Bool("guess")
 	varsStr := c.String("vars")
 
-	vars := make(map[string]interface{})
-	if len(varsStr) > 0 {
-		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return fmt.Errorf("Failed to decode vars: %s", err.Error())
-		}
-	}
-
-	err := exportToSomeTemplate(version, out, vars, tpls.GHRELEASE)
+	vars, err := computeVars(varsStr, guess)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
+	err2 := exportToSomeTemplate(version, out, vars, tpls.GHRELEASE)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
+	}
+
+	return nil
+}
+
+func computeVars(varsStr string, guess bool) (map[string]interface{}, error) {
+	vars := make(map[string]interface{})
+	if guess {
+		if err := guessVars(vars); err != nil {
+			return vars, cli.NewExitError(err.Error(), 1)
+		}
+	}
+	inputVars, err2 := decodeVars(varsStr)
+	if err2 != nil {
+		return vars, cli.NewExitError(err2.Error(), 1)
+	}
+	copyVars(vars, inputVars)
+	return vars, nil
+}
+
+func decodeVars(varsStr string) (map[string]interface{}, error) {
+	vars := make(map[string]interface{})
+	if len(varsStr) > 0 {
+		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
+			return vars, fmt.Errorf("Failed to decode vars: %s", err.Error())
+		}
+	}
+	return vars, nil
+}
+
+func copyVars(dest, src map[string]interface{}) {
+	for k, v := range src {
+		dest[k] = v
+	}
+}
+
+func guessVars(dest map[string]interface{}) error {
+	if cwd, err := os.Getwd(); err == nil {
+		parts := split(cwd, []rune{os.PathSeparator})
+		if len(parts) >= 2 {
+			dest["name"] = parts[len(parts)-1 : len(parts)][0]
+		}
+		if len(parts) >= 3 {
+			dest["user"] = parts[len(parts)-2 : len(parts)-1][0]
+		}
+	} else {
+		return err
+	}
 	return nil
 }
 

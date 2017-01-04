@@ -306,6 +306,7 @@ OPTIONS:
    --version value             Only given version
    --out value, -o value       Out target (default: "-")
    --vars value                Add more variables to the template
+   --guess, -g                 Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog export --out=CHANGELOG.rtf --template=rtf.go
@@ -326,6 +327,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
+   --guess, -g            Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog md --out=CHANGELOG.md
@@ -346,6 +348,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
+   --guess, -g            Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog debian --out=changelog
@@ -366,6 +369,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
+   --guess, -g            Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog rpm --out=changelog
@@ -386,6 +390,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
+   --guess, -g            Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog changelog --out=changelog
@@ -406,6 +411,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
+   --guess, -g            Automatically guess and inject name and user variable
 
 EXAMPLE:
   changelog ghrelease --out=changelog --version=0.0.2
