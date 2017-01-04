@@ -15,6 +15,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// VERSION contains the version string of the program
 var VERSION = "0.0.0"
 var logger = verbose.Auto()
 var changelogFile = "change.log"
@@ -279,9 +280,8 @@ func initChangelog(c *cli.Context) error {
 		newVersion.Author.Email = email
 		newVersion.Author.Name = author
 		logger.Printf("list commits of=%q since=%q to=%q\n", cTo, cSince, cTo)
-		err := setVersionChanges(newVersion, path, cSince, cTo)
-		if err != nil {
-			return cli.NewExitError(err.Error(), 1)
+		if err2 := setVersionChanges(newVersion, path, cSince, cTo); err2 != nil {
+			return cli.NewExitError(err2.Error(), 1)
 		}
 		if newVersion.Author.Name == "N/A" && len(newVersion.Contributors) > 0 {
 			newVersion.Author.Name = newVersion.Contributors[0].Name
@@ -314,7 +314,7 @@ func prepareNext(c *cli.Context) error {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
-	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
+	if _, err2 := os.Stat(changelogFile); os.IsNotExist(err2) {
 		return cli.NewExitError("Changelog file does not exist.", 1)
 	}
 
@@ -435,7 +435,7 @@ func exportChangelog(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
@@ -460,7 +460,7 @@ func exportToMd(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
@@ -484,7 +484,7 @@ func exportToDebian(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
@@ -508,7 +508,7 @@ func exportToRpm(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
@@ -528,7 +528,7 @@ func exportToChangelog(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
@@ -548,7 +548,7 @@ func exportToGHRELEASE(c *cli.Context) error {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return errors.New(fmt.Sprintf("Failed to decode vars: %s", err.Error()))
+			return fmt.Errorf("Failed to decode vars: %s", err.Error())
 		}
 	}
 
