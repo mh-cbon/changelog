@@ -1,8 +1,9 @@
 package tpls
 
 import (
-	"github.com/mh-cbon/changelog/changelog"
 	"testing"
+
+	"github.com/mh-cbon/changelog/changelog"
 )
 
 func TestChangeLogInternalFormat(t *testing.T) {
