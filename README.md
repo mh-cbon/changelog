@@ -306,7 +306,7 @@ OPTIONS:
    --version value             Only given version
    --out value, -o value       Out target (default: "-")
    --vars value                Add more variables to the template
-   --guess, -g                 Automatically guess and inject name and user variable
+   --guess, -g                 Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog export --out=CHANGELOG.rtf --template=rtf.go
@@ -327,7 +327,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
-   --guess, -g            Automatically guess and inject name and user variable
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog md --out=CHANGELOG.md
@@ -348,7 +348,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
-   --guess, -g            Automatically guess and inject name and user variable
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog debian --out=changelog
@@ -369,7 +369,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
-   --guess, -g            Automatically guess and inject name and user variable
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog rpm --out=changelog
@@ -390,7 +390,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
-   --guess, -g            Automatically guess and inject name and user variable
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog changelog --out=changelog
@@ -411,7 +411,7 @@ OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
    --vars value           Add more variables to the template
-   --guess, -g            Automatically guess and inject name and user variable
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
 
 EXAMPLE:
   changelog ghrelease --out=changelog --version=0.0.2
