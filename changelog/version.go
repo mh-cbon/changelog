@@ -1,6 +1,7 @@
 package changelog
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -20,7 +21,7 @@ import (
 // Changes, the list of changes
 // Contributors, the list of contributors participating to this version
 type Version struct {
-	Version      *semver.Version   // semver version
+	Version      *Jversion         // semver version
 	Name         string            // release name
 	Date         time.Time         // date of release
 	DateLayout   string            // layout of the date
@@ -28,6 +29,39 @@ type Version struct {
 	Tags         map[string]string // deb specifics, target distributions
 	Changes      []string          // list of changes
 	Contributors Contributors      // list of contributors
+}
+
+// Jversion isa json serializable semver.Version
+type Jversion struct {
+	*semver.Version
+}
+
+// NewJversion creates a new version of s
+func NewJversion(s string) (*Jversion, error) {
+	v, err := semver.NewVersion(s)
+	if err != nil {
+		return nil, err
+	}
+	return &Jversion{Version: v}, nil
+}
+
+// UnmarshalJSON implements json interfaces.
+func (a *Jversion) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	v, err := semver.NewVersion(s)
+	if err != nil {
+		return err
+	}
+	a.Version = v
+	return nil
+}
+
+// MarshalJSON implements json interfaces.
+func (a *Jversion) MarshalJSON() ([]byte, error) {
+	return json.Marshal(a.String())
 }
 
 // DateLayouts is a list of common date format to parse
@@ -77,16 +111,14 @@ func (s VersionList) Less(i, j int) bool {
 		// true => version without version number displays on top, it is desirable for next
 		return false
 	}
-	v1 := semver.Version(*s[i].Version)
-	v2 := semver.Version(*s[j].Version)
-	return v1.GreaterThan(&v2)
+	return s[i].Version.GreaterThan(s[j].Version.Version)
 }
 
 // SetVersion interprets given string as a semver value,
 // if its a valid semver, assigns it to Version property,
 // otherwise it returns an error
 func (v *Version) SetVersion(version string) error {
-	nv, err := semver.NewVersion(version)
+	nv, err := NewJversion(version)
 	if err == nil {
 		v.Version = nv
 	}
