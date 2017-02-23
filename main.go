@@ -1,3 +1,5 @@
+// Maintain a changelog easily.
+
 package main
 
 import (
