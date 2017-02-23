@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"io"
 	"io/ioutil"
-	"os"
 	"strings"
 	"text/template"
 
@@ -32,7 +31,7 @@ func PrintMultilines(lines string, prefix string) string {
 
 // WriteTemplateTo writes changelog content
 // to out target using src template file
-func WriteTemplateTo(clog changelog.Changelog, partial bool, vars map[string]interface{}, src string, out string) error {
+func WriteTemplateTo(clog *changelog.Changelog, partial bool, vars map[string]interface{}, src string, out io.Writer) error {
 	d, err := ioutil.ReadFile(src)
 	if err != nil {
 		return err
@@ -42,31 +41,19 @@ func WriteTemplateTo(clog changelog.Changelog, partial bool, vars map[string]int
 
 // WriteTemplateStrTo write changelog content
 // to out target using given template string
-func WriteTemplateStrTo(clog changelog.Changelog, partial bool, vars map[string]interface{}, tplString string, out string) error {
-	var writer io.Writer
-	if out == "-" {
-		writer = os.Stdout
-	} else {
-		f, err2 := os.Create(out)
-		if err2 != nil {
-			return err2
-		}
-		defer f.Close()
-		writer = f
-	}
-
+func WriteTemplateStrTo(clog *changelog.Changelog, partial bool, vars map[string]interface{}, tplString string, out io.Writer) error {
 	content, err := GenerateTemplateStr(clog, partial, vars, tplString)
 	if err != nil {
 		return err
 	}
 
-	_, err = writer.Write([]byte(content))
+	_, err = out.Write([]byte(content))
 	return err
 }
 
 // GenerateTemplate generates the changelog content
 // using given src template file
-func GenerateTemplate(clog changelog.Changelog, partial bool, vars map[string]interface{}, src string) (string, error) {
+func GenerateTemplate(clog *changelog.Changelog, partial bool, vars map[string]interface{}, src string) (string, error) {
 	tplString, err := ioutil.ReadFile(src)
 	if err != nil {
 		return "", err
@@ -76,7 +63,7 @@ func GenerateTemplate(clog changelog.Changelog, partial bool, vars map[string]in
 
 // GenerateTemplateStr generates changelog content
 // using given template string
-func GenerateTemplateStr(clog changelog.Changelog, partial bool, vars map[string]interface{}, tplString string) (string, error) {
+func GenerateTemplateStr(clog *changelog.Changelog, partial bool, vars map[string]interface{}, tplString string) (string, error) {
 
 	values := make(map[string]interface{})
 	values["changelog"] = clog

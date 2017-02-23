@@ -27,7 +27,7 @@ func TestChangeLogInternalFormat(t *testing.T) {
 
 
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
@@ -77,7 +77,7 @@ with another line
 
 
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
@@ -149,7 +149,7 @@ ______________
 
 
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
@@ -205,7 +205,7 @@ test (0.0.1)
 -- author  Mon, 22 Mar 2010 00:37:30 +0100
 
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
@@ -252,7 +252,7 @@ func TestChangeLogRPMFormat(t *testing.T) {
 * Mon Mar 22 2010 author - 0.0.1-1
 - change #1
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
@@ -290,7 +290,7 @@ func TestChangeLogGHRELEASEFormat(t *testing.T) {
 
 __Contributors__ : contributor #1, contributor #2
 `
-	s := changelog.Changelog{}
+	s := &changelog.Changelog{}
 	err := s.Parse([]byte(in))
 	if err != nil {
 		t.Errorf("should err=nil, got err=%q\n", err)
