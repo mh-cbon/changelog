@@ -3,9 +3,11 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -146,6 +148,23 @@ func main() {
 			},
 		},
 		{
+			Name:   "json",
+			Usage:  "Export the changelog to JSON format",
+			Action: exportToJSON,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "version",
+					Value: "",
+					Usage: "Only given version",
+				},
+				cli.StringFlag{
+					Name:  "out, o",
+					Value: "-",
+					Usage: "Out target",
+				},
+			},
+		},
+		{
 			Name:   "debian",
 			Usage:  "Export the changelog to Debian format",
 			Action: exportToDebian,
@@ -268,7 +287,7 @@ func initChangelog(c *cli.Context) error {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
-	clog := changelog.Changelog{}
+	clog := &changelog.Changelog{}
 
 	vcsTags, err := getVcsTags(path)
 	if err != nil {
@@ -321,8 +340,14 @@ func initChangelog(c *cli.Context) error {
 	}
 
 	clog.Sort()
+
+	out, err2 := os.Create(changelogFile)
+	if err2 != nil {
+		return cli.NewExitError(fmt.Sprintf("Failed to open file: %s", err2.Error()), 1)
+	}
 	vars := make(map[string]interface{})
-	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, changelogFile)
+
+	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, out)
 	if err != nil {
 		return cli.NewExitError(fmt.Sprintf("Error while processing the templates: %s", err.Error()), 1)
 	}
@@ -345,7 +370,7 @@ func prepareNext(c *cli.Context) error {
 		return cli.NewExitError("Changelog file does not exist.", 1)
 	}
 
-	clog := changelog.Changelog{}
+	clog := &changelog.Changelog{}
 	err = clog.Load(changelogFile)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
@@ -387,7 +412,11 @@ func prepareNext(c *cli.Context) error {
 	clog.Sort()
 
 	vars := make(map[string]interface{})
-	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, changelogFile)
+	out, err2 := os.OpenFile(changelogFile, os.O_RDWR|os.O_CREATE, 0755)
+	if err2 != nil {
+		return cli.NewExitError(fmt.Sprintf("Failed to open file: %s", err.Error()), 1)
+	}
+	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, out)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
@@ -421,7 +450,7 @@ func finalizeNext(c *cli.Context) error {
 		return cli.NewExitError("Changelog file does not exist.", 1)
 	}
 
-	clog := changelog.Changelog{}
+	clog := &changelog.Changelog{}
 	err := clog.Load(changelogFile)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
@@ -443,10 +472,12 @@ func finalizeNext(c *cli.Context) error {
 	}
 
 	vars := make(map[string]interface{})
-	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, changelogFile)
+	var out bytes.Buffer
+	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, &out)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
+	ioutil.WriteFile(changelogFile, out.Bytes(), os.ModePerm)
 
 	fmt.Println("changelog file updated")
 
@@ -484,6 +515,22 @@ func exportChangelog(c *cli.Context) error {
 	}
 
 	err2 := exportToSomeTemplate(version, out, vars, string(templateContent))
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
+	}
+
+	return nil
+}
+
+func exportToJSON(c *cli.Context) error {
+	version := c.String("version")
+
+	out, err := convertOut(c.String("out"))
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	err2 := exportChangelogToJSON(version, out)
 	if err2 != nil {
 		return cli.NewExitError(err2.Error(), 1)
 	}
@@ -640,26 +687,54 @@ func guessVars(dest map[string]interface{}) error {
 	return nil
 }
 
-func exportToSomeTemplate(version string, out string, vars map[string]interface{}, templateContent string) error {
-
-	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
-		return errors.New("Changelog file does not exist.")
+func loadChangelog(path string, version string) (*changelog.Changelog, error) {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil, errors.New("Changelog file %q does not exist.")
 	}
 
-	clog := changelog.Changelog{}
+	clog := &changelog.Changelog{}
 	err := clog.Load(changelogFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if version != "" {
 		newVersions := make([]*changelog.Version, 0)
 		v := clog.FindVersionByVersion(version)
 		if v == nil {
-			return errors.New("Version '" + version + "' not found.")
+			return nil, errors.New("Version '" + version + "' not found.")
 		}
 		newVersions = append(newVersions, v)
 		clog.Versions = newVersions
+	}
+	return clog, nil
+}
+
+func exportChangelogToJSON(version string, out io.Writer) error {
+
+	clog, err := loadChangelog(changelogFile, version)
+	if err != nil {
+		return err
+	}
+
+	enc := json.NewEncoder(out)
+	enc.SetIndent("", "    ")
+	return enc.Encode(clog)
+}
+
+func exportToSomeTemplate(version string, dst string, vars map[string]interface{}, templateContent string) error {
+
+	clog, err := loadChangelog(changelogFile, version)
+	if err != nil {
+		return err
+	}
+
+	out, err := convertOut(dst)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+	if x, ok := out.(*os.File); ok {
+		defer x.Close()
 	}
 
 	partial := version != ""
@@ -731,4 +806,18 @@ func getVcsTags(path string) ([]string, error) {
 		tags = repoutils.SortSemverTags(tags)
 	}
 	return tags, err
+}
+
+func convertOut(out string) (io.Writer, error) {
+	var writer io.Writer
+	if out == "-" {
+		writer = os.Stdout
+	} else {
+		f, err := os.OpenFile(out, os.O_RDWR|os.O_CREATE, 0755)
+		if err != nil {
+			return nil, err
+		}
+		writer = f
+	}
+	return writer, nil
 }
