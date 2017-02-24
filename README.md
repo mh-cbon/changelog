@@ -207,7 +207,7 @@ USAGE:
    changelog <cmd> <options>
 
 VERSION:
-   0.0.0
+   0.0.26
 
 COMMANDS:
      init       Initialize a new changelog file
