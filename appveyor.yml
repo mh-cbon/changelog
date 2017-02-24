@@ -25,6 +25,9 @@ install:
 
 build_script:
   - glide install
+  - go test github.com/mh-cbon/changelog/changelog
+  - go test github.com/mh-cbon/changelog/tpls
+  - go test
   - set GOARCH=386
   - go build -o %APPVEYOR_PROJECT_NAME%.exe --ldflags "-X main.VERSION=%APPVEYOR_REPO_TAG_NAME%" main.go
   - go-msi.exe make --msi %APPVEYOR_BUILD_FOLDER%\%APPVEYOR_PROJECT_NAME%-%GOARCH%.msi --version %APPVEYOR_REPO_TAG_NAME% --arch %GOARCH%

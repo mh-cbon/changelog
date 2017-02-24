@@ -8,6 +8,7 @@ preversion=
   666 go run main.go -v
   666 go test changelog/*
   666 go test tpls/*
+  666 go test
   666 changelog finalize --version !newversion!
   666 commit -q -m "changelog: !newversion!" -f change.log
   666 rm-glob -r build/

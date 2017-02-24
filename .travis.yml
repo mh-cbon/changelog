@@ -27,6 +27,7 @@ install:
 script:
   - go test changelog/*
   - go test tpls/*
+  - go test
 
 before_deploy:
   - mkdir -p build/{386,amd64}
