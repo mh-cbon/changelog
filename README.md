@@ -1,13 +1,35 @@
-# Changelog
+# changelog
+
+[![travis Status](https://travis-ci.org/mh-cbon/changelog.svg?branch=master)](https://travis-ci.org/mh-cbon/changelog)[![appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&svg=true)](https://ci.appveyor.com/project/mh-cbon/changelog)
+[![GoDoc](https://godoc.org/github.com/mh-cbon/changelog?status.svg)](http://godoc.org/github.com/mh-cbon/changelog)
+
 
 Maintain a changelog easily.
+
 
 This tool is part of the [go-github-release workflow](https://github.com/mh-cbon/go-github-release)
 
 # Install
 
-__deb/ubuntu/rpm repositories__
+Check the [release page](https://github.com/mh-cbon/changelog/releases)!
 
+#### Glide
+
+```sh
+mkdir -p $GOPATH/src/github.com/mh-cbon/changelog
+cd $GOPATH/src/github.com/mh-cbon/changelog
+git clone https://github.com/mh-cbon/changelog.git .
+glide install
+go install
+```
+
+
+#### Chocolatey
+```sh
+choco install changelog
+```
+
+#### linux rpm/deb repository
 ```sh
 wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
 | GH=mh-cbon/changelog sh -xe
@@ -16,8 +38,7 @@ curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
 | GH=mh-cbon/changelog sh -xe
 ```
 
-__deb/ubuntu/rpm packages__
-
+#### linux rpm/deb standalone package
 ```sh
 curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/changelog sh -xe
@@ -25,27 +46,6 @@ curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 wget -q -O - --no-check-certificate \
 https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/changelog sh -xe
-```
-
-__chocolatey__
-
-```sh
-choco install changelog -y
-```
-
-__windows__
-
-Pick an msi package [here](https://github.com/mh-cbon/changelog/releases)
-
-__go__
-
-```sh
-mkdir -p $GOPATH/src/github.com/mh-cbon
-cd $GOPATH/src/github.com/mh-cbon
-git clone https://github.com/mh-cbon/changelog.git
-cd changelog
-glide install
-go install
 ```
 
 # Usage
@@ -197,6 +197,8 @@ The trailing line provides `package author` and `release date` separated by a se
 
 ## CLI Usage
 
+
+__$ changelog -help__
 ```sh
 NAME:
    changelog - Changelog helper
@@ -208,17 +210,18 @@ VERSION:
    0.0.0
 
 COMMANDS:
-     init      Initialize a new changelog file
-     prepare   Prepare next changelog
-     finalize  Take pending next changelog, apply a version on it
-     test      Test to load your changelog file and report for errors or success
-     export    Export the changelog using given template
-     md        Export the changelog to Markdown format
-     debian    Export the changelog to Debian format
-     rpm       Export the changelog to RPM format
-     changelog Export the changelog to CHANGELOG (internal) format
-     ghrelease Export the changelog to gh-release format, good for gh release page
-     help, h   Shows a list of commands or help for one command
+     init       Initialize a new changelog file
+     prepare    Prepare next changelog
+     finalize   Take pending next changelog, apply a version on it
+     test       Test to load your changelog file and report for errors or success
+     export     Export the changelog using given template
+     md         Export the changelog to Markdown format
+     json       Export the changelog to JSON format
+     debian     Export the changelog to Debian format
+     rpm        Export the changelog to RPM format
+     changelog  Export the changelog to CHANGELOG format
+     ghrelease  Export the changelog to GHRELEASE format
+     help, h    Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help
@@ -227,6 +230,8 @@ GLOBAL OPTIONS:
 
 #### Init
 
+
+__$ changelog init -help__
 ```sh
 NAME:
    changelog init - Initialize a new changelog file
@@ -238,28 +243,19 @@ OPTIONS:
    --author value, -a value  Package author (default: "N/A")
    --email value, -e value   Package author email
    --since value, -s value   Since which tag should the changelog be generated
+```
 
+```sh
 EXAMPLE:
   changelog init
   changelog init --since=0.0.9
   changelog init --since=0.0.9 --author=mh-cbon
 ```
 
-#### Test
-
-```sh
-NAME:
-   changelog test - Test to load your changelog file and report for errors or success
-
-USAGE:
-   changelog test [arguments...]
-
-EXAMPLE:
-  changelog test
-```
-
 #### Prepare
 
+
+__$ changelog prepare -help__
 ```sh
 NAME:
    changelog prepare - Prepare next changelog
@@ -270,7 +266,9 @@ USAGE:
 OPTIONS:
    --author value, -a value  Package author (default: "N/A")
    --email value, -e value   Package author email
+```
 
+```sh
 EXAMPLE:
   changelog prepare
   changelog prepare --author=mh-cbon
@@ -278,6 +276,8 @@ EXAMPLE:
 
 #### Finalize
 
+
+__$ changelog finalize -help__
 ```sh
 NAME:
    changelog finalize - Take pending next changelog, apply a version on it
@@ -287,13 +287,34 @@ USAGE:
 
 OPTIONS:
    --version value  Version revision
+```
 
+```sh
 EXAMPLE:
   changelog finalize --version=0.0.2
 ```
 
+#### Test
+
+
+__$ changelog test -help__
+```sh
+NAME:
+   changelog test - Test to load your changelog file and report for errors or success
+
+USAGE:
+   changelog test [arguments...]
+```
+
+```sh
+EXAMPLE:
+  changelog test
+```
+
 #### Export
 
+
+__$ changelog export -help__
 ```sh
 NAME:
    changelog export - Export the changelog using given template
@@ -305,9 +326,11 @@ OPTIONS:
    --template value, -t value  Go template
    --version value             Only given version
    --out value, -o value       Out target (default: "-")
-   --vars value                Add more variables to the template
    --guess, -g                 Automatically guess and inject name and user variable from the cwd
+   --vars value                Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog export --out=CHANGELOG.rtf --template=rtf.go
   changelog export --out=CHANGELOG.rtf --template=rtf.go --version=0.0.2
@@ -316,9 +339,11 @@ EXAMPLE:
 
 #### Md
 
+
+__$ changelog md -help__
 ```sh
 NAME:
-   changelog md - Export the changelog to Markdown
+   changelog md - Export the changelog to Markdown format
 
 USAGE:
    changelog md [command options] [arguments...]
@@ -326,9 +351,11 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
-   --vars value           Add more variables to the template
    --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog md --out=CHANGELOG.md
   changelog md --out=CHANGELOG.md --version=0.0.2
@@ -337,6 +364,8 @@ EXAMPLE:
 
 #### Debian
 
+
+__$ changelog debian -help__
 ```sh
 NAME:
    changelog debian - Export the changelog to Debian format
@@ -347,9 +376,11 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
-   --vars value           Add more variables to the template
    --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog debian --out=changelog
   changelog debian --out=changelog --version=0.0.2
@@ -358,6 +389,8 @@ EXAMPLE:
 
 #### RPM
 
+
+__$ changelog rpm -help__
 ```sh
 NAME:
    changelog rpm - Export the changelog to RPM format
@@ -368,9 +401,11 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
-   --vars value           Add more variables to the template
    --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog rpm --out=changelog
   changelog rpm --out=changelog --version=0.0.2
@@ -379,6 +414,8 @@ EXAMPLE:
 
 #### CHANGELOG
 
+
+__$ changelog changelog -help__
 ```sh
 NAME:
    changelog changelog - Export the changelog to CHANGELOG format
@@ -389,9 +426,11 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
-   --vars value           Add more variables to the template
    --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog changelog --out=changelog
   changelog changelog --out=changelog --version=0.0.2
@@ -400,6 +439,8 @@ EXAMPLE:
 
 #### GHRELEASE
 
+
+__$ changelog ghrelease -help__
 ```sh
 NAME:
    changelog ghrelease - Export the changelog to GHRELEASE format
@@ -410,9 +451,11 @@ USAGE:
 OPTIONS:
    --version value        Only given version
    --out value, -o value  Out target (default: "-")
-   --vars value           Add more variables to the template
    --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+```
 
+```sh
 EXAMPLE:
   changelog ghrelease --out=changelog --version=0.0.2
 ```
