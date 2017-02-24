@@ -1,5 +1,24 @@
 # Changelog - changelog
 
+### 0.0.26
+
+__Changes__
+
+- add json comman to export a change.log file to JSON
+- add end-to-end tests
+- README: make use of emd
+- dependencies: update all
+- Version: ensure json serialization of semver.Version type works
+- bump: move script to a .version.sh file
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Fri 24 Feb 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.25...0.0.26#diff)
+______________
+
 ### 0.0.25
 
 __Changes__
