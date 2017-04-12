@@ -1,7 +1,7 @@
 
 0.0.26
 
-  * add json comman to export a change.log file to JSON
+  * add json command to export a change.log file to JSON
   * add end-to-end tests
   * README: make use of emd
   * dependencies: update all
@@ -293,5 +293,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
-
-

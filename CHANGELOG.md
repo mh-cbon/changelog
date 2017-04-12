@@ -4,7 +4,7 @@
 
 __Changes__
 
-- add json comman to export a change.log file to JSON
+- add json command to export a change.log file to JSON
 - add end-to-end tests
 - README: make use of emd
 - dependencies: update all
@@ -400,5 +400,3 @@ __Contributors__
 Released by mh-cbon, Mon 11 Jul 2016 -
 [see the diff](https://github.com/mh-cbon/changelog/compare/c589337667f6d64f5b2b2165290c20b8b4e7b40b...0.0.1#diff)
 ______________
-
-
