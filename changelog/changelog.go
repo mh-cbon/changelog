@@ -54,10 +54,16 @@ func (g *Changelog) Parse(data []byte) error {
 	versionEndRegexp := regexp.MustCompile(`^[-]{2}\s+(.+)`)
 	changeRegexp := regexp.MustCompile(`^\s+\*\s+(.+)`)
 	contributorRegexp := regexp.MustCompile(`^\s+-\s+(.+)`)
+	frontspaceRegexp := regexp.MustCompile(`^(\s+)`)
 
 	var cVersion *Version
 	cChange := ""
 	cVersionHasEnded := true
+	lastFrontWs := 0
+	var getFrontSpace = func(line []byte) int {
+		k := frontspaceRegexp.FindSubmatch(line)
+		return len(k[0])
+	}
 
 	for index, line := range lines {
 		if cVersion == nil {
@@ -81,6 +87,9 @@ func (g *Changelog) Parse(data []byte) error {
 		} else {
 			if versionEndRegexp.Match(line) {
 				if len(cChange) > 0 {
+					if strings.Count(cChange, "\n") <= 1 {
+						cChange = strings.TrimSpace(cChange)
+					}
 					cVersion.Changes = append(cVersion.Changes, cChange)
 					cChange = ""
 				}
@@ -112,30 +121,44 @@ func (g *Changelog) Parse(data []byte) error {
 				cVersion = nil
 				cVersionHasEnded = true
 
-			} else if contributorRegexp.Match(line) {
+			} else if contributorRegexp.Match(line) && (getFrontSpace(line) <= lastFrontWs || lastFrontWs <= 0) {
 				if len(cChange) > 0 {
+					if strings.Count(cChange, "\n") <= 1 {
+						cChange = strings.TrimSpace(cChange)
+					}
 					cVersion.Changes = append(cVersion.Changes, cChange)
 					cChange = ""
 				}
-
 				k := contributorRegexp.FindSubmatch(line)
 				c, err := NewContributor(string(k[1]))
 				if err == nil {
 					cVersion.Contributors = append(cVersion.Contributors, c)
 				}
 
-			} else if changeRegexp.Match(line) {
+			} else if changeRegexp.Match(line) && (getFrontSpace(line) <= lastFrontWs || lastFrontWs <= 0) {
 				if len(cChange) > 0 {
+					if strings.Count(cChange, "\n") <= 1 {
+						cChange = strings.TrimSpace(cChange)
+					}
 					cVersion.Changes = append(cVersion.Changes, cChange)
 				}
+				// fmt.Printf("%q\n", line)
 				k := changeRegexp.FindSubmatch(line)
 				cChange = string(k[1])
+				lastFrontWs = getFrontSpace(line)
 
-			} else if len(line) > 0 && len(cChange) > 0 {
+			} else if len(cChange) > 0 {
+				// fmt.Printf("%q\n", line)
 				if cChange[len(cChange)-1:len(cChange)] == "\\" {
 					cChange = strings.TrimSpace(cChange[0:len(cChange)-1]) + " " + strings.TrimSpace(string(line))
+				} else if len(line) > 0 {
+					x := string(line)
+					if lastFrontWs > 0 && strings.TrimSpace(x[:lastFrontWs]) == "" {
+						x = x[lastFrontWs:]
+					}
+					cChange += "\n" + x
 				} else {
-					cChange += "\n" + strings.TrimSpace(string(line))
+					cChange += "\n"
 				}
 
 			} else if len(strings.TrimSpace(string(line))) > 0 {

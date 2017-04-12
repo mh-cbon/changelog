@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -13,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/mh-cbon/changelog/changelog"
+	"github.com/mh-cbon/changelog/tpls"
 )
 
 type TestingStub struct{}
@@ -484,4 +486,63 @@ func mustWriteFile(t Errorer, p string, c string) bool {
 		return false
 	}
 	return true
+}
+
+func TestFormatting(t *testing.T) {
+	content := `
+UNRELEASED
+
+  * close #10: added feature to read, decode and registers the prelude data
+
+    It is now possible to define a prelude block of ` + "`" + `yaml` + "`" + ` data in your __README__ file to
+    register new data.
+
+  * added __cat/exec/shell/color/gotest/toc__ func
+
+    - __cat__(file string): to display the file content.
+    - __exec__(bin string, args ...string): to exec a program.
+    - __shell__(s string): to exec a command line on the underlying shell (it is not cross compatible).
+    - __color__(color string, content string): to embed content in a block code with color.
+    - __gotest__(rpkg string, run string, args ...string): exec ` + "`" + `go test <rpkg> -v -run <run> <args...>` + "`" + `.
+    - __toc__(maximportance string, title string): display a TOC.
+
+  * close #7: deprecated __file/cli__ func
+
+    Those two functions are deprecated in flavor of their new equivalents,
+    __cat/exec__.
+
+    The new functions does not returns a triple backquuotes block code.
+    They returns the response body only.
+    A new function helper __color__ is a added to create a block code.
+
+  * close #8: improved cli error output
+
+    Before the output error was not displaying
+    the command line entirely when it was too long.
+    Now the error is updated to always display the command line with full length.
+
+  * close #9: add new gotest helper func
+  * close #12: add toc func
+  * close#10: ensure unquoted strings are read properly
+  * close #11: add shell func helper.
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 12 Apr 2017 14:36:51 +0200
+
+`
+	s := &changelog.Changelog{}
+	err := s.Parse([]byte(content))
+	if err != nil {
+		t.Errorf("should err==nil, got err=%q\n", err)
+	}
+	mustHaveUnreleasedVersion(t, s)
+
+	var out bytes.Buffer
+	vars := map[string]interface{}{"name": "test"}
+	err = tpls.WriteTemplateStrTo(s, false, vars, tpls.MD, &out)
+	if err != nil {
+		t.Errorf("should err==nil, got err=%q\n", err)
+	}
+	fmt.Println(out.String())
 }

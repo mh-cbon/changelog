@@ -297,7 +297,7 @@ func TestChanges(t *testing.T) {
 	}
 	v := s.Versions[0]
 	if len(v.Changes) != 2 {
-		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%v\n", len(v.Changes))
 	}
 	if v.Changes[0] != "Change 1" {
 		t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
@@ -333,8 +333,8 @@ line 2
 	if v.Changes[0] != "Change 0\nline 2" {
 		t.Errorf("should v.Changes[0]='Change 0\nline 2', got v.Changes[0]=%q\n", v.Changes[0])
 	}
-	if v.Changes[1] != "Change 1\nline 2" {
-		t.Errorf("should v.Changes[1]='Change 1\nline 2', got v.Changes[1]=%q\n", v.Changes[1])
+	if v.Changes[1] != "Change 1\n  line 2" {
+		t.Errorf("should v.Changes[1]='Change 1\n  line 2', got v.Changes[1]=%q\n", v.Changes[1])
 	}
 	if v.Changes[2] != "Change 2 line 2" {
 		t.Errorf("should v.Changes[2]='Change 2 line 2', got v.Changes[2]=%q\n", v.Changes[2])
@@ -392,7 +392,7 @@ func TestRandomOk1(t *testing.T) {
 	}
 	v := s.Versions[0]
 	if len(v.Contributors) != 2 {
-		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
+		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%v\n", len(v.Changes))
 	}
 	if v.Contributors[0].Name != "Contributor 1" {
 		t.Errorf("should v.Contributors[0].Name='Contributor 1', got v.Contributors[0].Name=%q\n", v.Contributors[0].Name)
@@ -406,14 +406,11 @@ func TestRandomOk1(t *testing.T) {
 	if v.Contributors[1].Email != "" {
 		t.Errorf("should v.Contributors[1].Email='', got v.Contributors[1].Email=%q\n", v.Contributors[1].Email)
 	}
-	if len(v.Changes) != 2 {
-		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+	if len(v.Changes) != 1 {
+		t.Errorf("should len(v.Changes)='1', got len(v.Changes)=%v\n", len(v.Changes))
 	}
-	if v.Changes[0] != "Change 1" {
-		t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
-	}
-	if v.Changes[1] != "Change 2" {
-		t.Errorf("should v.Changes[1]='Change 2', got v.Changes[1]=%q\n", v.Changes[1])
+	if v.Changes[0] != "Change 1\n * Change 2" {
+		t.Errorf("should v.Changes[0]='Change 1\n * Change 2', got v.Changes[0]=%q\n", v.Changes[0])
 	}
 }
 
@@ -434,7 +431,7 @@ func TestRandomOk2(t *testing.T) {
 	}
 	v := s.Versions[0]
 	if len(v.Contributors) != 2 {
-		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%q\n", len(v.Changes))
+		t.Errorf("should len(v.Contributors)='2', got len(v.Contributors)=%v\n", len(v.Changes))
 	}
 	if v.Contributors[0].Name != "Contributor 1" {
 		t.Errorf("should v.Contributors[0].Name='Contributor 1', got v.Contributors[0].Name=%q\n", v.Contributors[0].Name)
@@ -448,14 +445,11 @@ func TestRandomOk2(t *testing.T) {
 	if v.Contributors[1].Email != "" {
 		t.Errorf("should v.Contributors[1].Email='', got v.Contributors[1].Email=%q\n", v.Contributors[1].Email)
 	}
-	if len(v.Changes) != 2 {
-		t.Errorf("should len(v.Changes)='2', got len(v.Changes)=%q\n", len(v.Changes))
+	if len(v.Changes) != 1 {
+		t.Errorf("should len(v.Changes)='1', got len(v.Changes)=%v\n", len(v.Changes))
 	}
-	if v.Changes[0] != "Change 1" {
-		t.Errorf("should v.Changes[0]='Change 1', got v.Changes[0]=%q\n", v.Changes[0])
-	}
-	if v.Changes[1] != "Change 2" {
-		t.Errorf("should v.Changes[1]='Change 2', got v.Changes[1]=%q\n", v.Changes[1])
+	if v.Changes[0] != "Change 1\n * Change 2" {
+		t.Errorf("should v.Changes[0]='Change 1\n * Change 2', got v.Changes[0]=%q\n", v.Changes[0])
 	}
 }
 
