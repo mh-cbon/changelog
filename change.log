@@ -1,4 +1,14 @@
 
+0.0.27
+
+  * close #4: fix whitespace handling
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 12 Apr 2017 16:34:57 +0200
+
+
+
 0.0.26
 
   * add json command to export a change.log file to JSON
@@ -74,6 +84,8 @@
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
+
+
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
@@ -293,3 +305,5 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
+
+
