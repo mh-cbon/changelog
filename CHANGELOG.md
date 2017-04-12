@@ -1,5 +1,19 @@
 # Changelog - changelog
 
+### 0.0.27
+
+__Changes__
+
+- close #4: fix whitespace handling
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Wed 12 Apr 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.26...0.0.27#diff)
+______________
+
 ### 0.0.26
 
 __Changes__
@@ -101,6 +115,9 @@ __Changes__
 
 - firstrev: silently fail if the directory is not a repository,
   or if the system does not have required binaries
+
+
+
 
 __Contributors__
 
@@ -400,3 +417,5 @@ __Contributors__
 Released by mh-cbon, Mon 11 Jul 2016 -
 [see the diff](https://github.com/mh-cbon/changelog/compare/c589337667f6d64f5b2b2165290c20b8b4e7b40b...0.0.1#diff)
 ______________
+
+
