@@ -198,7 +198,7 @@ The trailing line provides `package author` and `release date` separated by a se
 ## CLI Usage
 
 
-__$ changelog -help__
+###### $ changelog -help
 ```sh
 NAME:
    changelog - Changelog helper
@@ -207,7 +207,7 @@ USAGE:
    changelog <cmd> <options>
 
 VERSION:
-   0.0.26
+   0.0.0
 
 COMMANDS:
      init       Initialize a new changelog file
@@ -231,7 +231,7 @@ GLOBAL OPTIONS:
 #### Init
 
 
-__$ changelog init -help__
+###### $ changelog init -help
 ```sh
 NAME:
    changelog init - Initialize a new changelog file
@@ -255,7 +255,7 @@ EXAMPLE:
 #### Prepare
 
 
-__$ changelog prepare -help__
+###### $ changelog prepare -help
 ```sh
 NAME:
    changelog prepare - Prepare next changelog
@@ -277,7 +277,7 @@ EXAMPLE:
 #### Finalize
 
 
-__$ changelog finalize -help__
+###### $ changelog finalize -help
 ```sh
 NAME:
    changelog finalize - Take pending next changelog, apply a version on it
@@ -297,7 +297,7 @@ EXAMPLE:
 #### Test
 
 
-__$ changelog test -help__
+###### $ changelog test -help
 ```sh
 NAME:
    changelog test - Test to load your changelog file and report for errors or success
@@ -314,7 +314,7 @@ EXAMPLE:
 #### Export
 
 
-__$ changelog export -help__
+###### $ changelog export -help
 ```sh
 NAME:
    changelog export - Export the changelog using given template
@@ -340,7 +340,7 @@ EXAMPLE:
 #### Md
 
 
-__$ changelog md -help__
+###### $ changelog md -help
 ```sh
 NAME:
    changelog md - Export the changelog to Markdown format
@@ -365,7 +365,7 @@ EXAMPLE:
 #### Debian
 
 
-__$ changelog debian -help__
+###### $ changelog debian -help
 ```sh
 NAME:
    changelog debian - Export the changelog to Debian format
@@ -390,7 +390,7 @@ EXAMPLE:
 #### RPM
 
 
-__$ changelog rpm -help__
+###### $ changelog rpm -help
 ```sh
 NAME:
    changelog rpm - Export the changelog to RPM format
@@ -415,7 +415,7 @@ EXAMPLE:
 #### CHANGELOG
 
 
-__$ changelog changelog -help__
+###### $ changelog changelog -help
 ```sh
 NAME:
    changelog changelog - Export the changelog to CHANGELOG format
@@ -440,7 +440,7 @@ EXAMPLE:
 #### GHRELEASE
 
 
-__$ changelog ghrelease -help__
+###### $ changelog ghrelease -help
 ```sh
 NAME:
    changelog ghrelease - Export the changelog to GHRELEASE format
