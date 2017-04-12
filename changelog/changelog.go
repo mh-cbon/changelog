@@ -138,7 +138,7 @@ func (g *Changelog) Parse(data []byte) error {
 			} else if changeRegexp.Match(line) && (getFrontSpace(line) <= lastFrontWs || lastFrontWs <= 0) {
 				if len(cChange) > 0 {
 					if strings.Count(cChange, "\n") <= 1 {
-						cChange = strings.TrimSpace(cChange)
+						cChange = strings.TrimRight(cChange, "\n")
 					}
 					cVersion.Changes = append(cVersion.Changes, cChange)
 				}
@@ -148,13 +148,16 @@ func (g *Changelog) Parse(data []byte) error {
 				lastFrontWs = getFrontSpace(line)
 
 			} else if len(cChange) > 0 {
-				// fmt.Printf("%q\n", line)
+
 				if cChange[len(cChange)-1:len(cChange)] == "\\" {
 					cChange = strings.TrimSpace(cChange[0:len(cChange)-1]) + " " + strings.TrimSpace(string(line))
+
 				} else if len(line) > 0 {
 					x := string(line)
-					if lastFrontWs > 0 && strings.TrimSpace(x[:lastFrontWs]) == "" {
-						x = x[lastFrontWs:]
+					if strings.TrimSpace(x) == "" {
+						x = ""
+					} else if lastFrontWs > 0 && strings.TrimSpace(x[:lastFrontWs]) == "" {
+						x = strings.TrimRight(x[lastFrontWs:], "\n")
 					}
 					cChange += "\n" + x
 				} else {

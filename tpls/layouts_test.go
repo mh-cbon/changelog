@@ -55,7 +55,7 @@ func TestMultilineFormatting(t *testing.T) {
  * change #2
 with another line
  * change #3
-    still with another line
+     still with another line
 
  - contributor #1
 
@@ -69,7 +69,8 @@ with another line
   * change #2
     with another line
   * change #3
-    still with another line
+      still with another line
+
 
   - contributor #1
 
@@ -93,7 +94,7 @@ with another line
 	}
 
 	if expected != out {
-		t.Errorf("should output=\n%s\n, got output=\n%s\n", expected, out)
+		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
 	}
 }
 
@@ -124,6 +125,7 @@ __Changes__
 
 - change #2
   with another line
+
 
 __Contributors__
 
@@ -195,6 +197,7 @@ test (0.0.2)
   * change #2
     with another line
 
+
 -- author  Mon, 22 Mar 2010 00:37:30 +0100
 
 
@@ -221,7 +224,7 @@ test (0.0.1)
 	}
 
 	if expected != out {
-		t.Errorf("should output=\n%q\n, got output=\n%q\n", expected, out)
+		t.Errorf("should output=\n%v\n, got output=\n%v\n", expected, out)
 	}
 }
 
@@ -248,6 +251,7 @@ func TestChangeLogRPMFormat(t *testing.T) {
 * Mon Mar 22 2010 author - 0.0.2-1
 - change #2
   with another line
+
 
 * Mon Mar 22 2010 author - 0.0.1-1
 - change #1
@@ -287,6 +291,7 @@ func TestChangeLogGHRELEASEFormat(t *testing.T) {
 	expected := `
 - change #1
   with another line
+
 
 __Contributors__ : contributor #1, contributor #2
 `

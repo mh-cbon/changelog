@@ -22,8 +22,13 @@ func PrintMultilines(lines string, prefix string) string {
 	for index, line := range strings.Split(lines, "\n") {
 		if index == 0 {
 			ret += prefix + line + "\n"
-		} else {
+		} else if strings.TrimSpace(line) != "" {
+			if strings.TrimSpace(line[:2]) == "" {
+				line = line[2:]
+			}
 			ret += strings.Repeat(" ", len(prefix)) + line + "\n"
+		} else {
+			ret += "\n"
 		}
 	}
 	return strings.TrimSuffix(ret, "\n")
