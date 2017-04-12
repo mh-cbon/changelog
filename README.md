@@ -21,7 +21,7 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
   - [Init](#init)
   - [Prepare](#prepare)
   - [Finalize](#finalize)
-- [Changelog](#changelog)
+- [History](#history)
 
 # Install
 
@@ -482,7 +482,7 @@ To enable debug messages, just set `VERBOSE=change*`, `VERBOSE=*` before running
 VERBOSE=* changelog init
 ```
 
-# Changelog
+# History
 
 [CHANGELOG](CHANGELOG.md)
 

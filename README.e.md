@@ -286,6 +286,6 @@ To enable debug messages, just set `VERBOSE=change*`, `VERBOSE=*` before running
 VERBOSE=* changelog init
 ```
 
-# Changelog
+# History
 
 [CHANGELOG](CHANGELOG.md)
