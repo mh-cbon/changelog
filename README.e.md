@@ -171,11 +171,11 @@ The trailing line provides `package author` and `release date` separated by a se
 
 ## CLI Usage
 
-{{cli "changelog" "-help"}}
+{{exec "changelog" "-help" | color "sh"}}
 
 #### Init
 
-{{cli "changelog" "init" "-help"}}
+{{exec "changelog" "init" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -186,7 +186,7 @@ EXAMPLE:
 
 #### Prepare
 
-{{cli "changelog" "prepare" "-help"}}
+{{exec "changelog" "prepare" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -196,7 +196,7 @@ EXAMPLE:
 
 #### Finalize
 
-{{cli "changelog" "finalize" "-help"}}
+{{exec "changelog" "finalize" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -205,7 +205,7 @@ EXAMPLE:
 
 #### Test
 
-{{cli "changelog" "test" "-help"}}
+{{exec "changelog" "test" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -214,7 +214,7 @@ EXAMPLE:
 
 #### Export
 
-{{cli "changelog" "export" "-help"}}
+{{exec "changelog" "export" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -225,7 +225,7 @@ EXAMPLE:
 
 #### Md
 
-{{cli "changelog" "md" "-help"}}
+{{exec "changelog" "md" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -236,7 +236,7 @@ EXAMPLE:
 
 #### Debian
 
-{{cli "changelog" "debian" "-help"}}
+{{exec "changelog" "debian" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -247,7 +247,7 @@ EXAMPLE:
 
 #### RPM
 
-{{cli "changelog" "rpm" "-help"}}
+{{exec "changelog" "rpm" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -258,7 +258,7 @@ EXAMPLE:
 
 #### CHANGELOG
 
-{{cli "changelog" "changelog" "-help"}}
+{{exec "changelog" "changelog" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
@@ -269,7 +269,7 @@ EXAMPLE:
 
 #### GHRELEASE
 
-{{cli "changelog" "ghrelease" "-help"}}
+{{exec "changelog" "ghrelease" "-help" | color "sh"}}
 
 ```sh
 EXAMPLE:
