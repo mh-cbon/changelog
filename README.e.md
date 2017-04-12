@@ -6,6 +6,8 @@
 
 This tool is part of the [go-github-release workflow](https://github.com/mh-cbon/go-github-release)
 
+# {{toc 5}}
+
 # Install
 
 {{template "gh/releases" .}}
@@ -39,7 +41,7 @@ The workflow would be so,
 
 To work `changelog` uses an intermediary file `change.log`.
 
-#### General overview
+##### General overview
 
 A `change.log` file contains a list `version` and their changes.
 
@@ -65,7 +67,7 @@ A `change.log` file contains a list `version` and their changes.
 -- Josip Rodin <joy-mg@debian.org>; Mon, 22 Mar 2010 00:37:30 +0100
 ```
 
-#### Version block
+##### Version block
 
 Each version is a formatted block of text such as
 
@@ -90,7 +92,7 @@ semver
 -- Packager name <mail@packager.org>; Release date
 ```
 
-#### Version field
+##### Version field
 
 Each version starts with its version value, a valid `semver` identifier.
 
@@ -113,7 +115,7 @@ a version name; tag1=value; tag2=value;
 -- Packager name <mail@packager.org>; Release date
 ```
 
-#### Version changes
+##### Version changes
 
 Version changes immediately follow the `semver` identifier.
 
@@ -138,7 +140,7 @@ continuing here
 -- Packager name <mail@packager.org>; Release date
 ```
 
-#### Version contributors
+##### Version contributors
 
 Version `contributors` immediately follow the list of `changes`.
 
@@ -159,7 +161,7 @@ semver
 -- Packager name <mail@packager.org>; Release date
 ```
 
-#### Version ender
+##### Version ender
 
 Versions must end with a trailing line starting by a double hyphen `--`.
 
@@ -203,7 +205,7 @@ EXAMPLE:
   changelog finalize --version=0.0.2
 ```
 
-#### Test
+##### Test
 
 {{exec "changelog" "test" "-help" | color "sh"}}
 
@@ -212,7 +214,7 @@ EXAMPLE:
   changelog test
 ```
 
-#### Export
+##### Export
 
 {{exec "changelog" "export" "-help" | color "sh"}}
 
@@ -223,7 +225,7 @@ EXAMPLE:
   changelog export --out=CHANGELOG.rtf --template=rtf.go --vars='{"name":"changelog"}'
 ```
 
-#### Md
+##### Md
 
 {{exec "changelog" "md" "-help" | color "sh"}}
 
@@ -234,7 +236,7 @@ EXAMPLE:
   changelog md --out=CHANGELOG.md --vars='{"name":"changelog"}'
 ```
 
-#### Debian
+##### Debian
 
 {{exec "changelog" "debian" "-help" | color "sh"}}
 
@@ -245,7 +247,7 @@ EXAMPLE:
   changelog debian --out=changelog --vars='{"name":"changelog"}'
 ```
 
-#### RPM
+##### RPM
 
 {{exec "changelog" "rpm" "-help" | color "sh"}}
 
@@ -256,7 +258,7 @@ EXAMPLE:
   changelog rpm --out=changelog --vars='{"name":"changelog"}'
 ```
 
-#### CHANGELOG
+##### CHANGELOG
 
 {{exec "changelog" "changelog" "-help" | color "sh"}}
 
@@ -267,7 +269,7 @@ EXAMPLE:
   changelog changelog --out=changelog --vars='{"name":"changelog"}'
 ```
 
-#### GHRELEASE
+##### GHRELEASE
 
 {{exec "changelog" "ghrelease" "-help" | color "sh"}}
 
@@ -276,7 +278,7 @@ EXAMPLE:
   changelog ghrelease --out=changelog --version=0.0.2
 ```
 
-#### Enable debug messages
+##### Enable debug messages
 
 To enable debug messages, just set `VERBOSE=change*`, `VERBOSE=*` before running the command.
 
