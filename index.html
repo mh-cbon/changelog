@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  
+  <head>
+  <meta charset="UTF-8">
+  <title>changelog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <link rel="stylesheet" href="/changelog//css/normalize.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/changelog//css/cayman.css">
+</head>
+
+  <body>
+    <section class="page-header">
+  <h1 class="project-name">changelog</h1>
+  <h2 class="project-tagline">Maintain a changelog easily</h2>
+  <a href="http://github.com/mh-cbon/changelog" class="btn">View on GitHub</a>
+  <a href="http://github.com/mh-cbon/changelog/zipball/gh-pages" class="btn">Download .zip</a>
+  <a href="http://github.com/mh-cbon/changelog/tarball/gh-pages" class="btn">Download .tar.gz</a>
+</section>
+
+
+    <section class="main-content">
+      
+      <h1 id="changelog">changelog</h1>
+
+<p><a href="https://travis-ci.org/mh-cbon/changelog"><img src="https://travis-ci.org/mh-cbon/changelog.svg?branch=master" alt="travis Status" /></a><a href="https://ci.appveyor.com/project/mh-cbon/changelog"><img src="https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&amp;svg=true" alt="appveyor Status" /></a>
+<a href="http://godoc.org/github.com/mh-cbon/changelog"><img src="https://godoc.org/github.com/mh-cbon/changelog?status.svg" alt="GoDoc" /></a></p>
+
+<p>Maintain a changelog easily.</p>
+
+<p>This tool is part of the <a href="https://github.com/mh-cbon/go-github-release">go-github-release workflow</a></p>
+
+<h1 id="toc">TOC</h1>
+<ul>
+  <li><a href="#install">Install</a>
+    <ul>
+      <li><a href="#glide">Glide</a></li>
+      <li><a href="#chocolatey">Chocolatey</a></li>
+      <li><a href="#linux-rpmdeb-repository">linux rpm/deb repository</a></li>
+      <li><a href="#linux-rpmdeb-standalone-package">linux rpm/deb standalone package</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage</a>
+    <ul>
+      <li><a href="#intermediary-changelog-file">intermediary changelog file</a></li>
+      <li><a href="#cli-usage">CLI Usage</a></li>
+      <li><a href="#init">Init</a></li>
+      <li><a href="#prepare">Prepare</a></li>
+      <li><a href="#finalize">Finalize</a></li>
+    </ul>
+  </li>
+  <li><a href="#history">History</a></li>
+</ul>
+
+<h1 id="install">Install</h1>
+
+<p>Check the <a href="https://github.com/mh-cbon/changelog/releases">release page</a>!</p>
+
+<h4 id="glide">Glide</h4>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>mkdir -p <span class="nv">$GOPATH</span>/src/github.com/mh-cbon/changelog
+<span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/mh-cbon/changelog
+git clone https://github.com/mh-cbon/changelog.git .
+glide install
+go install
+</code></pre>
+</div>
+
+<h4 id="chocolatey">Chocolatey</h4>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>choco install changelog
+</code></pre>
+</div>
+
+<h4 id="linux-rpmdeb-repository">linux rpm/deb repository</h4>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh <span class="se">\</span>
+| <span class="nv">GH</span><span class="o">=</span>mh-cbon/changelog sh -xe
+<span class="c"># or</span>
+curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh <span class="se">\</span>
+| <span class="nv">GH</span><span class="o">=</span>mh-cbon/changelog sh -xe
+</code></pre>
+</div>
+
+<h4 id="linux-rpmdeb-standalone-package">linux rpm/deb standalone package</h4>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh <span class="se">\</span>
+| <span class="nv">GH</span><span class="o">=</span>mh-cbon/changelog sh -xe
+<span class="c"># or</span>
+wget -q -O - --no-check-certificate <span class="se">\</span>
+https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh <span class="se">\</span>
+| <span class="nv">GH</span><span class="o">=</span>mh-cbon/changelog sh -xe
+</code></pre>
+</div>
+
+<h1 id="usage">Usage</h1>
+
+<p>The workflow would be so,</p>
+
+<ul>
+  <li>make a new repo</li>
+  <li>commit your stuff</li>
+  <li>run <code class="highlighter-rouge">changelog init</code> to generate a <code class="highlighter-rouge">change.log</code> file</li>
+  <li>before a new release, run <code class="highlighter-rouge">changelog prepare</code>, to generate an <code class="highlighter-rouge">UNRELEASED</code> version</li>
+  <li>review and edit the new <code class="highlighter-rouge">UNRELEASED</code> version changes in <code class="highlighter-rouge">change.log</code> file</li>
+  <li>run <code class="highlighter-rouge">changelog finalize --version=x.x.x</code> to rename <code class="highlighter-rouge">UNRELEASED</code> version to its release version</li>
+  <li>run <code class="highlighter-rouge">changelog md --out=CHANGELOG.md</code> to generate the new markdowned changelog file</li>
+  <li>run <code class="highlighter-rouge">changelog debian</code> to get a the new version changelog to DEBIAN format</li>
+</ul>
+
+<h3 id="intermediary-changelog-file">intermediary changelog file</h3>
+
+<p>To work <code class="highlighter-rouge">changelog</code> uses an intermediary file <code class="highlighter-rouge">change.log</code>.</p>
+
+<h5 id="general-overview">General overview</h5>
+
+<p>A <code class="highlighter-rouge">change.log</code> file contains a list <code class="highlighter-rouge">version</code> and their changes.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>0.9.12-1
+
+  * Initial release (Closes: #nnnn)
+  * This is my first Debian package.
+
+  - mh-cbon &lt;mh-cbon@users.noreply.github.com&gt;
+
+-- Josip Rodin &lt;joy-mg@debian.org&gt;; Mon, 22 Mar 2010 00:37:31 +0100
+
+
+
+0.9.12-0; distribution=unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)
+  * This is my first Debian package.
+
+  - mh-cbon &lt;mh-cbon@users.noreply.github.com&gt;
+
+-- Josip Rodin &lt;joy-mg@debian.org&gt;; Mon, 22 Mar 2010 00:37:30 +0100
+</code></pre>
+</div>
+
+<h5 id="version-block">Version block</h5>
+
+<p>Each version is a formatted block of text such as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>semver
+
+  * Text of change #1
+  * Text of change #2
+  * ...
+
+  - contributor #1 &lt;mail@of.contributor.com&gt;
+  - contributor #2 &lt;mail@of.contributor.com&gt;
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<p>The most minimal version would be</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>semver
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<h5 id="version-field">Version field</h5>
+
+<p>Each version starts with its version value, a valid <code class="highlighter-rouge">semver</code> identifier.</p>
+
+<p><code class="highlighter-rouge">semver</code> identifier can have additional tags, in the form of <code class="highlighter-rouge">tagname=value;</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>semver; tag1=value; tag2=value;
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<p>It is allowed that a version starts by a non valid <code class="highlighter-rouge">semver</code> identifier,
+in which case, the version is always sorted in first.</p>
+
+<p>This possibility is offered to handle next <code class="highlighter-rouge">UNRELEASED</code> version.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>a version name; tag1=value; tag2=value;
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<h5 id="version-changes">Version changes</h5>
+
+<p>Version changes immediately follow the <code class="highlighter-rouge">semver</code> identifier.</p>
+
+<p>They start with a <code class="highlighter-rouge">space</code> followed by a star <code class="highlighter-rouge">*</code>, they can be multi-line.</p>
+
+<p>The format is similar to <code class="highlighter-rouge">\s+\*\s+(.+)</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>semver
+
+  * This is valid
+            * This is valid too, but ugly
+  *This is not valid
+*This is not valid either
+  * This is a multiline entry
+continuing here
+  * This is another multiline entry
+    nicer to read, leading white spaces will be trimmed
+  * This is another multiline entry \
+    with a backslash to get ride of the EOL
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<h5 id="version-contributors">Version contributors</h5>
+
+<p>Version <code class="highlighter-rouge">contributors</code> immediately follow the list of <code class="highlighter-rouge">changes</code>.</p>
+
+<p>They start with a <code class="highlighter-rouge">space</code> followed by an hyphen <code class="highlighter-rouge">-</code>.</p>
+
+<p>The format is similar to <code class="highlighter-rouge">\s\+-\s+(.+)</code>.</p>
+
+<p>It is not required to provide them
+in the form of <code class="highlighter-rouge">name &lt;email&gt;</code>, but it is recommended.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>semver
+
+  - contributor #1 &lt;mail@of.contributor.com&gt;
+  - contributor #2 &lt;mail@of.contributor.com&gt;
+
+-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<h5 id="version-ender">Version ender</h5>
+
+<p>Versions must end with a trailing line starting by a double hyphen <code class="highlighter-rouge">--</code>.</p>
+
+<p>The trailing line provides <code class="highlighter-rouge">package author</code> and <code class="highlighter-rouge">release date</code> separated by a semicolon <code class="highlighter-rouge">;</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>-- Packager name &lt;mail@packager.org&gt;; Release date
+</code></pre>
+</div>
+
+<h2 id="cli-usage">CLI Usage</h2>
+
+<h6 id="-changelog--help">$ changelog -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog - Changelog helper
+
+USAGE:
+   changelog &lt;cmd&gt; &lt;options&gt;
+
+VERSION:
+   0.0.0
+
+COMMANDS:
+     init       Initialize a new changelog file
+     prepare    Prepare next changelog
+     finalize   Take pending next changelog, apply a version on it
+     <span class="nb">test       </span>Test to load your changelog file and report <span class="k">for </span>errors or success
+     <span class="nb">export     </span>Export the changelog using given template
+     md         Export the changelog to Markdown format
+     json       Export the changelog to JSON format
+     debian     Export the changelog to Debian format
+     rpm        Export the changelog to RPM format
+     changelog  Export the changelog to CHANGELOG format
+     ghrelease  Export the changelog to GHRELEASE format
+     <span class="nb">help</span>, h    Shows a list of commands or <span class="nb">help </span><span class="k">for </span>one <span class="nb">command
+
+</span>GLOBAL OPTIONS:
+   --help, -h     show <span class="nb">help</span>
+   --version, -v  print the version
+</code></pre>
+</div>
+
+<h4 id="init">Init</h4>
+
+<h6 id="-changelog-init--help">$ changelog init -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog init - Initialize a new changelog file
+
+USAGE:
+   changelog init <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --author value, -a value  Package author <span class="o">(</span>default: <span class="s2">"N/A"</span><span class="o">)</span>
+   --email value, -e value   Package author email
+   --since value, -s value   Since which tag should the changelog be generated
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog init
+  changelog init --since<span class="o">=</span>0.0.9
+  changelog init --since<span class="o">=</span>0.0.9 --author<span class="o">=</span>mh-cbon
+</code></pre>
+</div>
+
+<h4 id="prepare">Prepare</h4>
+
+<h6 id="-changelog-prepare--help">$ changelog prepare -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog prepare - Prepare next changelog
+
+USAGE:
+   changelog prepare <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --author value, -a value  Package author <span class="o">(</span>default: <span class="s2">"N/A"</span><span class="o">)</span>
+   --email value, -e value   Package author email
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog prepare
+  changelog prepare --author<span class="o">=</span>mh-cbon
+</code></pre>
+</div>
+
+<h4 id="finalize">Finalize</h4>
+
+<h6 id="-changelog-finalize--help">$ changelog finalize -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog finalize - Take pending next changelog, apply a version on it
+
+USAGE:
+   changelog finalize <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value  Version revision
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog finalize --version<span class="o">=</span>0.0.2
+</code></pre>
+</div>
+
+<h5 id="test">Test</h5>
+
+<h6 id="-changelog-test--help">$ changelog test -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog <span class="nb">test</span> - Test to load your changelog file and report <span class="k">for </span>errors or success
+
+USAGE:
+   changelog <span class="nb">test</span> <span class="o">[</span>arguments...]
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog <span class="nb">test</span>
+</code></pre>
+</div>
+
+<h5 id="export">Export</h5>
+
+<h6 id="-changelog-export--help">$ changelog export -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog <span class="nb">export</span> - Export the changelog using given template
+
+USAGE:
+   changelog <span class="nb">export</span> <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --template value, -t value  Go template
+   --version value             Only given version
+   --out value, -o value       Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g                 Automatically guess and inject name and user variable from the cwd
+   --vars value                Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog <span class="nb">export</span> --out<span class="o">=</span>CHANGELOG.rtf --template<span class="o">=</span>rtf.go
+  changelog <span class="nb">export</span> --out<span class="o">=</span>CHANGELOG.rtf --template<span class="o">=</span>rtf.go --version<span class="o">=</span>0.0.2
+  changelog <span class="nb">export</span> --out<span class="o">=</span>CHANGELOG.rtf --template<span class="o">=</span>rtf.go --vars<span class="o">=</span><span class="s1">'{"name":"changelog"}'</span>
+</code></pre>
+</div>
+
+<h5 id="md">Md</h5>
+
+<h6 id="-changelog-md--help">$ changelog md -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog md - Export the changelog to Markdown format
+
+USAGE:
+   changelog md <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog md --out<span class="o">=</span>CHANGELOG.md
+  changelog md --out<span class="o">=</span>CHANGELOG.md --version<span class="o">=</span>0.0.2
+  changelog md --out<span class="o">=</span>CHANGELOG.md --vars<span class="o">=</span><span class="s1">'{"name":"changelog"}'</span>
+</code></pre>
+</div>
+
+<h5 id="debian">Debian</h5>
+
+<h6 id="-changelog-debian--help">$ changelog debian -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog debian - Export the changelog to Debian format
+
+USAGE:
+   changelog debian <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog debian --out<span class="o">=</span>changelog
+  changelog debian --out<span class="o">=</span>changelog --version<span class="o">=</span>0.0.2
+  changelog debian --out<span class="o">=</span>changelog --vars<span class="o">=</span><span class="s1">'{"name":"changelog"}'</span>
+</code></pre>
+</div>
+
+<h5 id="rpm">RPM</h5>
+
+<h6 id="-changelog-rpm--help">$ changelog rpm -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog rpm - Export the changelog to RPM format
+
+USAGE:
+   changelog rpm <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog rpm --out<span class="o">=</span>changelog
+  changelog rpm --out<span class="o">=</span>changelog --version<span class="o">=</span>0.0.2
+  changelog rpm --out<span class="o">=</span>changelog --vars<span class="o">=</span><span class="s1">'{"name":"changelog"}'</span>
+</code></pre>
+</div>
+
+<h5 id="changelog-1">CHANGELOG</h5>
+
+<h6 id="-changelog-changelog--help">$ changelog changelog -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog changelog - Export the changelog to CHANGELOG format
+
+USAGE:
+   changelog changelog <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog changelog --out<span class="o">=</span>changelog
+  changelog changelog --out<span class="o">=</span>changelog --version<span class="o">=</span>0.0.2
+  changelog changelog --out<span class="o">=</span>changelog --vars<span class="o">=</span><span class="s1">'{"name":"changelog"}'</span>
+</code></pre>
+</div>
+
+<h5 id="ghrelease">GHRELEASE</h5>
+
+<h6 id="-changelog-ghrelease--help">$ changelog ghrelease -help</h6>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog ghrelease - Export the changelog to GHRELEASE format
+
+USAGE:
+   changelog ghrelease <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value        Only given version
+   --out value, -o value  Out target <span class="o">(</span>default: <span class="s2">"-"</span><span class="o">)</span>
+   --guess, -g            Automatically guess and inject name and user variable from the cwd
+   --vars value           Add more variables to the template
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog ghrelease --out<span class="o">=</span>changelog --version<span class="o">=</span>0.0.2
+</code></pre>
+</div>
+
+<h5 id="enable-debug-messages">Enable debug messages</h5>
+
+<p>To enable debug messages, just set <code class="highlighter-rouge">VERBOSE=change*</code>, <code class="highlighter-rouge">VERBOSE=*</code> before running the command.</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="nv">VERBOSE</span><span class="o">=</span><span class="k">*</span> changelog init
+</code></pre>
+</div>
+
+<h1 id="history">History</h1>
+
+<p><a href="CHANGELOG.md">CHANGELOG</a></p>
+
+
+
+      <footer class="site-footer">
+  <span class="site-footer-owner"><a href="">changelog</a> is maintained by <a href="https://github.com/mh-cbon">mh-cbon</a>.</span>
+  <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+</footer>
+
+
+    </section>
+
+  </body>
+</html>
