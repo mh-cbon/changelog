@@ -1,8 +1,0 @@
-package: github.com/mh-cbon/changelog
-import:
-- package: github.com/urfave/cli
-  version: ^1.17.0
-- package: github.com/Masterminds/semver
-  version: ^1.1.0
-- package: github.com/mh-cbon/go-repo-utils
-  version: ^0.0.12
