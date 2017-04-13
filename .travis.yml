@@ -42,6 +42,7 @@ before_deploy:
   - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/create-pkg.sh | GH=$GH sh -xe
 
 after_deploy:
+  - wget -O - https://raw.githubusercontent.com/mh-cbon/gh-pages/master/all.sh | sh -x
   - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-deb/master/setup-repository.sh | GH=$GH EMAIL=$EMAIL sh -xe
   - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/setup-repository.sh | GH=$GH EMAIL=$EMAIL sh -xe
 
