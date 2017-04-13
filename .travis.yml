@@ -12,6 +12,7 @@ env:
     - APP=changelog
     - GH=mh-cbon/changelog
     - EMAIL=mh-cbon@users.noreply.github.com
+    - JEKYLL=pietromenna/jekyll-cayman-theme
     - MYEMAIL=mh-cbon@users.noreply.github.com # to clean
     - MYAPP=changelog # to clean
     - secure: Aze0dgazElsiZJmFCN/j5hnzn9vcBoUVnHYkz37wWJ1KyDftxFw9VkVXKJslS9+WV+DFs4CFm2IAxh9BB3gXk8GgCyIkwKrrgIYk4qtTDhvI4wLaMn7pwCbsk1H8a+P6gdEyDVV4YXqvXJDPr9nXdJXjiAiLOitZHXjAyijedcCUImJ7oqL6F7/+O8cSMH7YYAxeln82Zn3Kcko6GBJPxCeeFWA27jZfOsQDPkDFz+YJvSafOW101QCSieqQK53rWLGUwgknCLp0/s9yTe2gmdnpYjU1QgFjxIatWoilbJNvXTwZ+XO2S+6QPICnoOQ7BQmJg4KLIz+LPKkF7qPXaoYPdd7pbGraHY92UDcNSCgsD3RX27PUxMX6SE2tEUTxLcGMLZ592Kb+ZUldJ+oTdA40RopGE2DLdpkKHX7LhyBDPq+XCNE2LF/8neqCI8Y42egkl+6gZCIQe4N8yQmrTqaEl6CNYRMmM+FgYNnrr44ItawlgNgvKEmHgl0O1TAIld/j50aULEX+RKjv1XAsm+9zNAMdhjWEyiyXd5tZbLO9okGkqhS0QIm6g+stExdifknjvnaXf0TNA/q+ZUq0wLPYRpJxgQl0leCXJDLZvm8QXFGLRbqpa9ReF7aTfkvw8cS5zI6T/Ttaf+t5xaKfuDZfGdG3lo8GSrCroh2+GoE=
