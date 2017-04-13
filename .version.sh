@@ -16,7 +16,7 @@ preversion=
   666 build-them-all build main.go -o "build/&os-&arch/&pkg" --ldflags "-X main.VERSION=!newversion!"
 
 postversion=
-  666 changelog md -o CHANGELOG.md --vars='{"name":"go-bin-rpm"}'
+  666 changelog md -o CHANGELOG.md --vars='{"name":"changelog"}'
   666 commit -q -m "changelog: !newversion!" -f CHANGELOG.md
   666 go install --ldflags "-X main.VERSION=!newversion!"
   666 emd gen -out README.md
@@ -25,9 +25,9 @@ postversion=
   666 git push --tags
   philea -s -S -p "build/windows*/*" "666 archive create -f -o=assets/%dname.zip -C=build/%dname/ ."
   philea -s -S -e windows*/** -p "build/*/**" "666 archive create -f -o=assets/%dname.tar.gz -C=build/%dname/ ."
-  666 gh-api-cli create-release -n release -o mh-cbon -r go-bin-rpm \
+  666 gh-api-cli create-release -n release -o mh-cbon -r changelog \
     --ver !newversion! -c "changelog ghrelease --version !newversion!" \
     --draft !isprerelease!
-  666 gh-api-cli upload-release-asset -n release --glob "assets/*" -o mh-cbon -r go-bin-rpm --ver !newversion!
+  666 gh-api-cli upload-release-asset -n release --glob "assets/*" -o mh-cbon -r changelog --ver !newversion!
   666 rm-glob -r build/
   666 rm-glob -r assets/
