@@ -1,5 +1,5 @@
 
-UNRELEASED
+0.0.28
 
   * ci: add go 1.9, various updates
   * close #5: UNRELEASED can be exported
@@ -98,6 +98,7 @@ UNRELEASED
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
+
 
 
 
@@ -321,3 +322,5 @@ UNRELEASED
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
+
+
