@@ -1,4 +1,18 @@
 
+0.0.28
+
+  * ci: add go 1.9, various updates
+  * close #5: UNRELEASED can be exported
+  * export: ensure the file is open with truncate flag
+  * close #7: the init operation does not fail on vcs issue
+  * changelog: 0.0.27
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 22 Aug 2017 21:57:18 +0200
+
+
+
 0.0.27
 
   * close #4: fix whitespace handling
@@ -84,6 +98,8 @@
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
+
+
 
 
 
