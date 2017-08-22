@@ -223,6 +223,22 @@ func TestChangelog2(t *testing.T) {
 	mustNotErr(tt, os.RemoveAll(dir))
 }
 
+func TestInitAnyway(t *testing.T) {
+	// about: https://github.com/mh-cbon/changelog/issues/7
+	tt := &TestingExiter{t}
+
+	dir := "git_test/git"
+	mustNotErr(t, os.RemoveAll(dir))
+	os.MkdirAll(dir, os.ModePerm)
+	mustExecOk(t, makeCmd(dir, "git", "init"))
+
+	//- init the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "init"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+
+	mustNotErr(tt, os.RemoveAll(dir))
+}
+
 func mustGetChangelog(tt Errorer, dir string) *changelog.Changelog {
 	clog := &changelog.Changelog{}
 	out := mustExecOk(tt, makeCmd(dir, binPath, "json"))

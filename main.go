@@ -24,6 +24,7 @@ import (
 var VERSION = "0.0.0"
 var logger = verbose.Auto()
 var changelogFile = "change.log"
+var notAvailable = "N/A"
 
 func main() {
 
@@ -40,7 +41,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "author, a",
-					Value: "N/A",
+					Value: notAvailable,
 					Usage: "Package author",
 				},
 				cli.StringFlag{
@@ -62,7 +63,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "author, a",
-					Value: "N/A",
+					Value: notAvailable,
 					Usage: "Package author",
 				},
 				cli.StringFlag{
@@ -279,7 +280,7 @@ func initChangelog(c *cli.Context) error {
 	since := c.String("since")
 
 	if _, err := os.Stat(changelogFile); !os.IsNotExist(err) {
-		return cli.NewExitError("Changelog file exists.", 1)
+		return cli.NewExitError("Changelog file already exists.", 1)
 	}
 
 	path, err := os.Getwd()
@@ -289,57 +290,63 @@ func initChangelog(c *cli.Context) error {
 
 	clog := &changelog.Changelog{}
 
-	vcsTags, err := getVcsTags(path)
-	if err != nil {
-		return cli.NewExitError(err.Error(), 1)
-	}
-	tags := make([]string, 0)
-	tags = append(tags, "")
-	tags = append(tags, vcsTags...)
+	if vcsTags, err3 := getVcsTags(path); err3 == nil {
 
-	logger.Println(since)
-	logger.Println(c.IsSet("since"))
+		tags := make([]string, 0)
+		tags = append(tags, "")
+		tags = append(tags, vcsTags...)
 
-	found := false
-	for i, tag := range tags {
-		proceed := false
+		logger.Println(since)
+		logger.Println(c.IsSet("since"))
 
-		if !c.IsSet("since") {
-			proceed = true
-		} else {
-			found = found || tag == since
-			if found {
+		found := false
+		for i, tag := range tags {
+			proceed := false
+
+			if !c.IsSet("since") {
 				proceed = true
+			} else {
+				found = found || tag == since
+				if found {
+					proceed = true
+				}
 			}
-		}
 
-		if proceed == false {
-			continue
-		}
+			if proceed == false {
+				continue
+			}
 
-		cSince := tag
-		cTo := ""
-		if i+1 < len(tags) {
-			cTo = tags[i+1]
+			cSince := tag
+			cTo := ""
+			if i+1 < len(tags) {
+				cTo = tags[i+1]
+			}
+			newVersion := changelog.NewVersion(cTo)
+			newVersion.Author.Email = email
+			newVersion.Author.Name = author
+			logger.Printf("list commits of=%q since=%q to=%q\n", cTo, cSince, cTo)
+			if err2 := setVersionChanges(newVersion, path, cSince, cTo); err2 != nil && cTo != "" {
+				return cli.NewExitError(err2.Error(), 1)
+			}
+			if newVersion.Author.Name == notAvailable && len(newVersion.Contributors) > 0 {
+				newVersion.Author.Name = newVersion.Contributors[0].Name
+				newVersion.Author.Email = newVersion.Contributors[0].Email
+			}
+			if cTo == "" {
+				newVersion.Name = "UNRELEASED"
+			}
+			clog.Versions = append(clog.Versions, newVersion)
 		}
-		newVersion := changelog.NewVersion(cTo)
-		newVersion.Author.Email = email
-		newVersion.Author.Name = author
-		logger.Printf("list commits of=%q since=%q to=%q\n", cTo, cSince, cTo)
-		if err2 := setVersionChanges(newVersion, path, cSince, cTo); err2 != nil {
-			return cli.NewExitError(err2.Error(), 1)
-		}
-		if newVersion.Author.Name == "N/A" && len(newVersion.Contributors) > 0 {
-			newVersion.Author.Name = newVersion.Contributors[0].Name
-			newVersion.Author.Email = newVersion.Contributors[0].Email
-		}
-		if cTo == "" {
-			newVersion.Name = "UNRELEASED"
-		}
+		clog.Sort()
+
+	} else {
+		// the vcs somehow is broken/notready
+		// let s create an empty changelog
+		newVersion := changelog.NewVersion("UNRELEASED")
+		newVersion.Author.Name = notAvailable
+
 		clog.Versions = append(clog.Versions, newVersion)
 	}
-
-	clog.Sort()
 
 	out, err2 := os.Create(changelogFile)
 	if err2 != nil {
@@ -396,7 +403,7 @@ func prepareNext(c *cli.Context) error {
 	currentNext.Author.Email = email
 	currentNext.Author.Name = author
 
-	if currentNext.Author.Name == "N/A" && len(currentNext.Contributors) > 0 {
+	if currentNext.Author.Name == notAvailable && len(currentNext.Contributors) > 0 {
 		currentNext.Author.Name = currentNext.Contributors[0].Name
 		currentNext.Author.Email = currentNext.Contributors[0].Email
 	}
