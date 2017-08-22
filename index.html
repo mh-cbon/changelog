@@ -25,8 +25,7 @@
       
       <h1 id="changelog">changelog</h1>
 
-<p><a href="https://travis-ci.org/mh-cbon/changelog"><img src="https://travis-ci.org/mh-cbon/changelog.svg?branch=master" alt="travis Status" /></a><a href="https://ci.appveyor.com/project/mh-cbon/changelog"><img src="https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&amp;svg=true" alt="appveyor Status" /></a>
-<a href="http://godoc.org/github.com/mh-cbon/changelog"><img src="https://godoc.org/github.com/mh-cbon/changelog?status.svg" alt="GoDoc" /></a></p>
+<p><a href="https://travis-ci.org/mh-cbon/changelog"><img src="https://travis-ci.org/mh-cbon/changelog.svg?branch=master" alt="travis Status" /></a><a href="https://ci.appveyor.com/projects/mh-cbon/changelog"><img src="https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&amp;svg=true" alt="Appveyor Status" /></a><a href="http://godoc.org/github.com/mh-cbon/changelog"><img src="https://godoc.org/github.com/mh-cbon/changelog?status.svg" alt="GoDoc" /></a></p>
 
 <p>Maintain a changelog easily.</p>
 
@@ -45,7 +44,10 @@
   <li><a href="#usage">Usage</a>
     <ul>
       <li><a href="#intermediary-changelog-file">intermediary changelog file</a></li>
-      <li><a href="#cli-usage">CLI Usage</a></li>
+    </ul>
+  </li>
+  <li><a href="#cli-usage">CLI Usage</a>
+    <ul>
       <li><a href="#init">Init</a></li>
       <li><a href="#prepare">Prepare</a></li>
       <li><a href="#finalize">Finalize</a></li>
@@ -59,7 +61,6 @@
 <p>Check the <a href="https://github.com/mh-cbon/changelog/releases">release page</a>!</p>
 
 <h4 id="glide">Glide</h4>
-
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>mkdir -p <span class="nv">$GOPATH</span>/src/github.com/mh-cbon/changelog
 <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/mh-cbon/changelog
 git clone https://github.com/mh-cbon/changelog.git .
@@ -242,7 +243,7 @@ in the form of <code class="highlighter-rouge">name &lt;email&gt;</code>, but it
 
 <h2 id="cli-usage">CLI Usage</h2>
 
-<h6 id="-changelog--help">$ changelog -help</h6>
+<p>changelog -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog - Changelog helper
 
@@ -274,7 +275,7 @@ COMMANDS:
 
 <h4 id="init">Init</h4>
 
-<h6 id="-changelog-init--help">$ changelog init -help</h6>
+<p>changelog init -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog init - Initialize a new changelog file
 
@@ -297,7 +298,7 @@ OPTIONS:
 
 <h4 id="prepare">Prepare</h4>
 
-<h6 id="-changelog-prepare--help">$ changelog prepare -help</h6>
+<p>changelog prepare -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog prepare - Prepare next changelog
 
@@ -318,7 +319,7 @@ OPTIONS:
 
 <h4 id="finalize">Finalize</h4>
 
-<h6 id="-changelog-finalize--help">$ changelog finalize -help</h6>
+<p>changelog finalize -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog finalize - Take pending next changelog, apply a version on it
 
@@ -337,7 +338,7 @@ OPTIONS:
 
 <h5 id="test">Test</h5>
 
-<h6 id="-changelog-test--help">$ changelog test -help</h6>
+<p>changelog test -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog <span class="nb">test</span> - Test to load your changelog file and report <span class="k">for </span>errors or success
 
@@ -353,7 +354,7 @@ USAGE:
 
 <h5 id="export">Export</h5>
 
-<h6 id="-changelog-export--help">$ changelog export -help</h6>
+<p>changelog export -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog <span class="nb">export</span> - Export the changelog using given template
 
@@ -378,7 +379,7 @@ OPTIONS:
 
 <h5 id="md">Md</h5>
 
-<h6 id="-changelog-md--help">$ changelog md -help</h6>
+<p>changelog md -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog md - Export the changelog to Markdown format
 
@@ -402,7 +403,7 @@ OPTIONS:
 
 <h5 id="debian">Debian</h5>
 
-<h6 id="-changelog-debian--help">$ changelog debian -help</h6>
+<p>changelog debian -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog debian - Export the changelog to Debian format
 
@@ -426,7 +427,7 @@ OPTIONS:
 
 <h5 id="rpm">RPM</h5>
 
-<h6 id="-changelog-rpm--help">$ changelog rpm -help</h6>
+<p>changelog rpm -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog rpm - Export the changelog to RPM format
 
@@ -450,7 +451,7 @@ OPTIONS:
 
 <h5 id="changelog-1">CHANGELOG</h5>
 
-<h6 id="-changelog-changelog--help">$ changelog changelog -help</h6>
+<p>changelog changelog -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog changelog - Export the changelog to CHANGELOG format
 
@@ -474,7 +475,7 @@ OPTIONS:
 
 <h5 id="ghrelease">GHRELEASE</h5>
 
-<h6 id="-changelog-ghrelease--help">$ changelog ghrelease -help</h6>
+<p>changelog ghrelease -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
    changelog ghrelease - Export the changelog to GHRELEASE format
 
@@ -505,7 +506,6 @@ OPTIONS:
 <h1 id="history">History</h1>
 
 <p><a href="CHANGELOG.md">CHANGELOG</a></p>
-
 
 
       <footer class="site-footer">
