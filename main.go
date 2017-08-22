@@ -820,7 +820,7 @@ func convertOut(out string) (io.Writer, error) {
 	if out == "-" {
 		writer = os.Stdout
 	} else {
-		f, err := os.OpenFile(out, os.O_RDWR|os.O_CREATE, 0755)
+		f, err := os.OpenFile(out, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if err != nil {
 			return nil, err
 		}
