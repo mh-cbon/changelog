@@ -1,5 +1,5 @@
 
-0.0.28
+UNRELEASED
 
   * ci: add go 1.9, various updates
   * close #5: UNRELEASED can be exported
@@ -321,5 +321,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
-
-
