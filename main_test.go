@@ -562,3 +562,60 @@ UNRELEASED
 	}
 	fmt.Println(out.String())
 }
+
+func TestExportUnreleased(t *testing.T) {
+	tt := &TestingExiter{t}
+
+	dir := "git_test/git"
+	mustNotErr(t, os.RemoveAll(dir))
+	initGitDir(t, dir)
+
+	//- init the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "init"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 1)
+	}
+	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 2"))
+
+	//- prepare the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 2)
+	}
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+
+	//- finalize the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-am", "changelog 0.1.0"))
+
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+
+	//- create branch 0.1.0
+	mustExecOk(t, makeCmd(dir, "git", "tag", "0.1.0"))
+
+	//- add a change on master
+	mustExecOk(t, makeCmd(dir, "touch", "tomate-master"))
+	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 3 master"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+
+	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 1)
+	}
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+
+	mustNotErr(tt, os.RemoveAll(dir))
+}

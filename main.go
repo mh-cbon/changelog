@@ -709,11 +709,20 @@ func loadChangelog(path string, version string) (*changelog.Changelog, error) {
 		newVersions := make([]*changelog.Version, 0)
 		v := clog.FindVersionByVersion(version)
 		if v == nil {
-			return nil, errors.New("Version '" + version + "' not found.")
+			if version == "UNRELEASED" {
+				v = clog.FindVersionByName(version)
+				if v == nil {
+					v = changelog.NewVersion("UNRELEASED")
+					v.Author.Name = notAvailable
+				}
+			} else {
+				return nil, errors.New("Version '" + version + "' not found.")
+			}
 		}
 		newVersions = append(newVersions, v)
 		clog.Versions = newVersions
 	}
+
 	return clog, nil
 }
 
