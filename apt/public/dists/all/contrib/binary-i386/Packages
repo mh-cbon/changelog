@@ -1,20 +1,20 @@
 Package: changelog
 Priority: extra
 Section: unknown
-Installed-Size: 3.9 kB
+Installed-Size: 3.6 kB
 Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
 Architecture: i386
 Source: changelog
 Version: 0.0.28
 Filename: pool/contrib/c/changelog/changelog-0.0.28_386.deb
-Size: 1042610
-MD5sum: fa81ffad8a67e6e8b166be85a8ffe85c
-SHA1: 25273109358eb5a6e32351c55e12e6f8ffa4dc7b
-SHA256: 5604653ab1f196a527145b4d95e2689f6b45c7297366d025ee34c1f6bdc1cbe7
-SHA512: d3be1cba4105c1dba6644439ff6c41e5e293f0bead87acc717dfe8f10a3220a9621e038966c7dbc7846c2e674c9f00415b295d1e582cd453bfe3cf1a18194793
+Size: 1053920
+MD5sum: 9f4eae509f9f6e0248bd9c405009da7a
+SHA1: 14dfac8d16584213ce08e8a34fcb7cde2553d007
+SHA256: 3ae2df6bac30128c4ced65faa290cc4dfcbb4909ed72664ef61a5d83f9a7536c
+SHA512: c47800cf54a053b267f3b714b630f59339c94de85b3277af12c95f7f605a28e1186b0b3c88f4b27f5f223257c3fba21f5714b9bca0f91ae9ca477032e41b270a
 Description: Maintain a changelog
-Package-Type: deb
 Homepage: http://github.com/mh-cbon/changelog
+Package-Type: deb
 
 Package: changelog
 Priority: extra
