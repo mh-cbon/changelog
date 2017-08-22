@@ -1,8 +1,6 @@
 # changelog
 
-[![travis Status](https://travis-ci.org/mh-cbon/changelog.svg?branch=master)](https://travis-ci.org/mh-cbon/changelog)[![appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&svg=true)](https://ci.appveyor.com/project/mh-cbon/changelog)
-[![GoDoc](https://godoc.org/github.com/mh-cbon/changelog?status.svg)](http://godoc.org/github.com/mh-cbon/changelog)
-
+[![travis Status](https://travis-ci.org/mh-cbon/changelog.svg?branch=master)](https://travis-ci.org/mh-cbon/changelog)[![Appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&svg=true)](https://ci.appveyor.com/projects/mh-cbon/changelog)[![GoDoc](https://godoc.org/github.com/mh-cbon/changelog?status.svg)](http://godoc.org/github.com/mh-cbon/changelog)
 
 Maintain a changelog easily.
 
@@ -17,7 +15,7 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
   - [linux rpm/deb standalone package](#linux-rpmdeb-standalone-package)
 - [Usage](#usage)
   - [intermediary changelog file](#intermediary-changelog-file)
-  - [CLI Usage](#cli-usage)
+- [CLI Usage](#cli-usage)
   - [Init](#init)
   - [Prepare](#prepare)
   - [Finalize](#finalize)
@@ -28,7 +26,6 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
 Check the [release page](https://github.com/mh-cbon/changelog/releases)!
 
 #### Glide
-
 ```sh
 mkdir -p $GOPATH/src/github.com/mh-cbon/changelog
 cd $GOPATH/src/github.com/mh-cbon/changelog
@@ -36,7 +33,6 @@ git clone https://github.com/mh-cbon/changelog.git .
 glide install
 go install
 ```
-
 
 #### Chocolatey
 ```sh
@@ -211,8 +207,7 @@ The trailing line provides `package author` and `release date` separated by a se
 
 ## CLI Usage
 
-
-###### $ changelog -help
+changelog -help
 ```sh
 NAME:
    changelog - Changelog helper
@@ -244,8 +239,7 @@ GLOBAL OPTIONS:
 
 #### Init
 
-
-###### $ changelog init -help
+changelog init -help
 ```sh
 NAME:
    changelog init - Initialize a new changelog file
@@ -268,8 +262,7 @@ EXAMPLE:
 
 #### Prepare
 
-
-###### $ changelog prepare -help
+changelog prepare -help
 ```sh
 NAME:
    changelog prepare - Prepare next changelog
@@ -290,8 +283,7 @@ EXAMPLE:
 
 #### Finalize
 
-
-###### $ changelog finalize -help
+changelog finalize -help
 ```sh
 NAME:
    changelog finalize - Take pending next changelog, apply a version on it
@@ -310,8 +302,7 @@ EXAMPLE:
 
 ##### Test
 
-
-###### $ changelog test -help
+changelog test -help
 ```sh
 NAME:
    changelog test - Test to load your changelog file and report for errors or success
@@ -327,8 +318,7 @@ EXAMPLE:
 
 ##### Export
 
-
-###### $ changelog export -help
+changelog export -help
 ```sh
 NAME:
    changelog export - Export the changelog using given template
@@ -353,8 +343,7 @@ EXAMPLE:
 
 ##### Md
 
-
-###### $ changelog md -help
+changelog md -help
 ```sh
 NAME:
    changelog md - Export the changelog to Markdown format
@@ -378,8 +367,7 @@ EXAMPLE:
 
 ##### Debian
 
-
-###### $ changelog debian -help
+changelog debian -help
 ```sh
 NAME:
    changelog debian - Export the changelog to Debian format
@@ -403,8 +391,7 @@ EXAMPLE:
 
 ##### RPM
 
-
-###### $ changelog rpm -help
+changelog rpm -help
 ```sh
 NAME:
    changelog rpm - Export the changelog to RPM format
@@ -428,8 +415,7 @@ EXAMPLE:
 
 ##### CHANGELOG
 
-
-###### $ changelog changelog -help
+changelog changelog -help
 ```sh
 NAME:
    changelog changelog - Export the changelog to CHANGELOG format
@@ -453,8 +439,7 @@ EXAMPLE:
 
 ##### GHRELEASE
 
-
-###### $ changelog ghrelease -help
+changelog ghrelease -help
 ```sh
 NAME:
    changelog ghrelease - Export the changelog to GHRELEASE format
@@ -485,4 +470,3 @@ VERBOSE=* changelog init
 # History
 
 [CHANGELOG](CHANGELOG.md)
-
