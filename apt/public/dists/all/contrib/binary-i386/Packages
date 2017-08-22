@@ -1,6 +1,24 @@
 Package: changelog
 Priority: extra
 Section: unknown
+Installed-Size: 3.9 kB
+Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
+Architecture: i386
+Source: changelog
+Version: 0.0.28
+Filename: pool/contrib/c/changelog/changelog-0.0.28_386.deb
+Size: 1042610
+MD5sum: fa81ffad8a67e6e8b166be85a8ffe85c
+SHA1: 25273109358eb5a6e32351c55e12e6f8ffa4dc7b
+SHA256: 5604653ab1f196a527145b4d95e2689f6b45c7297366d025ee34c1f6bdc1cbe7
+SHA512: d3be1cba4105c1dba6644439ff6c41e5e293f0bead87acc717dfe8f10a3220a9621e038966c7dbc7846c2e674c9f00415b295d1e582cd453bfe3cf1a18194793
+Description: Maintain a changelog
+Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
+
+Package: changelog
+Priority: extra
+Section: unknown
 Installed-Size: 3.6 kB
 Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
 Architecture: i386
@@ -12,276 +30,6 @@ MD5sum: d933e4b0732103a9080505565b0e6acf
 SHA1: 73284f5f7981ee4e28e5fceeb54a815782309846
 SHA256: 3b136070d837da0e8d94362537391d78de55e4952fc509092852b3da4d657954
 SHA512: 819347617a9719c251489986727431360a29a6d94164391df2852aeb0763b18c1d1de443cf15517fa71a5d56d07caee154b5d41885a6fa20c24473b73226c8a5
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.5 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.26
-Filename: pool/contrib/c/changelog/changelog-0.0.26_386.deb
-Size: 1052774
-MD5sum: 889b195b35d028677f08b9beed036b3f
-SHA1: 9f82e695556b225fa343616fa681e148c7014c7c
-SHA256: 51372feb88b9b9bac09871c734231dbacdd50e9d4020cf3b1a69aefbd9a8839e
-SHA512: c997de1e1cbee8da7892d85c5a209561fdeeb39ed7d88357157e861150576c80d1bffcb6a4aa162911c2255396c111aba75746c3e35a90744f2590936b0af6ea
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.4 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.25
-Filename: pool/contrib/c/changelog/changelog-0.0.25_386.deb
-Size: 1017092
-MD5sum: 0da329ffb66374fcb12b5e1d58b49514
-SHA1: fa9aecd2ae290613e1d0b3124a1e9323329d98e9
-SHA256: f89cf7d91db7403aeba6f2255dec5d4b681731deb3c2a5f559b36d54170b2c1b
-SHA512: fd8c15701f109ae24a4be80979e2f63970d166a4bddf728accebdf1ec8195bc745ffcfd0789a833b7484881b020ad1884bf7130fb260b54d475a02c4f437f7cf
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.24
-Filename: pool/contrib/c/changelog/changelog-0.0.24_386.deb
-Size: 1006574
-MD5sum: 437acdcb546bdec95e6342e486d4c140
-SHA1: 92574149bf50bb451afe21016fad5e694c7b7725
-SHA256: 346168c5395afffb0f19d8ea1aded3f28d2a197a3a037e5804f4e532553daed2
-SHA512: 374fc78116df0f49a73cd6767658273550db655cdd6a57b15c2aa140ca844e741b9c016ac29361742b24ace298299f0869b5fcc31b0b814ed0c947273e141118
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.23
-Filename: pool/contrib/c/changelog/changelog-0.0.23_386.deb
-Size: 1005988
-MD5sum: 56215fa9d6eef200fc7deadd40ea2aba
-SHA1: 461adc94841712c54a167efbc7fd9d67f7d02741
-SHA256: 2b320e7a0c857eb34f6d74bafb7030d7b69b25e11059163d0b4c63c81857baf6
-SHA512: fdcf31ebf0a56983fe0495355e3ea0dc8894d495f4c5a1e9cb8345cd00c2c9d94c00b1b2aef001edf5b3300f43970e698003531a6124db7071bb15c2188c0b36
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.21
-Filename: pool/contrib/c/changelog/changelog-0.0.21_386.deb
-Size: 1006508
-MD5sum: ba6ae6b9e9ee3fa35e3d52cda9162d94
-SHA1: 469788dccea0a2d78f26ffa692c32bad5367d9fb
-SHA256: 129785eaf70cd047994b6ab7bf46f61acad0b18d6602f763dfd4d34072a9c45a
-SHA512: 2ab4e1497441129445e7bfdb3a69d2daa29275a258249ce139e3246f0b663855b95f29f3faf2b09d229ec8b7f476efd5ae6fc4363f79447bd49d780bb7a826b4
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.20
-Filename: pool/contrib/c/changelog/changelog-0.0.20_386.deb
-Size: 1005966
-MD5sum: e24e52fa105ac16a22fbf93738b4c45e
-SHA1: eaede6258e1d1c97695a6fd81ab01ab63f19ce9e
-SHA256: c6ae2bdee0a6fee5b5306f63c93c5b40d6d78b1986930686e4a6b53166926048
-SHA512: f8939c1be2390a912316dfa9351a866a1428bb6e3f46fa130c4255301842ceada221cdabff032732ba4af1acdd657bdcaf9013505d9cc3142ed2016c76c64bc2
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.18
-Filename: pool/contrib/c/changelog/changelog-0.0.18_386.deb
-Size: 998836
-MD5sum: d67599d460f95ca432b62428954c87b4
-SHA1: 7e7caccaa2661e4b598c3339fe6cb659ca883a4c
-SHA256: cab364a8681cbb479af60563b6a84d46ef0b3233b1fa7e58a154605569289182
-SHA512: 9b1401c0333673d737107598cdb4d0dd2ccdafd92f3afb4e3b1c2be605f2d9af18230b0eeccb109a1fe5e34401497adcb7bb470ff9644e390b1438f3d9dea911
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.17
-Filename: pool/contrib/c/changelog/changelog-0.0.17_386.deb
-Size: 998742
-MD5sum: aed4f17079bd126a1299d3ad41ed4c2a
-SHA1: 6f78bbf82b15561dc2af4c635913877b5906748e
-SHA256: 6a3ced900b1c1b8edc4804831a52d3c6ed2580077c4970b817e002f358712cc7
-SHA512: 9f42a199dbd811608b3bb62575b288b09aae4f5259c5c2405df04eee739f2ea7eb5bd54a590929354bb44d598d2bcca6d5164c1e3b7a621dae03156e04ce5f55
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.10
-Filename: pool/contrib/c/changelog/changelog-0.0.10_386.deb
-Size: 1309650
-MD5sum: d9f2187f146bc333f555d21fe3cab037
-SHA1: 8b331528d3c0fe969b4f1c1b2bafd95163fcf5b3
-SHA256: 68a1cc29d27a00baf61b2681eddb006b8bdb47008d0d7cf1c514bf68d3016612
-SHA512: bfc1731d5ea2fa8c8ac4aa4f2474d0b94cc5b648e168409eb7363321e3a949527c10fe96d89ea3e208198c717ac0e0f559e3a0985f9001082610612f36f75bd6
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.9
-Filename: pool/contrib/c/changelog/changelog-0.0.9_386.deb
-Size: 1308980
-MD5sum: 69ace33fc6e21f51330b0d23f63305ea
-SHA1: d6997c050b5292d074c835e42090c28b0cfcaba6
-SHA256: ed92a88dd88d5955fd1ca705743d076ce3b561dad48d8ac4bbe101c60816f2f0
-SHA512: db6370b942632bb47340bd54079425fe4a7fda8b806cfacf7c33476940306ce8cde45d6c540d587ce32488627fc2eb70367411d8065f6a74c0e495e227ef4b5d
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.8
-Filename: pool/contrib/c/changelog/changelog-0.0.8_386.deb
-Size: 1307956
-MD5sum: e86e6fcf78688b3d7e7b99ccc0ce494e
-SHA1: 7e5cc1e299fbd2e306cb5f54875e2395f45d9cb3
-SHA256: 9a7db00f4c2ca01e547e2fd3b3cd867f0774bade80931433e515ff6d47c4566d
-SHA512: 4275ba51da5cba7dab4b660fc22e628db978b199e685150d79e3976a26a03566d018707074ad4e776ee7af79ce0aefe84167586d7649bd7ad194ad931d533909
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.7
-Filename: pool/contrib/c/changelog/changelog-0.0.7_386.deb
-Size: 1307848
-MD5sum: 899852426751850f947785350aecadd6
-SHA1: b5952b80c657e2a5fab13c0a528cd24f4afafd45
-SHA256: 41b54b9a22fb82a4a07c5f2bf0c65ec2088302d10f17cf1dea8d767efbd9452d
-SHA512: 8732d8d34bbce5a84b5b3509a76ac81cd41a4c89f8cde76814cb7e350eac8135969d29fde089a3b2b0ee2756f4d4c47558807852e40b8718ab7a6f6734d64f85
-Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
-Package-Type: deb
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.6
-Filename: pool/contrib/c/changelog/changelog-0.0.6_386.deb
-Size: 1307800
-MD5sum: 5965a6c93cf9aff0f1f1e50d98f052ba
-SHA1: 22c8a7c6947d02ba1ef2da4617560292789cb969
-SHA256: 4ca0cd8f4d632909f79f99a6ddbf08adc77c9c3510d7ab34578b990556f4d513
-SHA512: 2401284470ff598d61b47155271dc343dd9195420e6e0e41016a518d5ee667393c2bb95cf304263882b82300ea4062705216e11b37eef449aae43d88e193eddd
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.5
-Filename: pool/contrib/c/changelog/changelog-0.0.5_386.deb
-Size: 1307762
-MD5sum: 144b6b8ac2b0e26d47c8e79caa184a53
-SHA1: 2cb8f880b54078a5fb776022fb9a40e299262d1b
-SHA256: 1479d571fb6f15bb20707b8b285b2aeddf488a530f331d7bdc666ef7e2714a47
-SHA512: c370094094f80efc50c52f9a1ebefd9463577edaabee9098efd0f005511cb0b84d61d246556f1accf73c3c37b19ed2338be60dc2aa697cad78fa3466eee1103c
-Description: Maintain a changelog
-Package-Type: deb
-Homepage: http://github.com/mh-cbon/changelog
-
-Package: changelog
-Priority: extra
-Section: unknown
-Installed-Size: 3.7 kB
-Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
-Architecture: i386
-Source: changelog
-Version: 0.0.4
-Filename: pool/contrib/c/changelog/changelog-0.0.4_386.deb
-Size: 1307650
-MD5sum: c7edf5dc3995bf4cbe0c03a7d09291aa
-SHA1: 42a39f269874e0bc71639a986f1527ee2b8f9c3b
-SHA256: bbacdc5acb8629ebbde1b076f142e2444f7d2deb2118bbb3e27ad37bb87e4ca1
-SHA512: e8dc917a0960a5e039a274efb7d20be784ab4a9b001a65c3d70451eddbe9c2010c1fa0326a73f05720aaf446c6d6fdb0a73e91c2690717480d44cc824ec2ace3
 Description: Maintain a changelog
 Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
