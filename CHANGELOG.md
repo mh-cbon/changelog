@@ -1,5 +1,23 @@
 # Changelog - changelog
 
+### 0.0.28
+
+__Changes__
+
+- ci: add go 1.9, various updates
+- close #5: UNRELEASED can be exported
+- export: ensure the file is open with truncate flag
+- close #7: the init operation does not fail on vcs issue
+- changelog: 0.0.27
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Tue 22 Aug 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.27...0.0.28#diff)
+______________
+
 ### 0.0.27
 
 __Changes__
@@ -115,6 +133,8 @@ __Changes__
 
 - firstrev: silently fail if the directory is not a repository,
   or if the system does not have required binaries
+
+
 
 
 
