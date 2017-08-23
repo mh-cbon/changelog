@@ -696,7 +696,7 @@ func guessVars(dest map[string]interface{}) error {
 
 func loadChangelog(path string, version string) (*changelog.Changelog, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil, errors.New("Changelog file %q does not exist.")
+		return nil, fmt.Errorf("Changelog file %q does not exist.", path)
 	}
 
 	clog := &changelog.Changelog{}
