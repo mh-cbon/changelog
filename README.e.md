@@ -222,7 +222,8 @@ EXAMPLE:
 EXAMPLE:
   changelog export --out=CHANGELOG.rtf --template=rtf.go
   changelog export --out=CHANGELOG.rtf --template=rtf.go --version=0.0.2
-  changelog export --out=CHANGELOG.rtf --template=rtf.go --vars='{"name":"changelog"}'
+  changelog export --out=CHANGELOG.rtf --template=rtf.go --vars='{"name":"changelog"}'       # linux rocks
+  changelog export --out=CHANGELOG.rtf --template=rtf.go --vars="{\"name\":\"changelog\"}"   # windows ....
 ```
 
 ##### Md
@@ -233,7 +234,8 @@ EXAMPLE:
 EXAMPLE:
   changelog md --out=CHANGELOG.md
   changelog md --out=CHANGELOG.md --version=0.0.2
-  changelog md --out=CHANGELOG.md --vars='{"name":"changelog"}'
+  changelog md --out=CHANGELOG.md --vars='{"name":"changelog"}'       # linux rocks
+  changelog md --out=CHANGELOG.md --vars="{\"name\":\"changelog\"}"   # windows ....
 ```
 
 ##### Debian
@@ -244,7 +246,8 @@ EXAMPLE:
 EXAMPLE:
   changelog debian --out=changelog
   changelog debian --out=changelog --version=0.0.2
-  changelog debian --out=changelog --vars='{"name":"changelog"}'
+  changelog debian --out=changelog --vars='{"name":"changelog"}'       # linux rocks
+  changelog debian --out=changelog --vars="{\"name\":\"changelog\"}"   # windows ....
 ```
 
 ##### RPM
@@ -255,7 +258,8 @@ EXAMPLE:
 EXAMPLE:
   changelog rpm --out=changelog
   changelog rpm --out=changelog --version=0.0.2
-  changelog rpm --out=changelog --vars='{"name":"changelog"}'
+  changelog rpm --out=changelog --vars='{"name":"changelog"}'       # linux rocks
+  changelog rpm --out=changelog --vars="{\"name\":\"changelog\"}"   # windows ....
 ```
 
 ##### CHANGELOG
@@ -266,7 +270,8 @@ EXAMPLE:
 EXAMPLE:
   changelog changelog --out=changelog
   changelog changelog --out=changelog --version=0.0.2
-  changelog changelog --out=changelog --vars='{"name":"changelog"}'
+  changelog changelog --out=changelog --vars='{"name":"changelog"}'       # linux rocks
+  changelog changelog --out=changelog --vars="{\"name\":\"changelog\"}"   # windows ....
 ```
 
 ##### GHRELEASE

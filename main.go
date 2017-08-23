@@ -667,7 +667,7 @@ func decodeVars(varsStr string) (map[string]interface{}, error) {
 	vars := make(map[string]interface{})
 	if len(varsStr) > 0 {
 		if err := json.Unmarshal([]byte(varsStr), &vars); err != nil {
-			return vars, fmt.Errorf("Failed to decode vars: %s", err.Error())
+			return vars, fmt.Errorf("Failed to decode vars: %s (input=%v)", err.Error(), varsStr)
 		}
 	}
 	return vars, nil
