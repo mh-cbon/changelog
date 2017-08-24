@@ -77,6 +77,11 @@ func main() {
 			},
 		},
 		{
+			Name:   "show",
+			Usage:  "Show last version",
+			Action: show,
+		},
+		{
 			Name:   "finalize",
 			Usage:  "Take pending next changelog, apply a version on it",
 			Action: finalizeNext,
@@ -467,6 +472,46 @@ func testFile(c *cli.Context) error {
 
 	fmt.Println("changelog file is correct")
 
+	return nil
+}
+
+func show(c *cli.Context) error {
+
+	guess := c.Bool("guess")
+	varsStr := c.String("vars")
+
+	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
+		return cli.NewExitError("Changelog file does not exist.", 1)
+	}
+
+	clog := &changelog.Changelog{}
+	err := clog.Load(changelogFile)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	v := clog.FindUnreleasedVersion()
+	if v == nil {
+		v = clog.FindMostRecentVersion()
+	}
+
+	if v == nil {
+		return cli.NewExitError("No version found", 1)
+	}
+
+	vars, err := computeVars(varsStr, guess)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	if _, ok := vars["name"]; !ok {
+		vars["name"] = ""
+	}
+
+	err2 := exportToSomeTemplate(v.GetName(), "-", vars, tpls.MD)
+	if err2 != nil {
+		return cli.NewExitError(err2.Error(), 1)
+	}
 	return nil
 }
 

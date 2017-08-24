@@ -196,6 +196,15 @@ EXAMPLE:
   changelog prepare --author=mh-cbon
 ```
 
+#### Show
+
+{{exec "changelog" "show" "-help" | color "sh"}}
+
+```sh
+EXAMPLE:
+  changelog show
+```
+
 #### Finalize
 
 {{exec "changelog" "finalize" "-help" | color "sh"}}

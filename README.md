@@ -18,6 +18,7 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
 - [CLI Usage](#cli-usage)
   - [Init](#init)
   - [Prepare](#prepare)
+  - [Show](#show)
   - [Finalize](#finalize)
   - [Rename](#rename)
   - [Export](#export)
@@ -223,6 +224,7 @@ VERSION:
 COMMANDS:
      init       Initialize a new changelog file
      prepare    Prepare next changelog
+     show       Show last version
      finalize   Take pending next changelog, apply a version on it
      rename     Rename a release
      test       Test to load your changelog file and report for errors or success
@@ -282,6 +284,22 @@ OPTIONS:
 EXAMPLE:
   changelog prepare
   changelog prepare --author=mh-cbon
+```
+
+#### Show
+
+changelog show -help
+```sh
+NAME:
+   changelog show - Show last version
+
+USAGE:
+   changelog show [arguments...]
+```
+
+```sh
+EXAMPLE:
+  changelog show
 ```
 
 #### Finalize
