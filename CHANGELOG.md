@@ -1,5 +1,24 @@
 # Changelog - changelog
 
+### 0.0.29
+
+__Changes__
+
+- `changelog show`: quickly display the last version on terminal.
+- `changelog rename`: quickly rename versions.
+  Wihthout arguments it renames the __last version__ to `UNRELEASED`.
+  Use `--version` and `--to=version|name` to control the behavior of `rename`.
+
+
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 24 Aug 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.28...0.0.29#diff)
+______________
+
 ### 0.0.28
 
 __Changes__
@@ -133,6 +152,8 @@ __Changes__
 
 - firstrev: silently fail if the directory is not a repository,
   or if the system does not have required binaries
+
+
 
 
 
