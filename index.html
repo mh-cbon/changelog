@@ -25,7 +25,7 @@
       
       <h1 id="changelog">changelog</h1>
 
-<p><a href="https://travis-ci.org/mh-cbon/changelog"><img src="https://travis-ci.org/mh-cbon/changelog.svg?branch=master" alt="travis Status" /></a><a href="https://ci.appveyor.com/projects/mh-cbon/changelog"><img src="https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&amp;svg=true" alt="Appveyor Status" /></a><a href="http://godoc.org/github.com/mh-cbon/changelog"><img src="https://godoc.org/github.com/mh-cbon/changelog?status.svg" alt="GoDoc" /></a></p>
+<p><a href="https://travis-ci.org/mh-cbon/changelog"><img src="https://travis-ci.org/mh-cbon/changelog.svg?branch=master" alt="travis Status" /></a><a href="https://ci.appveyor.com/project/mh-cbon/changelog"><img src="https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&amp;svg=true" alt="Appveyor Status" /></a><a href="http://godoc.org/github.com/mh-cbon/changelog"><img src="https://godoc.org/github.com/mh-cbon/changelog?status.svg" alt="GoDoc" /></a></p>
 
 <p>Maintain a changelog easily.</p>
 
@@ -257,6 +257,7 @@ COMMANDS:
      init       Initialize a new changelog file
      prepare    Prepare next changelog
      finalize   Take pending next changelog, apply a version on it
+     rename     Rename a release
      <span class="nb">test       </span>Test to load your changelog file and report <span class="k">for </span>errors or success
      <span class="nb">export     </span>Export the changelog using given template
      md         Export the changelog to Markdown format
@@ -333,6 +334,27 @@ OPTIONS:
 
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
   changelog finalize --version<span class="o">=</span>0.0.2
+</code></pre>
+</div>
+
+<h5 id="revert">Revert</h5>
+
+<p>changelog rename -help</p>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog rename - Rename a release
+
+USAGE:
+   changelog rename <span class="o">[</span><span class="nb">command </span>options] <span class="o">[</span>arguments...]
+
+OPTIONS:
+   --version value  Specify the version to rename
+   --to value       The new name of the version
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog rename --name UNRELEASED
+  changelog rename --version 0.0.1 --name UNRELEASED
 </code></pre>
 </div>
 
