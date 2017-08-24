@@ -1,4 +1,18 @@
 
+0.0.29
+
+  * `changelog show`: quickly display the last version on terminal.
+  * `changelog rename`: quickly rename versions.
+    Wihthout arguments it renames the __last version__ to `UNRELEASED`.
+    Use `--version` and `--to=version|name` to control the behavior of `rename`.
+
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 24 Aug 2017 21:44:14 +0200
+
+
+
 0.0.28
 
   * ci: add go 1.9, various updates
@@ -98,6 +112,8 @@
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
+
+
 
 
 
