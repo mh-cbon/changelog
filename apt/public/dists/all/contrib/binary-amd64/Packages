@@ -49,8 +49,8 @@ SHA1: f75a8c2c9e9c6c1b10a8ce624db7f27dc825fe90
 SHA256: 2ab83313713ca58e8c02ad444cbd9ec199312c2f218f34700e938e16ecfd5d0a
 SHA512: 46c2e19087b02e73cc9596229791283885b2521762ac7a837b959b0ac8ec0996ac217abb64416c52e6cb48e96d5a065e61205f3b1247e4aeee894f7544a69c3b
 Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
 
 Package: changelog
 Priority: extra
@@ -103,8 +103,8 @@ SHA1: 0e57155e5c7a8ca1401d4b63893abaf850141ff8
 SHA256: bd1a68de0757ac818ed1c7b3cd45fa783d64f657d25b93a64b7a154967fb9da2
 SHA512: 071456f4a31e78fd2fe2d4a841d62f6ec96be59f82faffc86f1d4c21c72c905d1216be939ccbea7525968c38503ded1edd390facb0bd0f6c6dc35e294c947ed6
 Description: Maintain a changelog
-Package-Type: deb
 Homepage: http://github.com/mh-cbon/changelog
+Package-Type: deb
 
 Package: changelog
 Priority: extra
@@ -121,8 +121,8 @@ SHA1: c2aa78196f48ed5041e17ae95cfaf31cc7f246bc
 SHA256: 895e1ed6e226ba45aca9591e5fd8b3995d79a7f35a0c833b5d8d0daabcee852b
 SHA512: 493d906efe3ebe0ddeb56c68a803d00a5be30148ac59cca956c6e5ec54c87e176988734e12f5f379cf7fca614f639dfd942e402c42887149ac3b4ff272937c57
 Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
 
 Package: changelog
 Priority: extra
@@ -157,8 +157,8 @@ SHA1: 81adb2dd77c87d2136f718491c452bcfc61eaefb
 SHA256: 19d0537062a026dc520064da0c1a6d65108173e48c1931208e20ecbbf021f0eb
 SHA512: f45a07e57871243df212bbae980e8ca75dece791b8af5c0b7ffdf9cf7e09c3814bbe0047e1cea2bad52517a293e923ea7a583c52242bab6d7f8ae957fe897199
 Description: Maintain a changelog
-Package-Type: deb
 Homepage: http://github.com/mh-cbon/changelog
+Package-Type: deb
 
 Package: changelog
 Priority: extra
@@ -175,8 +175,8 @@ SHA1: b4da726c992db5133869f413c993a25e8cd9ae44
 SHA256: 534655b140c42ce841d95a0776447078f5613537ca9ba43bfbc8daaab28ad896
 SHA512: 9d3fb8166ab76da5ebff700778767aa652edd87cef0336d3cdfa633d42edc0a432e4bdd1f2b175c09bbd5f61eb301eee28f4c361aff8b12336df9c4fef154e9e
 Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
 
 Package: changelog
 Priority: extra
@@ -211,8 +211,8 @@ SHA1: f9aa3457ff27e9fd6c44ff203489ccf161215f78
 SHA256: fcca426d9ec3183cdf6a483e56d84958d8be5d5144299b25bad7bc758f4d10bb
 SHA512: 45d95f2a30c485bb7e2a1e8a099f1f98bb1003623cfb5b0da19b88bcf12b2519bd41ad4e93d7c0d9ff92ee53742db667b5909f97f1cd9b469cd96fe997f2c651
 Description: Maintain a changelog
-Package-Type: deb
 Homepage: http://github.com/mh-cbon/changelog
+Package-Type: deb
 
 Package: changelog
 Priority: extra
@@ -229,8 +229,8 @@ SHA1: 2770d7a949a2787124df3234b3bb113c1ccec91f
 SHA256: 4c3972c8aa19aaf907de8eb875df2f361fdb0559136b251c6ed24ac6e59183c4
 SHA512: 4411f4ecbe2e4a05c33f5d49f9fc899ff20c032d7f864f3c25a9e2b6d15ba6b9a4b2e3bcb32047faaa6294995710ea86351428a308338114889287bf315d81b5
 Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
 
 Package: changelog
 Priority: extra
@@ -283,8 +283,8 @@ SHA1: 062a12afd6e39913d61a5656aa277bdca7b5b131
 SHA256: d6411ed5cf08546b725b845773503f31fd6efcfee0ce7c888d1e0c1b9a9d378b
 SHA512: 51e8a9ec685e3273f7f4fce912a4a83d917c24796a08022943e9ec445b294d5cda35edb456e926c8f968e0502fab95f51fde8d32c424cbe62e6da6401d587e13
 Description: Maintain a changelog
-Homepage: http://github.com/mh-cbon/changelog
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/changelog
 
 Package: changelog
 Priority: extra
