@@ -205,6 +205,17 @@ EXAMPLE:
   changelog finalize --version=0.0.2
 ```
 
+#### Rename
+
+{{exec "changelog" "rename" "-help" | color "sh"}}
+
+```sh
+EXAMPLE:
+  changelog rename --to UNRELEASED
+  changelog rename --version 0.0.1 --to UNRELEASED
+  changelog rename --version 0.0.1 --to 2.0.0
+```
+
 ##### Test
 
 {{exec "changelog" "test" "-help" | color "sh"}}
@@ -214,7 +225,7 @@ EXAMPLE:
   changelog test
 ```
 
-##### Export
+#### Export
 
 {{exec "changelog" "export" "-help" | color "sh"}}
 

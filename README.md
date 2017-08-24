@@ -1,6 +1,6 @@
 # changelog
 
-[![travis Status](https://travis-ci.org/mh-cbon/changelog.svg?branch=master)](https://travis-ci.org/mh-cbon/changelog)[![Appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&svg=true)](https://ci.appveyor.com/projects/mh-cbon/changelog)[![GoDoc](https://godoc.org/github.com/mh-cbon/changelog?status.svg)](http://godoc.org/github.com/mh-cbon/changelog)
+[![travis Status](https://travis-ci.org/mh-cbon/changelog.svg?branch=master)](https://travis-ci.org/mh-cbon/changelog)[![Appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/changelog?branch=master&svg=true)](https://ci.appveyor.com/project/mh-cbon/changelog)[![GoDoc](https://godoc.org/github.com/mh-cbon/changelog?status.svg)](http://godoc.org/github.com/mh-cbon/changelog)
 
 Maintain a changelog easily.
 
@@ -19,6 +19,8 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
   - [Init](#init)
   - [Prepare](#prepare)
   - [Finalize](#finalize)
+  - [Rename](#rename)
+  - [Export](#export)
 - [History](#history)
 
 # Install
@@ -222,6 +224,7 @@ COMMANDS:
      init       Initialize a new changelog file
      prepare    Prepare next changelog
      finalize   Take pending next changelog, apply a version on it
+     rename     Rename a release
      test       Test to load your changelog file and report for errors or success
      export     Export the changelog using given template
      md         Export the changelog to Markdown format
@@ -300,6 +303,28 @@ EXAMPLE:
   changelog finalize --version=0.0.2
 ```
 
+#### Rename
+
+changelog rename -help
+```sh
+NAME:
+   changelog rename - Rename a release
+
+USAGE:
+   changelog rename [command options] [arguments...]
+
+OPTIONS:
+   --version value  Specify the version to rename
+   --to value       The new name of the version
+```
+
+```sh
+EXAMPLE:
+  changelog rename --to UNRELEASED
+  changelog rename --version 0.0.1 --to UNRELEASED
+  changelog rename --version 0.0.1 --to 2.0.0
+```
+
 ##### Test
 
 changelog test -help
@@ -316,7 +341,7 @@ EXAMPLE:
   changelog test
 ```
 
-##### Export
+#### Export
 
 changelog export -help
 ```sh

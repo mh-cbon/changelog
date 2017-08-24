@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/mh-cbon/changelog/changelog"
 	"github.com/mh-cbon/changelog/tpls"
 	repocommit "github.com/mh-cbon/go-repo-utils/commit"
@@ -25,6 +27,7 @@ var VERSION = "0.0.0"
 var logger = verbose.Auto()
 var changelogFile = "change.log"
 var notAvailable = "N/A"
+var unreleased = "UNRELEASED"
 
 func main() {
 
@@ -82,6 +85,23 @@ func main() {
 					Name:  "version",
 					Value: "",
 					Usage: "Version revision",
+				},
+			},
+		},
+		{
+			Name:   "rename",
+			Usage:  "Rename a release",
+			Action: rename,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "version",
+					Value: "",
+					Usage: "Specify the version to rename",
+				},
+				cli.StringFlag{
+					Name:  "to",
+					Value: "",
+					Usage: "The new name of the version",
 				},
 			},
 		},
@@ -333,7 +353,7 @@ func initChangelog(c *cli.Context) error {
 				newVersion.Author.Email = newVersion.Contributors[0].Email
 			}
 			if cTo == "" {
-				newVersion.Name = "UNRELEASED"
+				newVersion.Name = unreleased
 			}
 			clog.Versions = append(clog.Versions, newVersion)
 		}
@@ -342,7 +362,7 @@ func initChangelog(c *cli.Context) error {
 	} else {
 		// the vcs somehow is broken/notready
 		// let s create an empty changelog
-		newVersion := changelog.NewVersion("UNRELEASED")
+		newVersion := changelog.NewVersion(unreleased)
 		newVersion.Author.Name = notAvailable
 
 		clog.Versions = append(clog.Versions, newVersion)
@@ -384,12 +404,12 @@ func prepareNext(c *cli.Context) error {
 	}
 
 	isNew := false
-	currentNext := clog.FindVersionByName("UNRELEASED")
+	currentNext := clog.FindVersionByName(unreleased)
 	if currentNext != nil {
 		currentNext.SetTodayDate()
 		currentNext.Changes = make([]string, 0)
 	} else {
-		currentNext = changelog.NewVersion("UNRELEASED")
+		currentNext = changelog.NewVersion(unreleased)
 		isNew = true
 	}
 
@@ -463,13 +483,15 @@ func finalizeNext(c *cli.Context) error {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
-	currentNext := clog.FindVersionByName("UNRELEASED")
+	currentNext := clog.FindVersionByName(unreleased)
 	if currentNext == nil {
 		currentVersion := clog.FindVersionByVersion(version)
 		if currentVersion == nil {
-			return cli.NewExitError("No UNRELEASED version into this changelog", 1)
+			return cli.NewExitError(fmt.Sprintf("No %q version into this changelog", unreleased), 1)
 		}
-		return cli.NewExitError("The version already exists and no UNRELEASED version was found into this changelog", 0) // desired to return 0 here.
+		return cli.NewExitError(
+			fmt.Sprintf("The version already exists and no %q version was found into this changelog", unreleased),
+			0) // desired to return 0 here.
 	}
 
 	currentNext.Name = ""
@@ -482,6 +504,70 @@ func finalizeNext(c *cli.Context) error {
 	var out bytes.Buffer
 	err = tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, &out)
 	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+	ioutil.WriteFile(changelogFile, out.Bytes(), os.ModePerm)
+
+	fmt.Println("changelog file updated")
+
+	return nil
+}
+
+func rename(c *cli.Context) error {
+	version := c.String("version")
+	to := c.String("to")
+
+	if to == "" {
+		to = unreleased
+		log.Printf("renaming to %q\n", to)
+	}
+
+	if to == version {
+		return nil
+	}
+
+	if _, err := os.Stat(changelogFile); os.IsNotExist(err) {
+		return cli.NewExitError("Changelog file does not exist.", 1)
+	}
+
+	clog := &changelog.Changelog{}
+	if err := clog.Load(changelogFile); err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+
+	// make sure the new name does not exist
+	if !(clog.FindVersionByVersion(to) == nil && clog.FindUnreleasedVersion() == nil) {
+		return cli.NewExitError("version already exists: "+to, 1)
+	}
+
+	var toRename *changelog.Version
+	if version == "" {
+		toRename = clog.FindUnreleasedVersion()
+		if toRename == nil {
+			toRename = clog.FindMostRecentVersion()
+		}
+		log.Printf("renaming version %q\n", toRename.GetName())
+	} else {
+		toRename = clog.FindVersionByVersion(version)
+	}
+
+	if toRename == nil {
+		return cli.NewExitError("version not found "+version, 1)
+	}
+
+	toRename.Version = nil
+	toRename.Name = ""
+	if _, err := semver.NewVersion(to); err == nil {
+		toRename.SetVersion(to)
+	} else {
+		toRename.Name = to
+	}
+
+	clog.Sort()
+
+	vars := make(map[string]interface{})
+	var out bytes.Buffer
+	if err := tpls.WriteTemplateStrTo(clog, false, vars, tpls.CHANGELOG, &out); err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
 	ioutil.WriteFile(changelogFile, out.Bytes(), os.ModePerm)
@@ -709,10 +795,10 @@ func loadChangelog(path string, version string) (*changelog.Changelog, error) {
 		newVersions := make([]*changelog.Version, 0)
 		v := clog.FindVersionByVersion(version)
 		if v == nil {
-			if version == "UNRELEASED" {
+			if version == unreleased {
 				v = clog.FindVersionByName(version)
 				if v == nil {
-					v = changelog.NewVersion("UNRELEASED")
+					v = changelog.NewVersion(unreleased)
 					v.Author.Name = notAvailable
 				}
 			} else {

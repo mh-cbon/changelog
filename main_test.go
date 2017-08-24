@@ -239,6 +239,201 @@ func TestInitAnyway(t *testing.T) {
 	mustNotErr(tt, os.RemoveAll(dir))
 }
 
+func TestFormatting(t *testing.T) {
+	content := `
+UNRELEASED
+
+  * close #10: added feature to read, decode and registers the prelude data
+
+    It is now possible to define a prelude block of ` + "`" + `yaml` + "`" + ` data in your __README__ file to
+    register new data.
+
+  * added __cat/exec/shell/color/gotest/toc__ func
+
+    - __cat__(file string): to display the file content.
+    - __exec__(bin string, args ...string): to exec a program.
+    - __shell__(s string): to exec a command line on the underlying shell (it is not cross compatible).
+    - __color__(color string, content string): to embed content in a block code with color.
+    - __gotest__(rpkg string, run string, args ...string): exec ` + "`" + `go test <rpkg> -v -run <run> <args...>` + "`" + `.
+    - __toc__(maximportance string, title string): display a TOC.
+
+  * close #7: deprecated __file/cli__ func
+
+    Those two functions are deprecated in flavor of their new equivalents,
+    __cat/exec__.
+
+    The new functions does not returns a triple backquuotes block code.
+    They returns the response body only.
+    A new function helper __color__ is a added to create a block code.
+
+  * close #8: improved cli error output
+
+    Before the output error was not displaying
+    the command line entirely when it was too long.
+    Now the error is updated to always display the command line with full length.
+
+  * close #9: add new gotest helper func
+  * close #12: add toc func
+  * close#10: ensure unquoted strings are read properly
+  * close #11: add shell func helper.
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 12 Apr 2017 14:36:51 +0200
+
+`
+	s := &changelog.Changelog{}
+	err := s.Parse([]byte(content))
+	if err != nil {
+		t.Errorf("should err==nil, got err=%q\n", err)
+	}
+	mustHaveUnreleasedVersion(t, s)
+
+	var out bytes.Buffer
+	vars := map[string]interface{}{"name": "test"}
+	err = tpls.WriteTemplateStrTo(s, false, vars, tpls.MD, &out)
+	if err != nil {
+		t.Errorf("should err==nil, got err=%q\n", err)
+	}
+	fmt.Println(out.String())
+}
+
+func TestExportUnreleased(t *testing.T) {
+	tt := &TestingExiter{t}
+
+	dir := "git_test/git"
+	mustNotErr(t, os.RemoveAll(dir))
+	initGitDir(t, dir)
+
+	//- init the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "init"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 1)
+	}
+	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 2"))
+
+	//- prepare the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 2)
+	}
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+
+	//- finalize the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-am", "changelog 0.1.0"))
+
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+
+	//- create branch 0.1.0
+	mustExecOk(t, makeCmd(dir, "git", "tag", "0.1.0"))
+
+	//- add a change on master
+	mustExecOk(t, makeCmd(dir, "touch", "tomate-master"))
+	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 3 master"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+
+	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
+	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		u := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, u, 1)
+	}
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+
+	mustNotErr(tt, os.RemoveAll(dir))
+}
+
+func TestRename(t *testing.T) {
+	tt := &TestingExiter{t}
+
+	dir := "git_test/git"
+	mustNotErr(t, os.RemoveAll(dir))
+	initGitDir(t, dir)
+
+	//- init the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "init"))
+	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
+	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 2"))
+
+	//- prepare the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
+
+	//- finalize the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
+
+	//- rename 0.1.0 to 0.1.1
+	mustExecOk(tt, makeCmd(dir, binPath, "rename", "--version", "0.1.0", "--to", "0.1.1"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		mustHaveNVersions(tt, clog, 1)
+		v001 := mustHaveVersion(tt, clog, "0.1.1")
+		mustHaveNChanges(tt, v001, 2)
+		mustHaveAChange(tt, v001, 0, "rev 2")
+		mustHaveAChange(tt, v001, 1, "rev 1")
+	}
+
+	//- rename 0.1.1 to UNRELEASED
+	mustExecOk(tt, makeCmd(dir, binPath, "rename", "--version", "0.1.1"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		mustHaveNVersions(tt, clog, 1)
+		v001 := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, v001, 2)
+		mustHaveAChange(tt, v001, 0, "rev 2")
+		mustHaveAChange(tt, v001, 1, "rev 1")
+	}
+
+	//- finalize the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
+
+	//- rename latest to UNRELEASED
+	mustExecOk(tt, makeCmd(dir, binPath, "rename", "--to", "UNRELEASED"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		mustHaveNVersions(tt, clog, 1)
+		v001 := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, v001, 2)
+		mustHaveAChange(tt, v001, 0, "rev 2")
+		mustHaveAChange(tt, v001, 1, "rev 1")
+	}
+
+	//- finalize the changelog
+	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
+
+	//- rename latest to UNRELEASED
+	mustExecOk(tt, makeCmd(dir, binPath, "rename"))
+	mustExecOk(tt, makeCmd(dir, binPath, "test"))
+	{
+		clog := mustGetChangelog(tt, dir)
+		mustHaveNVersions(tt, clog, 1)
+		v001 := mustHaveUnreleasedVersion(tt, clog)
+		mustHaveNChanges(tt, v001, 2)
+		mustHaveAChange(tt, v001, 0, "rev 2")
+		mustHaveAChange(tt, v001, 1, "rev 1")
+	}
+
+	mustNotErr(tt, os.RemoveAll(dir))
+}
+
+//
+// ---------------------------------
+//
+
 func mustGetChangelog(tt Errorer, dir string) *changelog.Changelog {
 	clog := &changelog.Changelog{}
 	out := mustExecOk(tt, makeCmd(dir, binPath, "json"))
@@ -502,120 +697,4 @@ func mustWriteFile(t Errorer, p string, c string) bool {
 		return false
 	}
 	return true
-}
-
-func TestFormatting(t *testing.T) {
-	content := `
-UNRELEASED
-
-  * close #10: added feature to read, decode and registers the prelude data
-
-    It is now possible to define a prelude block of ` + "`" + `yaml` + "`" + ` data in your __README__ file to
-    register new data.
-
-  * added __cat/exec/shell/color/gotest/toc__ func
-
-    - __cat__(file string): to display the file content.
-    - __exec__(bin string, args ...string): to exec a program.
-    - __shell__(s string): to exec a command line on the underlying shell (it is not cross compatible).
-    - __color__(color string, content string): to embed content in a block code with color.
-    - __gotest__(rpkg string, run string, args ...string): exec ` + "`" + `go test <rpkg> -v -run <run> <args...>` + "`" + `.
-    - __toc__(maximportance string, title string): display a TOC.
-
-  * close #7: deprecated __file/cli__ func
-
-    Those two functions are deprecated in flavor of their new equivalents,
-    __cat/exec__.
-
-    The new functions does not returns a triple backquuotes block code.
-    They returns the response body only.
-    A new function helper __color__ is a added to create a block code.
-
-  * close #8: improved cli error output
-
-    Before the output error was not displaying
-    the command line entirely when it was too long.
-    Now the error is updated to always display the command line with full length.
-
-  * close #9: add new gotest helper func
-  * close #12: add toc func
-  * close#10: ensure unquoted strings are read properly
-  * close #11: add shell func helper.
-
-  - mh-cbon <mh-cbon@users.noreply.github.com>
-
--- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 12 Apr 2017 14:36:51 +0200
-
-`
-	s := &changelog.Changelog{}
-	err := s.Parse([]byte(content))
-	if err != nil {
-		t.Errorf("should err==nil, got err=%q\n", err)
-	}
-	mustHaveUnreleasedVersion(t, s)
-
-	var out bytes.Buffer
-	vars := map[string]interface{}{"name": "test"}
-	err = tpls.WriteTemplateStrTo(s, false, vars, tpls.MD, &out)
-	if err != nil {
-		t.Errorf("should err==nil, got err=%q\n", err)
-	}
-	fmt.Println(out.String())
-}
-
-func TestExportUnreleased(t *testing.T) {
-	tt := &TestingExiter{t}
-
-	dir := "git_test/git"
-	mustNotErr(t, os.RemoveAll(dir))
-	initGitDir(t, dir)
-
-	//- init the changelog
-	mustExecOk(tt, makeCmd(dir, binPath, "init"))
-	mustExecOk(tt, makeCmd(dir, binPath, "test"))
-	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
-	{
-		clog := mustGetChangelog(tt, dir)
-		u := mustHaveUnreleasedVersion(tt, clog)
-		mustHaveNChanges(tt, u, 1)
-	}
-	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
-	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 2"))
-
-	//- prepare the changelog
-	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
-	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
-	{
-		clog := mustGetChangelog(tt, dir)
-		u := mustHaveUnreleasedVersion(tt, clog)
-		mustHaveNChanges(tt, u, 2)
-	}
-	mustExecOk(tt, makeCmd(dir, binPath, "test"))
-
-	//- finalize the changelog
-	mustExecOk(tt, makeCmd(dir, binPath, "finalize", "--version", "0.1.0"))
-	mustExecOk(tt, makeCmd(dir, binPath, "test"))
-	mustExecOk(t, makeCmd(dir, "git", "commit", "-am", "changelog 0.1.0"))
-
-	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
-
-	//- create branch 0.1.0
-	mustExecOk(t, makeCmd(dir, "git", "tag", "0.1.0"))
-
-	//- add a change on master
-	mustExecOk(t, makeCmd(dir, "touch", "tomate-master"))
-	mustExecOk(t, makeCmd(dir, "git", "add", "-A"))
-	mustExecOk(t, makeCmd(dir, "git", "commit", "-m", "rev 3 master"))
-	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
-
-	mustExecOk(tt, makeCmd(dir, binPath, "prepare"))
-	mustExecOk(tt, makeCmd(dir, binPath, "md", "--version", "UNRELEASED"))
-	{
-		clog := mustGetChangelog(tt, dir)
-		u := mustHaveUnreleasedVersion(tt, clog)
-		mustHaveNChanges(tt, u, 1)
-	}
-	mustExecOk(tt, makeCmd(dir, binPath, "test"))
-
-	mustNotErr(tt, os.RemoveAll(dir))
 }
