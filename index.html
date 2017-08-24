@@ -337,7 +337,7 @@ OPTIONS:
 </code></pre>
 </div>
 
-<h5 id="revert">Revert</h5>
+<h5 id="rename">Rename</h5>
 
 <p>changelog rename -help</p>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
@@ -353,8 +353,9 @@ OPTIONS:
 </div>
 
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
-  changelog rename --name UNRELEASED
-  changelog rename --version 0.0.1 --name UNRELEASED
+  changelog rename --to UNRELEASED
+  changelog rename --version 0.0.1 --to UNRELEASED
+  changelog rename --version 0.0.1 --to 2.0.0
 </code></pre>
 </div>
 
