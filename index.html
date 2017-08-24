@@ -50,6 +50,7 @@
     <ul>
       <li><a href="#init">Init</a></li>
       <li><a href="#prepare">Prepare</a></li>
+      <li><a href="#show">Show</a></li>
       <li><a href="#finalize">Finalize</a></li>
       <li><a href="#rename">Rename</a></li>
       <li><a href="#export">Export</a></li>
@@ -258,6 +259,7 @@ VERSION:
 COMMANDS:
      init       Initialize a new changelog file
      prepare    Prepare next changelog
+     show       Show last version
      finalize   Take pending next changelog, apply a version on it
      rename     Rename a release
      <span class="nb">test       </span>Test to load your changelog file and report <span class="k">for </span>errors or success
@@ -317,6 +319,22 @@ OPTIONS:
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
   changelog prepare
   changelog prepare --author<span class="o">=</span>mh-cbon
+</code></pre>
+</div>
+
+<h4 id="show">Show</h4>
+
+<p>changelog show -help</p>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>NAME:
+   changelog show - Show last version
+
+USAGE:
+   changelog show <span class="o">[</span>arguments...]
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>EXAMPLE:
+  changelog show
 </code></pre>
 </div>
 
