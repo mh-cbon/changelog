@@ -18,6 +18,8 @@ __Changes__
 
 
 
+
+
 __Contributors__
 
 - mh-cbon
@@ -159,6 +161,8 @@ __Changes__
 
 - firstrev: silently fail if the directory is not a repository,
   or if the system does not have required binaries
+
+
 
 
 
