@@ -20,6 +20,8 @@
 
 
 
+
+
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 24 Aug 2017 21:44:14 +0200
@@ -125,6 +127,8 @@
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
+
+
 
 
 
