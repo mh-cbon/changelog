@@ -20,7 +20,7 @@ env:
     - secure: TdFc992spuVRvR5FqvOsbvUtLjWdg7I0r2eMEKItyk5VA0erJqEoTZ+LtrKFrurKQmKyGjMekgoNr/SbmU+hYn65NqWUlTUdqLlx5m8vIdKDCoTLMkkt5iPPGrs87iG3PNyJWdRwwvca3zuBTCSgMz84rPuJj3tb0XMdMwl5yWB//nBPWZPynDNkyGsNZttibqifMWIdXsRuRG91FJk3t7+k5hW8BzWZq7hHJBPtbTE4c/xlOF9WvXcrY5ZIjLvXY4IGA6tJYR5EolzhIN3zNeEpptKBz+pTzHU54oQvqVSE/llrDDwLOGyn0TIdLYV8DWSQeFQPGxjgwUTANLpIHDpD3xXLsL2UqtFceU9v0G5KvC+U9OgAnD21xwuHusBrjoTzBZQqWKVrTw67BZAOfVLrs+82VrzW49+ZM+r5WjlKA9tbi/Oay/sO1Wkh6TGa1g9Uq6vPDdWKIXTmA1q8amo6wt/aDEfhzFFPniAyxsL+tZKuEczGJga8AfCAB4hEFChrpWPaZhsceLhCHbWCAl0HzSKWn0W6G1SQF+5tLzd/YCZO/SGBH+0+sHghbLGBsBSQrlvabhu2DhGZIOSIR7Zsn6istWfSuxx7bTrZ4VXUY/9e+BtT8T6GKZHHSGhSJSiMoVhKW+zeK7y0+jPwyzEqOHabssMQP2bhDW2/uIM=
 
 before_install:
-  - sudo add-apt-repository 'deb https://dl.bintray.com/mh-cbon/deb unstable main'
+  - sudo add-apt-repository 'deb https://dl.bintray.com/bincrafters/public-deb unstable main'
   - sudo apt-get -qq update
   - sudo apt-get install --allow-unauthenticated changelog go-bin-deb fakeroot
   - mkdir -p ${GOPATH}/bin
