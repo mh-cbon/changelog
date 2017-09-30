@@ -159,6 +159,7 @@ ______________
 	s.FirstRev = "some"
 
 	vars := make(map[string]interface{})
+	vars["user"] = "mh-cbon"
 	vars["name"] = "test"
 
 	out, err := GenerateTemplateStr(s, false, vars, MD)

@@ -622,19 +622,6 @@ func rename(c *cli.Context) error {
 	return nil
 }
 
-func split(s string, separators []rune) []string {
-	f := func(r rune) bool {
-		for _, s := range separators {
-			if r == s {
-				return true
-			}
-		}
-		return false
-	}
-	return strings.FieldsFunc(s, f)
-
-}
-
 func exportChangelog(c *cli.Context) error {
 	template := c.String("template")
 	version := c.String("version")
@@ -812,12 +799,12 @@ func copyVars(dest, src map[string]interface{}) {
 
 func guessVars(dest map[string]interface{}) error {
 	if cwd, err := os.Getwd(); err == nil {
-		parts := split(cwd, []rune{os.PathSeparator})
+		parts := strings.Split(cwd, string(os.PathSeparator))
 		if len(parts) >= 2 {
-			dest["name"] = parts[len(parts)-1 : len(parts)][0]
+			dest["name"] = parts[len(parts)-1]
 		}
 		if len(parts) >= 3 {
-			dest["user"] = parts[len(parts)-2 : len(parts)-1][0]
+			dest["user"] = parts[len(parts)-2]
 		}
 	} else {
 		return err
