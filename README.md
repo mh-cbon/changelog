@@ -301,7 +301,10 @@ NAME:
    changelog show - Show last version
 
 USAGE:
-   changelog show [arguments...]
+   changelog show [command options] [arguments...]
+
+OPTIONS:
+   --guess, -g  Automatically guess and inject name and user variable from the cwd
 ```
 
 ```sh
