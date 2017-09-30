@@ -16,7 +16,7 @@ preversion=
   666 build-them-all build main.go -o "build/&os-&arch/&pkg" --ldflags "-X main.VERSION=!newversion!"
 
 postversion=
-  666 changelog md -o CHANGELOG.md --vars='{"name":"changelog"}'
+  666 changelog md -o CHANGELOG.md -g
   666 commit -q -m "changelog: !newversion!" -f CHANGELOG.md
   666 go install --ldflags "-X main.VERSION=!newversion!"
   666 emd gen -out README.md
