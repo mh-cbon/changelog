@@ -1,5 +1,25 @@
 # Changelog - changelog
 
+### 0.0.30
+
+__Changes__
+
+- ci: ensure the changelog is generated with all variables
+- show command: add missing -g/--guess argument
+- fix #9, close #10: the MD layout uses dynamic user name
+- ci
+- ci
+- ci
+- changelog: 0.0.29
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Sat 30 Sep 2017 -
+[see the diff](https://github.com/mh-cbon/changelog/compare/0.0.29...0.0.30#diff)
+______________
+
 ### 0.0.29
 
 __Changes__
@@ -8,20 +28,6 @@ __Changes__
 - `changelog rename`: quickly rename versions.
   Wihthout arguments it renames the __last version__ to `UNRELEASED`.
   Use `--version` and `--to=version|name` to control the behavior of `rename`.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -167,33 +173,6 @@ __Changes__
 
 - firstrev: silently fail if the directory is not a repository,
   or if the system does not have required binaries
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
