@@ -80,6 +80,12 @@ func main() {
 			Name:   "show",
 			Usage:  "Show last version",
 			Action: show,
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "guess, g",
+					Usage: "Automatically guess and inject name and user variable from the cwd",
+				},
+			},
 		},
 		{
 			Name:   "finalize",

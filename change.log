@@ -6,27 +6,9 @@
     Wihthout arguments it renames the __last version__ to `UNRELEASED`.
     Use `--version` and `--to=version|name` to control the behavior of `rename`.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 24 Aug 2017 21:44:14 +0200
-
-
 
 0.0.28
 
@@ -40,8 +22,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 22 Aug 2017 21:57:18 +0200
 
-
-
 0.0.27
 
   * close #4: fix whitespace handling
@@ -49,8 +29,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 12 Apr 2017 16:34:57 +0200
-
-
 
 0.0.26
 
@@ -65,8 +43,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Fri, 24 Feb 2017 01:07:41 +0100
 
-
-
 0.0.25
 
   * add new option -g/--guess to guess name and user variable from the cwd
@@ -75,8 +51,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 04 Jan 2017 15:21:15 +0100
-
-
 
 0.0.24
 
@@ -88,8 +62,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 17:08:34 +0200
 
-
-
 0.0.23
 
   * packaging: fix travis script
@@ -97,8 +69,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 02:15:31 +0200
-
-
 
 0.0.22
 
@@ -110,8 +80,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 02:07:20 +0200
 
-
-
 0.0.21
 
   * MD layout: Fix diff url, it was using wrong repository name
@@ -121,47 +89,14 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 27 Jul 2016 16:05:24 +0200
 
-
-
 0.0.20
 
   * firstrev: silently fail if the directory is not a repository,
     or if the system does not have required binaries
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 26 Jul 2016 18:22:32 +0200
-
-
 
 0.0.19
 
@@ -177,8 +112,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 26 Jul 2016 18:09:45 +0200
 
-
-
 0.0.18
 
   * travs: fix wrong asset name
@@ -186,8 +119,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 23:50:54 +0200
-
-
 
 0.0.17
 
@@ -197,8 +128,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 23:23:00 +0200
 
-
-
 0.0.16
 
   * rpm: add missing rpm.json to build the package
@@ -207,8 +136,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 22:50:34 +0200
 
-
-
 0.0.15
 
   * rpm: add missing rpm.json to build the package
@@ -216,8 +143,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 22:29:40 +0200
-
-
 
 0.0.14
 
@@ -228,8 +153,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 22:02:41 +0200
 
-
-
 0.0.13
 
   * travis: update docker file
@@ -237,8 +160,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 21:12:30 +0200
-
-
 
 0.0.12
 
@@ -248,8 +169,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 20:28:36 +0200
 
-
-
 0.0.11
 
   * build: add rpm packages
@@ -257,8 +176,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 19:15:32 +0200
-
-
 
 0.0.10
 
@@ -274,8 +191,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 15:34:11 +0200
 
-
-
 0.0.9
 
   * export: Add RPM export format
@@ -289,8 +204,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 14 Jul 2016 15:00:01 +0200
 
-
-
 0.0.8
 
   * appveyor: register go-msi path manually
@@ -301,8 +214,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 12 Jul 2016 00:10:58 +0200
 
-
-
 0.0.7
 
   * appveyor: fix curl option to follow location redirect
@@ -310,8 +221,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 23:32:43 +0200
-
-
 
 0.0.6
 
@@ -321,8 +230,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 23:23:53 +0200
-
-
 
 0.0.5
 
@@ -334,8 +241,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:51:43 +0200
 
-
-
 0.0.4
 
   * fix glide lock file
@@ -343,8 +248,6 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:22:19 +0200
-
-
 
 0.0.3
 
@@ -356,8 +259,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:05:53 +0200
 
-
-
 0.0.2
 
   * add deb.json file to generate debian packages
@@ -366,8 +267,6 @@
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:48:46 +0200
 
-
-
 0.0.1
 
   * Initial release
@@ -375,5 +274,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
-
-
