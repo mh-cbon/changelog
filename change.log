@@ -4,10 +4,6 @@
   * ci: ensure the changelog is generated with all variables
   * show command: add missing -g/--guess argument
   * fix #9, close #10: the MD layout uses dynamic user name
-  * ci
-  * ci
-  * ci
-  * changelog: 0.0.29
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
@@ -350,5 +346,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 21:43:10 +0200
-
-

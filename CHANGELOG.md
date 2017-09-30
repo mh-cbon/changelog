@@ -7,10 +7,6 @@ __Changes__
 - ci: ensure the changelog is generated with all variables
 - show command: add missing -g/--guess argument
 - fix #9, close #10: the MD layout uses dynamic user name
-- ci
-- ci
-- ci
-- changelog: 0.0.29
 
 __Contributors__
 
@@ -475,5 +471,3 @@ __Contributors__
 Released by mh-cbon, Mon 11 Jul 2016 -
 [see the diff](https://github.com/mh-cbon/changelog/compare/c589337667f6d64f5b2b2165290c20b8b4e7b40b...0.0.1#diff)
 ______________
-
-
